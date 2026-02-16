@@ -5,7 +5,7 @@ Este repo es **1 HTML** (index.html) + **Netlify Functions** para PayPal y refer
 ## 1) Variables de entorno (Netlify)
 Configura en Netlify → Site settings → Environment variables:
 
-- `PAYPAL_ENV` = `sandbox` (luego `live`)
+- `PAYPAL_ENV` = `live` (por defecto; usa `sandbox` solo para pruebas)
 - `PAYPAL_CLIENT_ID` = (tu Client ID)
 - `PAYPAL_CLIENT_SECRET` = (tu Secret)
 - `SUPABASE_URL` = `https://lqdodhyovotxyjhinjgd.supabase.co`

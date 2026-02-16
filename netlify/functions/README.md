@@ -15,7 +15,7 @@ Netlify Functions para integrar PayPal con tu aplicación TestVocación.
     - ```
       PAYPAL_CLIENT_ID=tu_client_id
       PAYPAL_CLIENT_SECRET=tu_client_secret
-      PAYPAL_ENV=sandbox  (o "live" para producción)
+      PAYPAL_ENV=live  (por defecto; usa "sandbox" solo para pruebas)
       PAYPAL_RETURN_URL=https://tudominio.com/success
       PAYPAL_CANCEL_URL=https://tudominio.com/cancel
       ```

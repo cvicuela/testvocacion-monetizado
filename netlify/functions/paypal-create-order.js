@@ -23,7 +23,7 @@ async function getAccessToken() {
     ).toString('base64');
 
     const response = await axios.post(
-        `https://api-m.${process.env.PAYPAL_ENV === 'live' ? 'paypal.com' : 'sandbox.paypal.com'}/v1/oauth2/token`,
+        `https://api-m.${process.env.PAYPAL_ENV === 'sandbox' ? 'sandbox.paypal.com' : 'paypal.com'}/v1/oauth2/token`,
         'grant_type=client_credentials',
         {
             headers: {
@@ -92,8 +92,8 @@ exports.handler = async (event) => {
                 },
             ],
             application_context: {
-                return_url: `${process.env.PAYPAL_RETURN_URL || 'http://localhost:8888'}`,
-                cancel_url: `${process.env.PAYPAL_CANCEL_URL || 'http://localhost:8888'}`,
+                return_url: `${process.env.PAYPAL_RETURN_URL || 'https://testvocacion.netlify.app'}`,
+                cancel_url: `${process.env.PAYPAL_CANCEL_URL || 'https://testvocacion.netlify.app'}`,
                 brand_name: 'TestVocación',
                 landing_page: 'BILLING',
                 shipping_preference: 'NO_SHIPPING',
@@ -102,7 +102,7 @@ exports.handler = async (event) => {
         };
 
         const response = await axios.post(
-            `https://api-m.${process.env.PAYPAL_ENV === 'live' ? 'paypal.com' : 'sandbox.paypal.com'}/v2/checkout/orders`,
+            `https://api-m.${process.env.PAYPAL_ENV === 'sandbox' ? 'sandbox.paypal.com' : 'paypal.com'}/v2/checkout/orders`,
             orderData,
             {
                 headers: {
