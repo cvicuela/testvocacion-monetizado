@@ -195,7 +195,10 @@
 
   /* PAYWALL (preview + blur) */
   .locked { position:relative; overflow:hidden; }
-  .locked .locked-content { filter: blur(10px); opacity:0.92; pointer-events:none; user-select:none; }
+  .locked .locked-content { opacity:0.92; pointer-events:none; user-select:none; }
+  .locked .locked-content p,
+  .locked .locked-content .trait-grid,
+  .locked .locked-content .career-grid { filter: blur(8px); }
   .locked .locked-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:18px;
     background: linear-gradient(180deg, rgba(245,243,255,0.35), rgba(245,243,255,0.88)); border:1px solid var(--border); }
   .locked-box { width:100%; max-width:560px; background: rgba(255,255,255,0.94); border:1px solid rgba(226,229,235,0.9);
@@ -1300,12 +1303,14 @@ async function submitRefs(sessionId){
     }
   }
 
-  box.textContent = (LANG==='es') ? 'Validando...' : 'Validating...';
+  box.textContent = (LANG==='es') ? 'Validando y enviando invitaciones...' : 'Validating and sending invitations...';
+
+  const referrerName = (document.getElementById('userName').value||'').trim();
 
   const r = await fetch('/.netlify/functions/referral-invite', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ sessionId, emails:[e1,e2,e3] })
+    body: JSON.stringify({ sessionId, emails:[e1,e2,e3], referrerName })
   });
   const d = await r.json();
   if (!d.ok) {
@@ -1461,7 +1466,7 @@ function retake() {
 (function(){
   var PAYPAL_CLIENT_ID = 'AT3lDO9UP6KY9SIu9XjaWpABL-jMhYhPQd8pzBAGF159cLNWcPyNDWw9YVwiy_IXmrCnIqoQamJsOfQ_';
   var s = document.createElement('script');
-  s.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(PAYPAL_CLIENT_ID) + '&currency=USD';
+  s.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(PAYPAL_CLIENT_ID) + '&currency=USD&enable-funding=card&disable-funding=paylater';
   s.async = true;
   document.body.appendChild(s);
 })();

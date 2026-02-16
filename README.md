@@ -10,6 +10,8 @@ Configura en Netlify → Site settings → Environment variables:
 - `PAYPAL_CLIENT_SECRET` = (tu Secret)
 - `SUPABASE_URL` = `https://lqdodhyovotxyjhinjgd.supabase.co`
 - `SUPABASE_SERVICE_ROLE_KEY` = (service_role key)
+- `SENDGRID_API_KEY` = (tu SendGrid API key)
+- `SENDGRID_FROM_EMAIL` = (email verificado en SendGrid, ej. `hello@testvocacion.app`)
 
 > **No** pongas el secret en el HTML. Solo en Netlify env vars.
 
