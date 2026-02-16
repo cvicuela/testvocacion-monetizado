@@ -111,10 +111,14 @@ exports.handler = async (event) => {
 
         if (error) {
             console.error('Supabase insert error:', error.message);
+            const isDuplicate = error.message && error.message.includes('idx_referrals_unique_invite');
+            const friendlyMsg = isDuplicate
+                ? 'Uno o más de estos emails ya fueron invitados desde esta sesión. Usa emails diferentes.'
+                : 'Error al guardar referidos. Intenta de nuevo.';
             return {
                 statusCode: 400,
                 headers: CORS_HEADERS,
-                body: JSON.stringify({ ok: false, message: 'Error al guardar referidos: ' + error.message })
+                body: JSON.stringify({ ok: false, message: friendlyMsg })
             };
         }
 
