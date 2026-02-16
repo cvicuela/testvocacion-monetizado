@@ -1174,12 +1174,14 @@ function buildLockedPreview(lockedHTML, sessionId, L){
 }
 
 function ensureLegalChecked(){
-  const ok=document.getElementById('legal_ok');
-  if(!ok || !ok.checked){
-    const msg = (LANG==='es') ? 'Debes aceptar los términos para continuar.' : 'You must accept the terms to continue.';
-    alert(msg);
-    throw new Error('LEGAL_NOT_ACCEPTED');
-  }
+    const ok = document.getElementById('legal_ok');
+    if(!ok || !ok.checked){
+          alert(LANG==='es'
+                      ? 'Debes aceptar Términos/Privacidad/Reembolsos para pagar.'
+                      : 'You must accept Terms/Privacy/Refunds to pay.');
+          return false; // 👈 clave: NO throw
+    }
+    return true;
 }
 
 function renderPaywallButtons(sessionId){
