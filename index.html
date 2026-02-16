@@ -1188,17 +1188,41 @@ function renderPaywallButtons(sessionId){
   // FULL
   if (document.getElementById('pp_full')) {
     paypal.Buttons({
+
+      function showPayPalDebug(message){
+          let box = document.getElementById('pp_debug');
+          if(!box){
+                box = document.createElement('div');
+                box.id = 'pp_debug';
+                box.style.marginTop = '12px';
+                box.style.padding = '10px 12px';
+                box.style.border = '1.5px solid #f59e0b';
+                box.style.background = 'rgba(245,158,11,.10)';
+                box.style.borderRadius = '12px';
+                box.style.fontSize = '12px';
+                box.style.color = '#92400e';
+                const host = document.querySelector('.locked-box') || document.body;
+                host.appendChild(box);
+          }
+          box.textContent = message;
+      }
       createOrder: async () => {
-        ensureLegalChecked();
+if (!ensureLegalChecked()) return;
         const r = await fetch('/.netlify/functions/paypal-create-order', {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ tier:'FULL_7_99', sessionId })
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({ tier:'FULL_7_99', sessionId })
         });
-        const d = await r.json();
-        if (!d.id) throw new Error('No order id');
-        return d.id;
-      },
+          const text = await r.text();
+          let d = {};
+          try { d = JSON.parse(text); } catch(e) {}
+          if (!r.ok || !d.id) {
+                  showPayPalDebug(`Create order failed (${r.status}): ${text}`);
+                  throw new Error('CREATE_ORDER_FAILED');
+          }
+          return d.id;
+        },
+      onError: (e) => { console.error(e); showPayPalDebug(String(e)); alert(LANG==='es'?'Error con PayPal. Revisa el detalle.':'PayPal error. See details.'); },
       onApprove: async (data) => {
         const r = await fetch('/.netlify/functions/paypal-capture-order', {
           method:'POST',
@@ -1253,16 +1277,22 @@ async function submitRefs(sessionId){
 
     paypal.Buttons({
       createOrder: async () => {
-        ensureLegalChecked();
-        const rr = await fetch('/.netlify/functions/paypal-create-order', {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ tier:'DISC_3_99', sessionId })
-        });
-        const dd = await rr.json();
-        if (!dd.id) throw new Error('No order id');
-        return dd.id;
-      },
+if (!ensureLegalChecked()) return;
+          const rr = await fetch('/.netlify/functions/paypal-create-order', {
+                  method:'POST',
+                  headers:{'Content-Type':'application/json'},
+                  body: JSON.stringify({ tier:'DISC_3_99', sessionId })
+          });
+            const text = await rr.text();
+            let d = {};
+            try { d = JSON.parse(text); } catch(e) {}
+            if (!rr.ok || !d.id) {
+                    showPayPalDebug(`Create order failed (${rr.status}): ${text}`);
+                    throw new Error('CREATE_ORDER_FAILED');
+            }
+            return d.id;
+          },
+      onError: (e) => { console.error(e); showPayPalDebug(String(e)); alert(LANG==='es'?'Error con PayPal. Revisa el detalle.':'PayPal error. See details.'); },
       onApprove: async (data) => {
         const rr = await fetch('/.netlify/functions/paypal-capture-order', {
           method:'POST',
