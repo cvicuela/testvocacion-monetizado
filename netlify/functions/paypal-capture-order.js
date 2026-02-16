@@ -43,7 +43,8 @@ exports.handler = async (event) => {
     }
 
     try {
-        const { orderID } = JSON.parse(event.body);
+        const body = JSON.parse(event.body);
+        const orderID = body.orderID || body.orderId;
 
         if (!orderID || typeof orderID !== 'string' || orderID.length > 50) {
             return {
