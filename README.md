@@ -25,6 +25,6 @@ Ejecuta el SQL en `supabase/schema.sql`.
 - Functions: `netlify/functions`
 
 ## 4) Flujo de precios
-- Full Report: **$7.99**
-- Discount: **$3.99** (se habilita al tener **3 referidos** válidos)
+- Full Report: **$9.99**
+- Discount: **$5.99** (se habilita al tener **3 referidos** válidos)
 
