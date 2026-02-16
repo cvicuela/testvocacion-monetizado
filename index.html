@@ -1179,11 +1179,39 @@ function buildLockedPreview(lockedHTML, sessionId, L){
 function ensureLegalChecked(){
     const ok = document.getElementById('legal_ok');
     if(!ok || !ok.checked){
-          alert(LANG==='es'
-                      ? 'Debes aceptar Términos/Privacidad/Reembolsos para pagar.'
-                      : 'You must accept Terms/Privacy/Refunds to pay.');
-          return false; // 👈 clave: NO throw
+          // Scroll to and highlight the checkbox area
+          const legalBox = ok ? ok.closest('.legal-mini') : null;
+          if(legalBox){
+            legalBox.scrollIntoView({behavior:'smooth', block:'center'});
+            // Add pulsing highlight
+            legalBox.style.transition = 'all 0.3s ease';
+            legalBox.style.background = 'rgba(239,68,68,0.12)';
+            legalBox.style.borderRadius = '10px';
+            legalBox.style.padding = '8px 10px';
+            legalBox.style.border = '1.5px solid #ef4444';
+            // Show inline reminder message
+            var reminder = document.getElementById('legal_reminder');
+            if(!reminder){
+              reminder = document.createElement('div');
+              reminder.id = 'legal_reminder';
+              reminder.style.cssText = 'color:#dc2626;font-size:13px;font-weight:600;margin-top:6px;display:flex;align-items:center;gap:6px;';
+              legalBox.appendChild(reminder);
+            }
+            reminder.innerHTML = (LANG==='es')
+              ? '&#9660; Acepta los Términos, Privacidad y Reembolsos marcando la casilla'
+              : '&#9660; Accept Terms, Privacy & Refunds by checking the box below';
+            // Auto-remove highlight after 4s
+            setTimeout(function(){
+              legalBox.style.background = '';
+              legalBox.style.border = '';
+              legalBox.style.padding = '';
+            }, 4000);
+          }
+          return false;
     }
+    // Remove reminder if it exists when checkbox is checked
+    var reminder = document.getElementById('legal_reminder');
+    if(reminder) reminder.remove();
     return true;
 }
 

@@ -43,26 +43,33 @@ exports.handler = async (event) => {
     }
 
     try {
-        const { items, totalPrice } = JSON.parse(event.body);
+        const body = JSON.parse(event.body);
+        const { tier, sessionId } = body;
 
-        if (!items || !Array.isArray(items) || items.length === 0) {
+        // Map tier to price and description
+        const TIERS = {
+            FULL_7_99: { price: '7.99', name: 'Full Personalized Career Report' },
+            DISC_3_99: { price: '3.99', name: 'Discounted Career Report (Referral)' },
+        };
+
+        const tierInfo = TIERS[tier];
+        if (!tierInfo) {
             return {
                 statusCode: 400,
                 headers: CORS_HEADERS,
-                body: JSON.stringify({ error: 'Missing or invalid items' }),
+                body: JSON.stringify({ error: 'Invalid tier: ' + (tier || 'missing') }),
             };
         }
 
-        const price = parseFloat(totalPrice);
-        if (!totalPrice || isNaN(price) || price <= 0 || price > 10000) {
-            return {
-                statusCode: 400,
-                headers: CORS_HEADERS,
-                body: JSON.stringify({ error: 'Invalid totalPrice' }),
-            };
-        }
+        const priceStr = tierInfo.price;
 
-        const priceStr = price.toFixed(2);
+        const items = [
+            {
+                name: tierInfo.name,
+                unit_amount: { currency_code: 'USD', value: priceStr },
+                quantity: '1',
+            },
+        ];
 
         const accessToken = await getAccessToken();
 
@@ -70,6 +77,7 @@ exports.handler = async (event) => {
             intent: 'CAPTURE',
             purchase_units: [
                 {
+                    description: tierInfo.name + (sessionId ? ' (' + sessionId.substring(0, 16) + ')' : ''),
                     amount: {
                         currency_code: 'USD',
                         value: priceStr,
