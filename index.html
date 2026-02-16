@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+h<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1404,4 +1404,65 @@ function retake() {
 
 <script src="https://www.paypal.com/sdk/js?client-id=AT3lDO9UP6KY9SIu9XjaWpABL-jMhYhPQd8pzBAGF159cLNWcPyNDWw9YVwiy_IXmrCnIqoQamJsOfQ_&currency=USD"></script>
 </body>
+  <style>
+    @media (max-width: 600px){
+        .main { padding-bottom: 140px; } /* espacio extra */
+        .nav-buttons{
+              position: sticky;
+        bottom: calc(14px + env(safe-area-inset-bottom));
+              background: rgba(245,243,255,0.92);
+              backdrop-filter: blur(10px);
+              padding: 10px;
+              border-radius: 14px;
+              box-shadow: var(--shadow-lg);
+              z-index: 50;
+    }
+    }
+    </style>
+  <script>
+    // Scroll nav buttons into view when changing questions (Next/Prev)
+    // Wrap original nextQuestion and prevQuestion functions
+    const originalNextQuestion = typeof nextQuestion === 'function' ? nextQuestion : null;
+    const originalPrevQuestion = typeof prevQuestion === 'function' ? prevQuestion : null;
+
+    if (originalNextQuestion) {
+        window.nextQuestion = function() {
+              originalNextQuestion.apply(this, arguments);
+              setTimeout(() => {
+                      document.querySelector('.nav-buttons')?.scrollIntoView({block:'end', behavior:'smooth'});
+              }, 50);
+        };
+    }
+
+    if (originalPrevQuestion) {
+        window.prevQuestion = function() {
+              originalPrevQuestion.apply(this, arguments);
+              setTimeout(() => {
+                      document.querySelector('.nav-buttons')?.scrollIntoView({block:'end', behavior:'smooth'});
+              }, 50);
+        };
+    }
+
+    // Fallback: Also monitor for click events on buttons with next/prev in their id or classes
+    document.addEventListener('DOMContentLoaded', function() {
+        const nextButtons = document.querySelectorAll('[onclick*="next"], .next-btn, [id*="next"]');
+        const prevButtons = document.querySelectorAll('[onclick*="prev"], .prev-btn, [id*="prev"]');
+
+        nextButtons.forEach(btn => {
+              btn.addEventListener('click', function() {
+                      setTimeout(() => {
+                                document.querySelector('.nav-buttons')?.scrollIntoView({block:'end', behavior:'smooth'});
+                      }, 50);
+              });
+        });
+
+        prevButtons.forEach(btn => {
+              btn.addEventListener('click', function() {
+                      setTimeout(() => {
+                                document.querySelector('.nav-buttons')?.scrollIntoView({block:'end', behavior:'smooth'});
+                      }, 50);
+              });
+        });
+    });
+  </script>
 </html>
