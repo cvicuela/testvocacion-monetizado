@@ -1138,14 +1138,14 @@ function buildLockedPreview(lockedHTML, sessionId, L){
           <div class="plan-grid">
             <div class="plan-card reco">
               <div class="plan-title">Full Personalized Career Report</div>
-              <div class="plan-price">$7.99</div>
+              <div class="plan-price">$9.99</div>
               <div class="plan-note">${isES?'Acceso inmediato + PDF':'Instant access + PDF'}</div>
               <div class="paypal-slot" id="pp_full"></div>
             </div>
 
             <div class="plan-card">
               <div class="plan-title">Share with 3 friends → Discount</div>
-              <div class="plan-price">$3.99</div>
+              <div class="plan-price">$5.99</div>
               <div class="plan-note">${isES?'Disponible al completar 3 referidos':'Available after 3 referrals'}</div>
 
               <div class="ref-box">
@@ -1248,7 +1248,7 @@ function renderPaywallButtons(sessionId){
         const r = await fetch('/.netlify/functions/paypal-create-order', {
                 method:'POST',
                 headers:{'Content-Type':'application/json'},
-                body: JSON.stringify({ tier:'FULL_7_99', sessionId })
+                body: JSON.stringify({ tier:'FULL_9_99', sessionId })
         });
         const text = await r.text();
         let d = {};
@@ -1263,7 +1263,7 @@ function renderPaywallButtons(sessionId){
         const r = await fetch('/.netlify/functions/paypal-capture-order', {
           method:'POST',
           headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ orderId: data.orderID, sessionId, tier:'FULL_7_99' })
+          body: JSON.stringify({ orderId: data.orderID, sessionId, tier:'FULL_9_99' })
         });
         const d = await r.json();
         if (d.status === 'COMPLETED') {
@@ -1338,7 +1338,7 @@ if (!ensureLegalChecked()) return;
           const rr = await fetch('/.netlify/functions/paypal-create-order', {
                   method:'POST',
                   headers:{'Content-Type':'application/json'},
-                  body: JSON.stringify({ tier:'DISC_3_99', sessionId })
+                  body: JSON.stringify({ tier:'DISC_5_99', sessionId })
           });
             const text = await rr.text();
             let d = {};
@@ -1354,7 +1354,7 @@ if (!ensureLegalChecked()) return;
         const rr = await fetch('/.netlify/functions/paypal-capture-order', {
           method:'POST',
           headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ orderId: data.orderID, sessionId, tier:'DISC_3_99' })
+          body: JSON.stringify({ orderId: data.orderID, sessionId, tier:'DISC_5_99' })
         });
         const dd = await rr.json();
         if (dd.status === 'COMPLETED') {

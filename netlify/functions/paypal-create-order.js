@@ -48,8 +48,8 @@ exports.handler = async (event) => {
 
         // Map tier to price and description
         const TIERS = {
-            FULL_7_99: { price: '7.99', name: 'Full Personalized Career Report' },
-            DISC_3_99: { price: '3.99', name: 'Discounted Career Report (Referral)' },
+            FULL_9_99: { price: '9.99', name: 'Full Personalized Career Report' },
+            DISC_5_99: { price: '5.99', name: 'Discounted Career Report (Referral)' },
         };
 
         const tierInfo = TIERS[tier];
