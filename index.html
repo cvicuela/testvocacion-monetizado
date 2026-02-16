@@ -212,7 +212,9 @@
   .plan-price { font-weight:900; color:var(--accent); font-size:22px; margin-top:6px; }
   .plan-note { font-size:12px; color:var(--text-light); margin-top:6px; }
   .paypal-slot { margin-top:10px; }
-  .gpay-slot { margin-top:10px; min-height:40px; }
+  .applepay-slot { margin-top:10px; min-height:40px; }
+  .applepay-slot apple-pay-button { --apple-pay-button-width:100%; --apple-pay-button-height:40px; --apple-pay-button-border-radius:8px; --apple-pay-button-padding:0; display:block; cursor:pointer; }
+  .applepay-slot .apple-pay-fallback { display:none; }
   .pay-or { text-align:center; font-size:11px; font-weight:700; color:var(--text-light); margin:8px 0; text-transform:uppercase; letter-spacing:1px; }
   .legal-mini { margin-top:16px; font-size:13px; color:var(--text); line-height:1.6; text-align:left; background:rgba(99,102,241,0.07); border:1.5px solid rgba(99,102,241,0.25); border-radius:12px; padding:14px 16px; }
   .legal-mini label { cursor:pointer; }
@@ -1156,7 +1158,7 @@ function buildLockedPreview(lockedHTML, sessionId, L){
               <div class="plan-note">${isES?'Acceso inmediato + PDF':'Instant access + PDF'}</div>
               <div class="paypal-slot" id="pp_full"></div>
               <div class="pay-or">${isES?'o paga con':'or pay with'}</div>
-              <div class="gpay-slot" id="gp_full"></div>
+              <div class="applepay-slot" id="ap_full"></div>
               <div class="pay-or">${isES?'o paga con tarjeta':'or pay with card'}</div>
               <div class="stripe-slot" id="stripe_full">
                 <button class="stripe-btn" onclick="stripeCheckout('FULL_9_99','${sessionId}')">
@@ -1185,8 +1187,8 @@ function buildLockedPreview(lockedHTML, sessionId, L){
               </div>
 
               <div class="paypal-slot" id="pp_disc" style="display:none"></div>
-              <div class="pay-or" id="gp_disc_or" style="display:none">${isES?'o paga con':'or pay with'}</div>
-              <div class="gpay-slot" id="gp_disc" style="display:none"></div>
+              <div class="pay-or" id="ap_disc_or" style="display:none">${isES?'o paga con':'or pay with'}</div>
+              <div class="applepay-slot" id="ap_disc" style="display:none"></div>
               <div class="pay-or" id="stripe_disc_or" style="display:none">${isES?'o paga con tarjeta':'or pay with card'}</div>
               <div class="stripe-slot" id="stripe_disc" style="display:none">
                 <button class="stripe-btn" onclick="stripeCheckout('DISC_5_99','${sessionId}')">
@@ -1310,91 +1312,81 @@ function renderPaywallButtons(sessionId){
     }).render('#pp_full');
   }
 
-  // FULL — Google Pay
-  initGooglePay(sessionId);
+  // FULL — Apple Pay
+  initApplePay(sessionId);
 }
 
-// ===================== GOOGLE PAY =====================
-var _gpayClient = null;
-var _gpayConfig = null;
-var _gpaySessionId = null;
+// ===================== APPLE PAY =====================
+var _applePayConfig = null;
+var _applePayReady = false;
+var _applePaySessionId = null;
 
-async function initGooglePay(sessionId, retryCount) {
-  _gpaySessionId = sessionId;
+async function initApplePay(sessionId, retryCount) {
+  _applePaySessionId = sessionId;
   retryCount = retryCount || 0;
 
-  // Check if PayPal's Googlepay component is available
-  if (typeof paypal === 'undefined' || typeof paypal.Googlepay !== 'function') {
-    console.log('Google Pay: PayPal Googlepay component not available');
-    hideGPayContainers();
+  // Apple Pay only works in Safari / Apple devices
+  if (!window.ApplePaySession || !ApplePaySession.canMakePayments()) {
+    console.log('Apple Pay: not available on this device/browser');
+    hideApplePayContainers();
     return;
   }
 
-  // Check if Google Pay JS library is loaded; retry up to 5 times
-  if (typeof google === 'undefined' || !google.payments) {
+  // Check if PayPal's Applepay component is available
+  if (typeof paypal === 'undefined' || typeof paypal.Applepay !== 'function') {
     if (retryCount < 5) {
-      setTimeout(function(){ initGooglePay(sessionId, retryCount + 1); }, 500);
+      setTimeout(function(){ initApplePay(sessionId, retryCount + 1); }, 500);
       return;
     }
-    console.log('Google Pay: JS library not loaded after retries');
-    hideGPayContainers();
+    console.log('Apple Pay: PayPal Applepay component not available');
+    hideApplePayContainers();
     return;
   }
 
   try {
-    var googlepay = paypal.Googlepay();
-    _gpayConfig = await googlepay.config();
+    var applepay = paypal.Applepay();
+    _applePayConfig = await applepay.config();
 
-    _gpayClient = new google.payments.api.PaymentsClient({
-      environment: (window._paypalEnv === 'sandbox') ? 'TEST' : 'PRODUCTION'
-    });
-
-    var readyToPay = await _gpayClient.isReadyToPay({
-      apiVersion: 2,
-      apiVersionMinor: 0,
-      allowedPaymentMethods: _gpayConfig.allowedPaymentMethods
-    });
-
-    if (readyToPay.result) {
-      renderGPayButton('gp_full', 'FULL_9_99', '9.99');
+    if (_applePayConfig.isEligible) {
+      _applePayReady = true;
+      renderApplePayButton('ap_full', 'FULL_9_99', '9.99');
     } else {
-      hideGPayContainers();
+      console.log('Apple Pay: not eligible');
+      hideApplePayContainers();
     }
   } catch(e) {
-    console.log('Google Pay init error:', e);
-    hideGPayContainers();
+    console.log('Apple Pay init error:', e);
+    hideApplePayContainers();
   }
 }
 
-function hideGPayContainers() {
-  ['gp_full','gp_disc','gp_disc_or'].forEach(function(id){
+function hideApplePayContainers() {
+  ['ap_full','ap_disc','ap_disc_or'].forEach(function(id){
     var el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
-  var orFull = document.querySelector('#gp_full')
-    ? document.querySelector('#gp_full').previousElementSibling : null;
+  var orFull = document.querySelector('#ap_full')
+    ? document.querySelector('#ap_full').previousElementSibling : null;
   if (orFull && orFull.classList.contains('pay-or')) orFull.style.display = 'none';
 }
 
-function renderGPayButton(containerId, tier, price) {
+function renderApplePayButton(containerId, tier, price) {
   var container = document.getElementById(containerId);
-  if (!container || !_gpayClient) return;
+  if (!container || !_applePayReady) return;
 
-  container.innerHTML = '';
-  var button = _gpayClient.createButton({
-    onClick: function() { onGooglePayClick(tier, price); },
-    buttonColor: 'black',
-    buttonType: 'pay',
-    buttonSizeMode: 'fill',
-    buttonLocale: (LANG === 'es') ? 'es' : 'en'
+  container.innerHTML = '<apple-pay-button buttonstyle="black" type="pay" locale="' +
+    ((LANG === 'es') ? 'es-DO' : 'en-US') + '"></apple-pay-button>';
+
+  container.querySelector('apple-pay-button').addEventListener('click', function() {
+    onApplePayClick(tier, price);
   });
-  container.appendChild(button);
 }
 
-async function onGooglePayClick(tier, price) {
+async function onApplePayClick(tier, price) {
   if (!ensureLegalChecked()) return;
 
-  var sessionId = _gpaySessionId;
+  var sessionId = _applePaySessionId;
+  var orderId = null;
 
   try {
     // 1. Create PayPal order
@@ -1407,55 +1399,86 @@ async function onGooglePayClick(tier, price) {
     var d = {};
     try { d = JSON.parse(text); } catch(e) { /* ignore */ }
     if (!r.ok || !d.id) {
-      showPayPalDebug('Google Pay create order failed (' + r.status + '): ' + text);
+      showPayPalDebug('Apple Pay create order failed (' + r.status + '): ' + text);
       return;
     }
+    orderId = d.id;
 
-    // 2. Get Google Pay payment data from user
-    var paymentData = await _gpayClient.loadPaymentData({
-      apiVersion: 2,
-      apiVersionMinor: 0,
-      allowedPaymentMethods: _gpayConfig.allowedPaymentMethods,
-      transactionInfo: {
-        totalPriceStatus: 'FINAL',
-        totalPrice: price,
-        currencyCode: 'USD',
-        countryCode: 'US'
-      },
-      merchantInfo: _gpayConfig.merchantInfo
-    });
+    // 2. Start Apple Pay session
+    var paymentRequest = {
+      countryCode: _applePayConfig.countryCode || 'DO',
+      currencyCode: 'USD',
+      merchantCapabilities: _applePayConfig.merchantCapabilities || ['supports3DS'],
+      supportedNetworks: _applePayConfig.supportedNetworks || ['visa', 'masterCard'],
+      total: {
+        label: 'TestVocacion',
+        amount: price,
+        type: 'final'
+      }
+    };
 
-    // 3. Confirm order with PayPal using Google Pay token
-    var googlepay = paypal.Googlepay();
-    var confirmResult = await googlepay.confirmOrder({
-      orderId: d.id,
-      paymentMethodData: paymentData.paymentMethodData
-    });
+    var appleSession = new ApplePaySession(4, paymentRequest);
+    var applepay = paypal.Applepay();
 
-    // 4. Handle 3D Secure if required
-    if (confirmResult.status === 'PAYER_ACTION_REQUIRED') {
-      await googlepay.initiatePayerAction({ orderId: d.id });
-    }
+    // 3. Merchant validation
+    appleSession.onvalidatemerchant = async function(event) {
+      try {
+        var result = await applepay.validateMerchant({
+          validationUrl: event.validationURL,
+          displayName: 'TestVocacion'
+        });
+        appleSession.completeMerchantValidation(result.merchantSession);
+      } catch(e) {
+        console.error('Apple Pay merchant validation error:', e);
+        appleSession.abort();
+      }
+    };
 
-    // 5. Capture payment
-    var capture = await fetch('/.netlify/functions/paypal-capture-order', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ orderID: d.id, sessionId: sessionId, tier: tier })
-    });
-    var captureData = await capture.json();
+    // 4. Payment authorized
+    appleSession.onpaymentauthorized = async function(event) {
+      try {
+        var confirmResult = await applepay.confirmOrder({
+          orderId: orderId,
+          token: event.payment.token,
+          billingContact: event.payment.billingContact
+        });
 
-    if (captureData.status === 'COMPLETED') {
-      setUnlocked(sessionId);
-      location.reload();
-    } else {
-      alert((LANG === 'es') ? 'Pago no completado.' : 'Payment not completed.');
-    }
+        if (confirmResult.status === 'PAYER_ACTION_REQUIRED') {
+          await applepay.initiatePayerAction({ orderId: orderId });
+        }
+
+        // 5. Capture payment
+        var capture = await fetch('/.netlify/functions/paypal-capture-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderID: orderId, sessionId: sessionId, tier: tier })
+        });
+        var captureData = await capture.json();
+
+        if (captureData.status === 'COMPLETED') {
+          appleSession.completePayment(ApplePaySession.STATUS_SUCCESS);
+          setUnlocked(sessionId);
+          location.reload();
+        } else {
+          appleSession.completePayment(ApplePaySession.STATUS_FAILURE);
+          alert((LANG === 'es') ? 'Pago no completado.' : 'Payment not completed.');
+        }
+      } catch(e) {
+        console.error('Apple Pay authorization error:', e);
+        appleSession.completePayment(ApplePaySession.STATUS_FAILURE);
+        showPayPalDebug('Apple Pay: ' + (e.message || String(e)));
+      }
+    };
+
+    // 6. User cancelled
+    appleSession.oncancel = function() {
+      console.log('Apple Pay: user cancelled');
+    };
+
+    appleSession.begin();
   } catch(e) {
-    console.error('Google Pay error:', e);
-    // Don't show error if user just cancelled the Google Pay popup
-    if (e.statusCode === 'CANCELED' || (e.message && e.message.indexOf('cancel') !== -1)) return;
-    showPayPalDebug('Google Pay: ' + (e.message || String(e)));
+    console.error('Apple Pay error:', e);
+    showPayPalDebug('Apple Pay: ' + (e.message || String(e)));
   }
 }
 
@@ -1547,13 +1570,13 @@ async function submitRefs(sessionId){
       onError: (e) => { console.error(e); showPayPalDebug(String(e)); alert(LANG==='es'?'Error con PayPal. Revisa el detalle.':'PayPal error. See details.'); }
     }).render('#pp_disc');
 
-    // Show Google Pay discount button if available
-    if (_gpayClient && _gpayConfig) {
-      var gpDiscOr = document.getElementById('gp_disc_or');
-      var gpDisc = document.getElementById('gp_disc');
-      if (gpDiscOr) gpDiscOr.style.display = '';
-      if (gpDisc) gpDisc.style.display = '';
-      renderGPayButton('gp_disc', 'DISC_5_99', '5.99');
+    // Show Apple Pay discount button if available
+    if (_applePayReady && _applePayConfig) {
+      var apDiscOr = document.getElementById('ap_disc_or');
+      var apDisc = document.getElementById('ap_disc');
+      if (apDiscOr) apDiscOr.style.display = '';
+      if (apDisc) apDisc.style.display = '';
+      renderApplePayButton('ap_disc', 'DISC_5_99', '5.99');
     }
 
     // Show Stripe discount button
@@ -1719,7 +1742,7 @@ function retake() {
 }
 </script>
 
-<script src="https://pay.google.com/gp/p/js/pay.js" async></script>
+<!-- Apple Pay is built into Safari — no external JS needed -->
 <script>
 // PayPal SDK — load dynamically using the Client ID from the server env vars.
 // This ensures frontend and backend always use the same credentials.
@@ -1730,7 +1753,7 @@ function retake() {
     if (!cfg.clientId) { console.error('PayPal config: missing clientId', cfg); return; }
     window._paypalEnv = cfg.env || 'live';
     var s = document.createElement('script');
-    s.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(cfg.clientId) + '&currency=USD&disable-funding=paylater,card&components=buttons,googlepay';
+    s.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(cfg.clientId) + '&currency=USD&disable-funding=paylater,card&components=buttons,applepay';
     s.async = true;
     document.body.appendChild(s);
   } catch(e) { console.error('Failed to load PayPal config:', e); }
