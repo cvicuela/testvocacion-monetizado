@@ -23,46 +23,52 @@ exports.handler = async (event, context) => {
             return {
                 statusCode: 405,
                 headers: CORS_HEADERS,
-                body: JSON.stringify({ error: 'Method not allowed' })
+                body: JSON.stringify({ ok: false, message: 'Method not allowed' })
             };
         }
 
-        const { referrerEmail, invitedEmail } = JSON.parse(event.body);
+        const { sessionId, emails } = JSON.parse(event.body);
 
-        if (!referrerEmail || !invitedEmail) {
+        if (!sessionId || !Array.isArray(emails) || emails.length < 3) {
             return {
                 statusCode: 400,
                 headers: CORS_HEADERS,
-                body: JSON.stringify({ error: 'Missing required fields' })
+                body: JSON.stringify({ ok: false, message: 'Se requieren sessionId y 3 emails.' })
             };
         }
 
-        if (!EMAIL_RE.test(referrerEmail) || !EMAIL_RE.test(invitedEmail)) {
+        // Validate all emails
+        for (const email of emails) {
+            if (!EMAIL_RE.test(email)) {
+                return {
+                    statusCode: 400,
+                    headers: CORS_HEADERS,
+                    body: JSON.stringify({ ok: false, message: `Email inválido: ${email}` })
+                };
+            }
+        }
+
+        // Check for duplicates
+        const unique = new Set(emails.map(e => e.toLowerCase()));
+        if (unique.size < 3) {
             return {
                 statusCode: 400,
                 headers: CORS_HEADERS,
-                body: JSON.stringify({ error: 'Invalid email format' })
+                body: JSON.stringify({ ok: false, message: 'Los 3 emails deben ser diferentes.' })
             };
         }
 
-        if (referrerEmail.toLowerCase() === invitedEmail.toLowerCase()) {
-            return {
-                statusCode: 400,
-                headers: CORS_HEADERS,
-                body: JSON.stringify({ error: 'Referrer and invited email must be different' })
-            };
-        }
+        // Insert all 3 referrals
+        const rows = emails.map(email => ({
+            referrer_session: sessionId,
+            invited_email: email.toLowerCase(),
+            status: 'completed',
+            created_at: new Date().toISOString()
+        }));
 
         const { data, error } = await supabase
             .from('referrals')
-            .insert([
-                {
-                    referrer_email: referrerEmail,
-                    invited_email: invitedEmail,
-                    status: 'pending',
-                    created_at: new Date().toISOString()
-                }
-            ])
+            .insert(rows)
             .select();
 
         if (error) {
@@ -70,7 +76,7 @@ exports.handler = async (event, context) => {
             return {
                 statusCode: 400,
                 headers: CORS_HEADERS,
-                body: JSON.stringify({ error: 'Failed to create invitation' })
+                body: JSON.stringify({ ok: false, message: 'Error al guardar referidos: ' + error.message })
             };
         }
 
@@ -78,9 +84,9 @@ exports.handler = async (event, context) => {
             statusCode: 200,
             headers: CORS_HEADERS,
             body: JSON.stringify({
-                success: true,
-                message: 'Invitation sent successfully',
-                data: data
+                ok: true,
+                message: 'Referidos registrados correctamente.',
+                count: data.length
             })
         };
     } catch (error) {
@@ -88,7 +94,7 @@ exports.handler = async (event, context) => {
         return {
             statusCode: 500,
             headers: CORS_HEADERS,
-            body: JSON.stringify({ error: 'Internal server error' })
+            body: JSON.stringify({ ok: false, message: 'Error interno del servidor.' })
         };
     }
 };
