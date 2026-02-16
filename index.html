@@ -967,6 +967,9 @@ function updateProgress() {
 function submitForm() {
   if (Object.keys(answers).length < 10) return;
   playComplete();
+  // Save state so results survive page refresh / navigation
+  const name = document.getElementById('userName').value.trim();
+  sessionStorage.setItem('tv_quiz_state', JSON.stringify({ answers: {...answers}, name, lang: LANG }));
   generateResults();
 }
 
@@ -1448,6 +1451,7 @@ function retake() {
   document.getElementById('langScreen').classList.remove('hidden');
   Object.keys(answers).forEach(k=>delete answers[k]);
   document.getElementById('userName').value='';
+  sessionStorage.removeItem('tv_quiz_state');
 }
 </script>
 
@@ -1540,14 +1544,24 @@ function retake() {
                       }
     });
 
-                                 // ======================== RESTORE STATE ========================
+    // ======================== RESTORE RESULTS ON PAGE LOAD ========================
     window.addEventListener('load', () => {
-        const st = loadState();
-        if (!st) return;
+        try {
+            const raw = sessionStorage.getItem('tv_quiz_state');
+            if (!raw) return;
+            const st = JSON.parse(raw);
+            if (!st || !st.answers || Object.keys(st.answers).length < 10) return;
 
-        if (st.LANG && typeof st.LANG === 'string') LANG = st.LANG;
+            // Restore language, answers, and name — then regenerate results
+            LANG = st.lang || 'en';
+            Object.assign(answers, st.answers);
+            buildForm();
+            document.getElementById('userName').value = st.name || '';
 
-        // resto igual...
+            // Hide lang screen, show results directly
+            document.getElementById('langScreen').classList.add('hidden');
+            generateResults();
+        } catch(e) { /* ignore corrupt state */ }
     });
   </script>
 </html>
