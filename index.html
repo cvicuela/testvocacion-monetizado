@@ -1,3 +1,8 @@
+1400
+1447
+1350
+1450
+1465
 h<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1463,6 +1468,22 @@ function retake() {
                       }, 50);
               });
         });
+
+                    // Add event listeners for START buttons
+                      const startFreBtn = document.getElementById('btn-start-free');
+                    const startPaidBtn = document.getElementById('btn-start-paid');
+
+                      if (startFreBtn) {
+                                            startFreBtn.addEventListener('click', function() {
+                                                                      showIntroCard();
+                                            });
+                      }
+
+                      if (startPaidBtn) {
+                                            startPaidBtn.addEventListener('click', function() {
+                                                                      showIntroCard();
+                                            });
+                      }
     });
   </script>
 </html>
