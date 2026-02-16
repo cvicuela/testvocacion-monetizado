@@ -212,9 +212,11 @@
   .plan-price { font-weight:900; color:var(--accent); font-size:22px; margin-top:6px; }
   .plan-note { font-size:12px; color:var(--text-light); margin-top:6px; }
   .paypal-slot { margin-top:10px; }
-  .legal-mini { margin-top:12px; font-size:11px; color:var(--text-light); line-height:1.5; text-align:left; }
-  .legal-mini a { color:var(--accent); text-decoration:none; font-weight:700; }
-  .legal-mini a:hover { text-decoration:underline; }
+  .legal-mini { margin-top:16px; font-size:13px; color:var(--text); line-height:1.6; text-align:left; background:rgba(99,102,241,0.07); border:1.5px solid rgba(99,102,241,0.25); border-radius:12px; padding:14px 16px; }
+  .legal-mini label { cursor:pointer; }
+  .legal-mini input[type="checkbox"] { width:18px; height:18px; accent-color:var(--accent); flex-shrink:0; cursor:pointer; }
+  .legal-mini a { color:var(--accent); text-decoration:underline; font-weight:700; }
+  .legal-mini a:hover { opacity:0.8; }
   .ref-box { margin-top:10px; border-radius:12px; border:1.5px solid var(--border); background:var(--bg); padding:12px; text-align:left; }
   .ref-box label { font-size:11px; font-weight:800; color:var(--text-light); letter-spacing:1px; text-transform:uppercase; }
   .ref-box input { width:100%; margin-top:8px; padding:12px 12px; border-radius:10px; border:1.5px solid var(--border); outline:none; font-family:'DM Sans',sans-serif; }
@@ -1166,12 +1168,12 @@ function buildLockedPreview(lockedHTML, sessionId, L){
           </div>
 
           <div class="legal-mini">
-            <label style="display:flex;gap:10px;align-items:flex-start;margin-top:10px;">
-              <input id="legal_ok" type="checkbox" style="margin-top:3px;">
+            <label style="display:flex;gap:12px;align-items:center;">
+              <input id="legal_ok" type="checkbox">
               <span>
                 ${isES
-                  ? `Al pagar, aceptas nuestros <a href="/terms.html" target="_blank">Términos</a>, <a href="/privacy.html" target="_blank">Privacidad</a> y <a href="/refund.html" target="_blank">Reembolsos</a>.`
-                  : `By paying, you agree to our <a href="/terms.html" target="_blank">Terms</a>, <a href="/privacy.html" target="_blank">Privacy</a> and <a href="/refund.html" target="_blank">Refunds</a>.`
+                  ? `<strong>Acepto</strong> los <a href="/terms.html" target="_blank">Términos</a>, <a href="/privacy.html" target="_blank">Privacidad</a> y <a href="/refund.html" target="_blank">Reembolsos</a> antes de pagar.`
+                  : `<strong>I accept</strong> the <a href="/terms.html" target="_blank">Terms</a>, <a href="/privacy.html" target="_blank">Privacy</a> and <a href="/refund.html" target="_blank">Refunds</a> before paying.`
                 }
               </span>
             </label>
