@@ -119,12 +119,13 @@ exports.handler = async (event) => {
         }
 
         // Send invitation emails via SendGrid
+        const displayName = (referrerName || '').trim() || 'Test Vocacional';
         const htmlBody = buildEmailHtml();
         const textBody = buildEmailText();
 
         const messages = [...unique].map(toEmail => ({
             to: toEmail,
-            from: { email: FROM_EMAIL, name: FROM_NAME },
+            from: { email: FROM_EMAIL, name: displayName },
             subject: 'Te recomendaron este test vocacional',
             text: textBody,
             html: htmlBody,
