@@ -96,6 +96,7 @@ exports.handler = async (event) => {
                 cancel_url: `${process.env.PAYPAL_CANCEL_URL || 'http://localhost:8888'}`,
                 brand_name: 'TestVocación',
                 landing_page: 'BILLING',
+                shipping_preference: 'NO_SHIPPING',
                 user_action: 'PAY_NOW',
             },
         };
