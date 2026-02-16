@@ -1,9 +1,4 @@
-1400
-1447
-1350
-1450
-1465
-h<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1192,45 +1187,44 @@ function ensureLegalChecked(){
     return true;
 }
 
+function showPayPalDebug(message){
+    let box = document.getElementById('pp_debug');
+    if(!box){
+          box = document.createElement('div');
+          box.id = 'pp_debug';
+          box.style.marginTop = '12px';
+          box.style.padding = '10px 12px';
+          box.style.border = '1.5px solid #f59e0b';
+          box.style.background = 'rgba(245,158,11,.10)';
+          box.style.borderRadius = '12px';
+          box.style.fontSize = '12px';
+          box.style.color = '#92400e';
+          const host = document.querySelector('.locked-box') || document.body;
+          host.appendChild(box);
+    }
+    box.textContent = message;
+}
+
 function renderPaywallButtons(sessionId){
   // FULL
   if (document.getElementById('pp_full')) {
     paypal.Buttons({
-
-      function showPayPalDebug(message){
-          let box = document.getElementById('pp_debug');
-          if(!box){
-                box = document.createElement('div');
-                box.id = 'pp_debug';
-                box.style.marginTop = '12px';
-                box.style.padding = '10px 12px';
-                box.style.border = '1.5px solid #f59e0b';
-                box.style.background = 'rgba(245,158,11,.10)';
-                box.style.borderRadius = '12px';
-                box.style.fontSize = '12px';
-                box.style.color = '#92400e';
-                const host = document.querySelector('.locked-box') || document.body;
-                host.appendChild(box);
-          }
-          box.textContent = message;
-      }
       createOrder: async () => {
-if (!ensureLegalChecked()) return;
+        if (!ensureLegalChecked()) return;
         const r = await fetch('/.netlify/functions/paypal-create-order', {
                 method:'POST',
                 headers:{'Content-Type':'application/json'},
                 body: JSON.stringify({ tier:'FULL_7_99', sessionId })
         });
-          const text = await r.text();
-          let d = {};
-          try { d = JSON.parse(text); } catch(e) { console.error('Failed to parse create-order response:', e, text); }
-          if (!r.ok || !d.id) {
-                  showPayPalDebug(`Create order failed (${r.status}): ${text}`);
-                  throw new Error('CREATE_ORDER_FAILED');
-          }
-          return d.id;
-        },
-      onError: (e) => { console.error(e); showPayPalDebug(String(e)); alert(LANG==='es'?'Error con PayPal. Revisa el detalle.':'PayPal error. See details.'); },
+        const text = await r.text();
+        let d = {};
+        try { d = JSON.parse(text); } catch(e) { console.error('Failed to parse create-order response:', e, text); }
+        if (!r.ok || !d.id) {
+                showPayPalDebug(`Create order failed (${r.status}): ${text}`);
+                throw new Error('CREATE_ORDER_FAILED');
+        }
+        return d.id;
+      },
       onApprove: async (data) => {
         const r = await fetch('/.netlify/functions/paypal-capture-order', {
           method:'POST',
@@ -1246,7 +1240,7 @@ if (!ensureLegalChecked()) return;
         }
       },
       onCancel: () => alert((LANG==='es') ? 'Pago cancelado.' : 'Payment cancelled.'),
-      onError: (e) => { console.error(e); alert((LANG==='es') ? 'Error con PayPal.' : 'PayPal error.'); }
+      onError: (e) => { console.error(e); showPayPalDebug(String(e)); alert(LANG==='es'?'Error con PayPal. Revisa el detalle.':'PayPal error. See details.'); }
     }).render('#pp_full');
   }
 }
