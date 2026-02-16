@@ -1485,5 +1485,15 @@ function retake() {
                                             });
                       }
     });
+
+                                 // ======================== RESTORE STATE ========================
+    window.addEventListener('load', () => {
+        const st = loadState();
+        if (!st) return;
+
+        if (st.LANG && typeof st.LANG === 'string') LANG = st.LANG;
+
+        // resto igual...
+    });
   </script>
 </html>
