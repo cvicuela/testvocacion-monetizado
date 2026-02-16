@@ -1461,8 +1461,8 @@ function retake() {
 </script>
 
 <script>
-// PayPal Client ID — this is a public key (safe to expose in frontend).
-// To switch between sandbox/live, change this value or set it via build-time env injection.
+// PayPal LIVE Client ID — this is a public key (safe to expose in frontend).
+// Currently configured for PRODUCTION. To revert to sandbox, replace with sandbox client ID.
 (function(){
   var PAYPAL_CLIENT_ID = 'AT3lDO9UP6KY9SIu9XjaWpABL-jMhYhPQd8pzBAGF159cLNWcPyNDWw9YVwiy_IXmrCnIqoQamJsOfQ_';
   var s = document.createElement('script');

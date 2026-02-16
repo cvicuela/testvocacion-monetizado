@@ -23,7 +23,7 @@ async function getAccessToken() {
     ).toString('base64');
 
     const response = await axios.post(
-        `https://api-m.${process.env.PAYPAL_ENV === 'live' ? 'paypal.com' : 'sandbox.paypal.com'}/v1/oauth2/token`,
+        `https://api-m.${process.env.PAYPAL_ENV === 'sandbox' ? 'sandbox.paypal.com' : 'paypal.com'}/v1/oauth2/token`,
         'grant_type=client_credentials',
         {
             headers: {
@@ -56,7 +56,7 @@ exports.handler = async (event) => {
         const accessToken = await getAccessToken();
 
         const response = await axios.post(
-            `https://api-m.${process.env.PAYPAL_ENV === 'live' ? 'paypal.com' : 'sandbox.paypal.com'}/v2/checkout/orders/${encodeURIComponent(orderID)}/capture`,
+            `https://api-m.${process.env.PAYPAL_ENV === 'sandbox' ? 'sandbox.paypal.com' : 'paypal.com'}/v2/checkout/orders/${encodeURIComponent(orderID)}/capture`,
             {},
             {
                 headers: {
