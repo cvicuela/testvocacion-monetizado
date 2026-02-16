@@ -5,8 +5,6 @@ const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 const CORS_HEADERS = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -23,32 +21,24 @@ exports.handler = async (event, context) => {
             return {
                 statusCode: 405,
                 headers: CORS_HEADERS,
-                body: JSON.stringify({ error: 'Method not allowed' })
+                body: JSON.stringify({ ok: false, message: 'Method not allowed' })
             };
         }
 
-        const { referrerEmail } = JSON.parse(event.body);
+        const { sessionId } = JSON.parse(event.body);
 
-        if (!referrerEmail) {
+        if (!sessionId) {
             return {
                 statusCode: 400,
                 headers: CORS_HEADERS,
-                body: JSON.stringify({ error: 'Missing referrer email' })
-            };
-        }
-
-        if (!EMAIL_RE.test(referrerEmail)) {
-            return {
-                statusCode: 400,
-                headers: CORS_HEADERS,
-                body: JSON.stringify({ error: 'Invalid email format' })
+                body: JSON.stringify({ ok: false, count: 0, message: 'Missing sessionId' })
             };
         }
 
         const { data, error, count } = await supabase
             .from('referrals')
             .select('*', { count: 'exact' })
-            .eq('referrer_email', referrerEmail)
+            .eq('referrer_session', sessionId)
             .eq('status', 'completed');
 
         if (error) {
@@ -56,7 +46,7 @@ exports.handler = async (event, context) => {
             return {
                 statusCode: 400,
                 headers: CORS_HEADERS,
-                body: JSON.stringify({ error: 'Failed to query referrals' })
+                body: JSON.stringify({ ok: false, count: 0, message: 'Error al consultar referidos.' })
             };
         }
 
@@ -67,12 +57,10 @@ exports.handler = async (event, context) => {
             statusCode: 200,
             headers: CORS_HEADERS,
             body: JSON.stringify({
-                success: true,
-                referrerEmail: referrerEmail,
-                validReferrals: validReferrals,
+                ok: true,
+                count: validReferrals,
                 hasDiscount: hasDiscount,
-                discountPercentage: hasDiscount ? 50 : 0,
-                message: hasDiscount ? 'Discount unlocked!' : `Need ${3 - validReferrals} more referrals for discount`
+                message: hasDiscount ? 'Descuento habilitado.' : `Faltan ${3 - validReferrals} referidos más.`
             })
         };
     } catch (error) {
@@ -80,7 +68,7 @@ exports.handler = async (event, context) => {
         return {
             statusCode: 500,
             headers: CORS_HEADERS,
-            body: JSON.stringify({ error: 'Internal server error' })
+            body: JSON.stringify({ ok: false, count: 0, message: 'Error interno del servidor.' })
         };
     }
 };
