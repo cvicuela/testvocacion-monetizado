@@ -3,18 +3,15 @@
     "version": "1.0.0",
     "description": "TestVocación - Monetización (Netlify + PayPal + Supabase)",
     "main": "index.html",
-    "dependencies": {
-          "@supabase/supabase-js": "^2.38.0",
-          "axios": "^1.6.0"
-    },
+    "dependencies": {},
     "scripts": {
-          "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [
-          "netlify",
-          "paypal",
-          "supabase",
-          "functions"
+        "netlify",
+        "paypal",
+        "supabase",
+        "functions"
     ],
     "author": "",
     "license": "ISC"

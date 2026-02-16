@@ -1103,7 +1103,10 @@ function getOrCreateSessionId(){
   const key='tv_session_id';
   let v=localStorage.getItem(key);
   if(!v){
-    v='sess_'+Math.random().toString(16).slice(2)+'_'+Date.now();
+    var arr=new Uint8Array(16);
+    crypto.getRandomValues(arr);
+    var hex=Array.from(arr,function(b){return b.toString(16).padStart(2,'0');}).join('');
+    v='sess_'+hex+'_'+Date.now();
     localStorage.setItem(key,v);
   }
   return v;
@@ -1220,7 +1223,7 @@ if (!ensureLegalChecked()) return;
         });
           const text = await r.text();
           let d = {};
-          try { d = JSON.parse(text); } catch(e) {}
+          try { d = JSON.parse(text); } catch(e) { console.error('Failed to parse create-order response:', e, text); }
           if (!r.ok || !d.id) {
                   showPayPalDebug(`Create order failed (${r.status}): ${text}`);
                   throw new Error('CREATE_ORDER_FAILED');
@@ -1248,11 +1251,30 @@ if (!ensureLegalChecked()) return;
   }
 }
 
+function isValidEmail(email){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 async function submitRefs(sessionId){
   const e1=(document.getElementById('ref1').value||'').trim();
   const e2=(document.getElementById('ref2').value||'').trim();
   const e3=(document.getElementById('ref3').value||'').trim();
   const box=document.getElementById('ref_status');
+
+  var emails=[e1,e2,e3].filter(Boolean);
+  if(emails.length<3){
+    box.style.color='#BF6C00';
+    box.textContent=(LANG==='es')?'Ingresa 3 emails válidos.':'Please enter 3 valid emails.';
+    return;
+  }
+  for(var i=0;i<emails.length;i++){
+    if(!isValidEmail(emails[i])){
+      box.style.color='#BF6C00';
+      box.textContent=(LANG==='es')?'Email inválido: '+emails[i]:'Invalid email: '+emails[i];
+      return;
+    }
+  }
+
   box.textContent = (LANG==='es') ? 'Validando...' : 'Validating...';
 
   const r = await fetch('/.netlify/functions/referral-invite', {
@@ -1290,7 +1312,7 @@ if (!ensureLegalChecked()) return;
           });
             const text = await rr.text();
             let d = {};
-            try { d = JSON.parse(text); } catch(e) {}
+            try { d = JSON.parse(text); } catch(e) { console.error('Failed to parse create-order response:', e, text); }
             if (!rr.ok || !d.id) {
                     showPayPalDebug(`Create order failed (${rr.status}): ${text}`);
                     throw new Error('CREATE_ORDER_FAILED');
@@ -1407,7 +1429,17 @@ function retake() {
 }
 </script>
 
-<script src="https://www.paypal.com/sdk/js?client-id=AT3lDO9UP6KY9SIu9XjaWpABL-jMhYhPQd8pzBAGF159cLNWcPyNDWw9YVwiy_IXmrCnIqoQamJsOfQ_&currency=USD"></script>
+<script>
+// PayPal Client ID — this is a public key (safe to expose in frontend).
+// To switch between sandbox/live, change this value or set it via build-time env injection.
+(function(){
+  var PAYPAL_CLIENT_ID = 'AT3lDO9UP6KY9SIu9XjaWpABL-jMhYhPQd8pzBAGF159cLNWcPyNDWw9YVwiy_IXmrCnIqoQamJsOfQ_';
+  var s = document.createElement('script');
+  s.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(PAYPAL_CLIENT_ID) + '&currency=USD';
+  s.async = true;
+  document.body.appendChild(s);
+})();
+</script>
 </body>
   <style>
     @media (max-width: 600px){
