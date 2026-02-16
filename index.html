@@ -1300,12 +1300,14 @@ async function submitRefs(sessionId){
     }
   }
 
-  box.textContent = (LANG==='es') ? 'Validando...' : 'Validating...';
+  box.textContent = (LANG==='es') ? 'Validando y enviando invitaciones...' : 'Validating and sending invitations...';
+
+  const referrerName = (document.getElementById('userName').value||'').trim();
 
   const r = await fetch('/.netlify/functions/referral-invite', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ sessionId, emails:[e1,e2,e3] })
+    body: JSON.stringify({ sessionId, emails:[e1,e2,e3], referrerName })
   });
   const d = await r.json();
   if (!d.ok) {
