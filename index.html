@@ -212,6 +212,8 @@
   .plan-price { font-weight:900; color:var(--accent); font-size:22px; margin-top:6px; }
   .plan-note { font-size:12px; color:var(--text-light); margin-top:6px; }
   .paypal-slot { margin-top:10px; }
+  .gpay-slot { margin-top:10px; min-height:40px; }
+  .pay-or { text-align:center; font-size:11px; font-weight:700; color:var(--text-light); margin:8px 0; text-transform:uppercase; letter-spacing:1px; }
   .legal-mini { margin-top:16px; font-size:13px; color:var(--text); line-height:1.6; text-align:left; background:rgba(99,102,241,0.07); border:1.5px solid rgba(99,102,241,0.25); border-radius:12px; padding:14px 16px; }
   .legal-mini label { cursor:pointer; }
   .legal-mini input[type="checkbox"] { width:18px; height:18px; accent-color:var(--accent); flex-shrink:0; cursor:pointer; }
@@ -1143,6 +1145,8 @@ function buildLockedPreview(lockedHTML, sessionId, L){
               <div class="plan-price">$9.99</div>
               <div class="plan-note">${isES?'Acceso inmediato + PDF':'Instant access + PDF'}</div>
               <div class="paypal-slot" id="pp_full"></div>
+              <div class="pay-or">${isES?'o paga con':'or pay with'}</div>
+              <div class="gpay-slot" id="gp_full"></div>
             </div>
 
             <div class="plan-card">
@@ -1164,6 +1168,8 @@ function buildLockedPreview(lockedHTML, sessionId, L){
               </div>
 
               <div class="paypal-slot" id="pp_disc" style="display:none"></div>
+              <div class="pay-or" id="gp_disc_or" style="display:none">${isES?'o paga con':'or pay with'}</div>
+              <div class="gpay-slot" id="gp_disc" style="display:none"></div>
             </div>
           </div>
 
@@ -1242,7 +1248,7 @@ function showPayPalDebug(message){
 }
 
 function renderPaywallButtons(sessionId){
-  // FULL
+  // FULL — PayPal
   if (document.getElementById('pp_full')) {
     paypal.Buttons({
       createOrder: async () => {
@@ -1265,7 +1271,7 @@ function renderPaywallButtons(sessionId){
         const r = await fetch('/.netlify/functions/paypal-capture-order', {
           method:'POST',
           headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ orderId: data.orderID, sessionId, tier:'FULL_9_99' })
+          body: JSON.stringify({ orderID: data.orderID, sessionId, tier:'FULL_9_99' })
         });
         const d = await r.json();
         if (d.status === 'COMPLETED') {
@@ -1278,6 +1284,154 @@ function renderPaywallButtons(sessionId){
       onCancel: () => alert((LANG==='es') ? 'Pago cancelado.' : 'Payment cancelled.'),
       onError: (e) => { console.error(e); showPayPalDebug(String(e)); alert(LANG==='es'?'Error con PayPal. Revisa el detalle.':'PayPal error. See details.'); }
     }).render('#pp_full');
+  }
+
+  // FULL — Google Pay
+  initGooglePay(sessionId);
+}
+
+// ===================== GOOGLE PAY =====================
+var _gpayClient = null;
+var _gpayConfig = null;
+var _gpaySessionId = null;
+
+async function initGooglePay(sessionId, retryCount) {
+  _gpaySessionId = sessionId;
+  retryCount = retryCount || 0;
+
+  // Check if PayPal's Googlepay component is available
+  if (typeof paypal === 'undefined' || typeof paypal.Googlepay !== 'function') {
+    console.log('Google Pay: PayPal Googlepay component not available');
+    hideGPayContainers();
+    return;
+  }
+
+  // Check if Google Pay JS library is loaded; retry up to 5 times
+  if (typeof google === 'undefined' || !google.payments) {
+    if (retryCount < 5) {
+      setTimeout(function(){ initGooglePay(sessionId, retryCount + 1); }, 500);
+      return;
+    }
+    console.log('Google Pay: JS library not loaded after retries');
+    hideGPayContainers();
+    return;
+  }
+
+  try {
+    var googlepay = paypal.Googlepay();
+    _gpayConfig = await googlepay.config();
+
+    _gpayClient = new google.payments.api.PaymentsClient({
+      environment: (window._paypalEnv === 'sandbox') ? 'TEST' : 'PRODUCTION'
+    });
+
+    var readyToPay = await _gpayClient.isReadyToPay({
+      apiVersion: 2,
+      apiVersionMinor: 0,
+      allowedPaymentMethods: _gpayConfig.allowedPaymentMethods
+    });
+
+    if (readyToPay.result) {
+      renderGPayButton('gp_full', 'FULL_9_99', '9.99');
+    } else {
+      hideGPayContainers();
+    }
+  } catch(e) {
+    console.log('Google Pay init error:', e);
+    hideGPayContainers();
+  }
+}
+
+function hideGPayContainers() {
+  ['gp_full','gp_disc','gp_disc_or'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  var orFull = document.querySelector('#gp_full')
+    ? document.querySelector('#gp_full').previousElementSibling : null;
+  if (orFull && orFull.classList.contains('pay-or')) orFull.style.display = 'none';
+}
+
+function renderGPayButton(containerId, tier, price) {
+  var container = document.getElementById(containerId);
+  if (!container || !_gpayClient) return;
+
+  container.innerHTML = '';
+  var button = _gpayClient.createButton({
+    onClick: function() { onGooglePayClick(tier, price); },
+    buttonColor: 'black',
+    buttonType: 'pay',
+    buttonSizeMode: 'fill',
+    buttonLocale: (LANG === 'es') ? 'es' : 'en'
+  });
+  container.appendChild(button);
+}
+
+async function onGooglePayClick(tier, price) {
+  if (!ensureLegalChecked()) return;
+
+  var sessionId = _gpaySessionId;
+
+  try {
+    // 1. Create PayPal order
+    var r = await fetch('/.netlify/functions/paypal-create-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tier: tier, sessionId: sessionId })
+    });
+    var text = await r.text();
+    var d = {};
+    try { d = JSON.parse(text); } catch(e) { /* ignore */ }
+    if (!r.ok || !d.id) {
+      showPayPalDebug('Google Pay create order failed (' + r.status + '): ' + text);
+      return;
+    }
+
+    // 2. Get Google Pay payment data from user
+    var paymentData = await _gpayClient.loadPaymentData({
+      apiVersion: 2,
+      apiVersionMinor: 0,
+      allowedPaymentMethods: _gpayConfig.allowedPaymentMethods,
+      transactionInfo: {
+        totalPriceStatus: 'FINAL',
+        totalPrice: price,
+        currencyCode: 'USD',
+        countryCode: 'US'
+      },
+      merchantInfo: _gpayConfig.merchantInfo
+    });
+
+    // 3. Confirm order with PayPal using Google Pay token
+    var googlepay = paypal.Googlepay();
+    var confirmResult = await googlepay.confirmOrder({
+      orderId: d.id,
+      paymentMethodData: paymentData.paymentMethodData
+    });
+
+    // 4. Handle 3D Secure if required
+    if (confirmResult.status === 'PAYER_ACTION_REQUIRED') {
+      await googlepay.initiatePayerAction({ orderId: d.id });
+    }
+
+    // 5. Capture payment
+    var capture = await fetch('/.netlify/functions/paypal-capture-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderID: d.id, sessionId: sessionId, tier: tier })
+    });
+    var captureData = await capture.json();
+
+    if (captureData.status === 'COMPLETED') {
+      setUnlocked(sessionId);
+      location.reload();
+    } else {
+      alert((LANG === 'es') ? 'Pago no completado.' : 'Payment not completed.');
+    }
+  } catch(e) {
+    console.error('Google Pay error:', e);
+    // Don't show error if user just cancelled the Google Pay popup
+    if (e.statusCode === 'CANCELED' || (e.message && e.message.indexOf('cancel') !== -1)) return;
+    showPayPalDebug('Google Pay: ' + (e.message || String(e)));
   }
 }
 
@@ -1336,27 +1490,26 @@ async function submitRefs(sessionId){
 
     paypal.Buttons({
       createOrder: async () => {
-if (!ensureLegalChecked()) return;
-          const rr = await fetch('/.netlify/functions/paypal-create-order', {
-                  method:'POST',
-                  headers:{'Content-Type':'application/json'},
-                  body: JSON.stringify({ tier:'DISC_5_99', sessionId })
-          });
-            const text = await rr.text();
-            let d = {};
-            try { d = JSON.parse(text); } catch(e) { console.error('Failed to parse create-order response:', e, text); }
-            if (!rr.ok || !d.id) {
-                    showPayPalDebug(`Create order failed (${rr.status}): ${text}`);
-                    throw new Error('CREATE_ORDER_FAILED');
-            }
-            return d.id;
-          },
-      onError: (e) => { console.error(e); showPayPalDebug(String(e)); alert(LANG==='es'?'Error con PayPal. Revisa el detalle.':'PayPal error. See details.'); },
+        if (!ensureLegalChecked()) return;
+        const rr = await fetch('/.netlify/functions/paypal-create-order', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ tier:'DISC_5_99', sessionId })
+        });
+        const text = await rr.text();
+        let d = {};
+        try { d = JSON.parse(text); } catch(e) { console.error('Failed to parse create-order response:', e, text); }
+        if (!rr.ok || !d.id) {
+          showPayPalDebug(`Create order failed (${rr.status}): ${text}`);
+          throw new Error('CREATE_ORDER_FAILED');
+        }
+        return d.id;
+      },
       onApprove: async (data) => {
         const rr = await fetch('/.netlify/functions/paypal-capture-order', {
           method:'POST',
           headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ orderId: data.orderID, sessionId, tier:'DISC_5_99' })
+          body: JSON.stringify({ orderID: data.orderID, sessionId, tier:'DISC_5_99' })
         });
         const dd = await rr.json();
         if (dd.status === 'COMPLETED') {
@@ -1367,8 +1520,17 @@ if (!ensureLegalChecked()) return;
         }
       },
       onCancel: () => alert((LANG==='es') ? 'Pago cancelado.' : 'Payment cancelled.'),
-      onError: (e) => { console.error(e); alert((LANG==='es') ? 'Error con PayPal.' : 'PayPal error.'); }
+      onError: (e) => { console.error(e); showPayPalDebug(String(e)); alert(LANG==='es'?'Error con PayPal. Revisa el detalle.':'PayPal error. See details.'); }
     }).render('#pp_disc');
+
+    // Show Google Pay discount button if available
+    if (_gpayClient && _gpayConfig) {
+      var gpDiscOr = document.getElementById('gp_disc_or');
+      var gpDisc = document.getElementById('gp_disc');
+      if (gpDiscOr) gpDiscOr.style.display = '';
+      if (gpDisc) gpDisc.style.display = '';
+      renderGPayButton('gp_disc', 'DISC_5_99', '5.99');
+    }
 
   } else {
     box.style.color = '#BF6C00';
@@ -1462,6 +1624,7 @@ function retake() {
 }
 </script>
 
+<script src="https://pay.google.com/gp/p/js/pay.js" async></script>
 <script>
 // PayPal SDK — load dynamically using the Client ID from the server env vars.
 // This ensures frontend and backend always use the same credentials.
@@ -1470,8 +1633,9 @@ function retake() {
     var resp = await fetch('/.netlify/functions/paypal-config');
     var cfg  = await resp.json();
     if (!cfg.clientId) { console.error('PayPal config: missing clientId', cfg); return; }
+    window._paypalEnv = cfg.env || 'live';
     var s = document.createElement('script');
-    s.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(cfg.clientId) + '&currency=USD&enable-funding=card&disable-funding=paylater&components=buttons';
+    s.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(cfg.clientId) + '&currency=USD&disable-funding=paylater,card&components=buttons,googlepay';
     s.async = true;
     document.body.appendChild(s);
   } catch(e) { console.error('Failed to load PayPal config:', e); }

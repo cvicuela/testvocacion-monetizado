@@ -21,6 +21,6 @@ exports.handler = async (event) => {
     return {
         statusCode: 200,
         headers: { ...CORS_HEADERS, 'Cache-Control': 'public, max-age=300' },
-        body: JSON.stringify({ clientId }),
+        body: JSON.stringify({ clientId, env: process.env.PAYPAL_ENV || 'live' }),
     };
 };
