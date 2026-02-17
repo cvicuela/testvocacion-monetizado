@@ -468,6 +468,31 @@
       margin-top:16px !important;
     }
 
+    /* === LOCKED WRAPPER: make invisible in print so inner cards flow normally === */
+    .result-card.locked {
+      display:block !important;
+      border:none !important;
+      padding:0 !important;
+      margin:0 !important;
+      box-shadow:none !important;
+      page-break-before:auto !important;
+      break-before:auto !important;
+      page-break-inside:auto !important;
+      break-inside:auto !important;
+      overflow:visible !important;
+      position:static !important;
+    }
+    .result-card.locked::before { display:none !important; }
+    .locked .locked-content {
+      opacity:1 !important;
+      pointer-events:auto !important;
+      padding:0 !important;
+    }
+    /* Remove all blur in print */
+    .locked .locked-content * { filter:none !important; }
+    /* Hide paywall overlay in print */
+    .locked-overlay { display:none !important; }
+
     /* Typography */
     .result-card h2 {
       font-size:17px !important;
