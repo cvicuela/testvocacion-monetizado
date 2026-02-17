@@ -385,7 +385,12 @@
 
   .print-watermark { display:none; }
 
-  /* ============ PRINT / PDF ============ */
+  /* ============ PRINT / PDF — US Letter 8.5 x 11 in ============ */
+  @page {
+    size:8.5in 11in;
+    margin:0.5in 0.6in;
+  }
+
   @media print {
     /* Hide non-printable elements */
     .share-section, .results-footer, .lang-switch, .btn-retake,
@@ -412,9 +417,9 @@
     .header p { font-size:11px !important; }
     .header .badge { font-size:9px !important; padding:3px 12px !important; margin-bottom:8px !important; }
 
-    /* Results body — no extra padding, let cards handle spacing */
+    /* Results body — margins handled by @page */
     .results-body {
-      padding:0 16px !important;
+      padding:0 !important;
       max-width:100% !important;
       margin:0 !important;
     }
@@ -427,21 +432,21 @@
       page-break-inside:avoid !important;
       break-inside:avoid !important;
 
-      /* Reset online styles — normal block flow, NO flex */
+      /* Reset online styles — normal block flow */
       display:block !important;
       box-shadow:none !important;
       border:1px solid #D0D5DD !important;
-      border-radius:8px !important;
+      border-radius:6px !important;
       overflow:visible !important;
       position:relative !important;
 
-      /* Size and spacing */
+      /* Size — fill the printable area (margins from @page) */
       width:100% !important;
       max-width:100% !important;
-      margin:0 !important;
-      padding:48px 36px 40px !important;
+      margin:0 0 0 0 !important;
+      padding:36px 28px 32px !important;
 
-      /* NO min-height, NO flex centering — content flows from top */
+      /* No flex centering — content flows from top */
       min-height:auto !important;
     }
 
