@@ -455,12 +455,31 @@
     .synergy-badge { padding:12px; gap:10px; }
   }
 
-  /* PAYWALL (preview + blur) */
+  /* PAYWALL (preview + blur) — FOMO strategy */
   .locked { position:relative; overflow:hidden; }
   .locked .locked-content { opacity:0.92; pointer-events:none; user-select:none; }
-  .locked .locked-content p,
+
+  /* Titles: fully visible — show what they're missing */
+  .locked .locked-content .result-card h2 { filter:none; }
+  .locked .locked-content .section-divider { filter:none; }
+
+  /* First paragraph per card: semi-blur — tease the content */
+  .locked .locked-content .result-card p:first-of-type { filter:blur(3px); }
+
+  /* Everything else: full blur */
+  .locked .locked-content .result-card p ~ p,
   .locked .locked-content .trait-grid,
-  .locked .locked-content .career-grid { filter: blur(8px); }
+  .locked .locked-content .career-grid,
+  .locked .locked-content .tips-grid,
+  .locked .locked-content .values-grid,
+  .locked .locked-content .academic-grid,
+  .locked .locked-content .rolemodels-grid,
+  .locked .locked-content .action-list,
+  .locked .locked-content .roadmap-timeline,
+  .locked .locked-content .synergy-badge,
+  .locked .locked-content .subsection-title,
+  .locked .locked-content .primary-badge { filter:blur(8px); }
+
   .locked .locked-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:18px;
     background: linear-gradient(180deg, rgba(245,243,255,0.35), rgba(245,243,255,0.88)); border:1px solid var(--border); }
   .locked-box { width:100%; max-width:560px; background: rgba(255,255,255,0.94); border:1px solid rgba(226,229,235,0.9);
