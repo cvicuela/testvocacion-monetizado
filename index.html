@@ -392,222 +392,228 @@
     .sound-toggle, .section-divider, .form-container,
     .lang-screen, .progress-wrap { display:none !important; }
 
-    /* Base */
+    /* Base — force colors everywhere */
     * { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; color-adjust:exact !important; }
-    body { background:white !important; margin:0 !important; padding:0 !important; font-size:12px !important; }
-    html { font-size:12px !important; }
+    body { background:white !important; margin:0 !important; padding:0 !important; }
 
     /* Results visible */
     .results-container, .results-container.visible { display:block !important; }
 
-    /* Header — compact for print */
+    /* Header — compact, stays with first card */
     .header {
-      background:var(--navy) !important;
-      padding:24px 32px 28px !important;
-      page-break-after:avoid;
-      break-after:avoid;
+      background:#1B1464 !important;
+      padding:20px 28px 24px !important;
+      page-break-after:avoid !important;
+      break-after:avoid !important;
+      margin:0 !important;
     }
     .header::before, .header::after { display:none !important; }
-    .header h1 { font-size:22px !important; }
-    .header .badge { font-size:10px !important; padding:4px 14px !important; margin-bottom:12px !important; }
+    .header h1 { font-size:20px !important; margin-bottom:4px !important; }
+    .header p { font-size:11px !important; }
+    .header .badge { font-size:9px !important; padding:3px 12px !important; margin-bottom:8px !important; }
 
-    /* Results body */
+    /* Results body — no extra padding, let cards handle spacing */
     .results-body {
-      padding:0 !important;
+      padding:0 16px !important;
       max-width:100% !important;
       margin:0 !important;
     }
 
-    /* ===== RESULT CARDS: one per page, centered ===== */
+    /* ===== RESULT CARDS: each on its own page ===== */
     .result-card {
-      page-break-inside:avoid !important;
-      break-inside:avoid !important;
+      /* Page control */
       page-break-before:always !important;
       break-before:page !important;
+      page-break-inside:avoid !important;
+      break-inside:avoid !important;
 
-      /* Reset online styles */
+      /* Reset online styles — normal block flow, NO flex */
+      display:block !important;
       box-shadow:none !important;
-      border:1.5px solid #D0D5DD !important;
-      border-radius:10px !important;
+      border:1px solid #D0D5DD !important;
+      border-radius:8px !important;
       overflow:visible !important;
       position:relative !important;
 
-      /* Full page centering */
-      width:92% !important;
-      max-width:92% !important;
-      margin:0 auto !important;
-      padding:32px 28px !important;
+      /* Size and spacing */
+      width:100% !important;
+      max-width:100% !important;
+      margin:0 !important;
+      padding:48px 36px 40px !important;
 
-      /* Center content vertically on page */
-      min-height:88vh !important;
-      display:flex !important;
-      flex-direction:column !important;
-      justify-content:center !important;
+      /* NO min-height, NO flex centering — content flows from top */
+      min-height:auto !important;
     }
 
-    /* Gradient bar: clean top line for print */
+    /* Top accent line for print */
     .result-card::before {
       display:block !important;
+      content:'' !important;
       height:3px !important;
-      background:var(--navy) !important;
-      border-radius:10px 10px 0 0 !important;
+      background:#1B1464 !important;
+      border-radius:8px 8px 0 0 !important;
       position:absolute !important;
       top:0 !important; left:0 !important; right:0 !important;
     }
 
-    /* First card: no forced page break (stays after header) */
+    /* First card stays with header, no page break */
     .result-card:first-child {
       page-break-before:auto !important;
       break-before:auto !important;
+      margin-top:16px !important;
     }
 
-    /* Typography for print */
+    /* Typography */
     .result-card h2 {
-      font-size:18px !important;
+      font-size:17px !important;
       border-bottom:1.5px solid #E2E5EB !important;
-      padding-bottom:12px !important;
-      margin-bottom:16px !important;
-      color:var(--navy) !important;
+      padding-bottom:10px !important;
+      margin-bottom:14px !important;
+      color:#1B1464 !important;
     }
     .result-card h2 .sn {
       font-size:9px !important;
-      letter-spacing:2.5px !important;
-      margin-bottom:4px !important;
-      color:var(--accent) !important;
+      letter-spacing:2px !important;
+      margin-bottom:3px !important;
+      color:#6C5CE7 !important;
     }
     .result-card p {
-      font-size:11.5px !important;
-      line-height:1.65 !important;
-      margin-bottom:10px !important;
+      font-size:11px !important;
+      line-height:1.6 !important;
+      margin-bottom:8px !important;
     }
-    .result-card strong { color:var(--text) !important; }
+    .result-card strong { color:#1A1A2E !important; }
 
     /* Primary badges */
     .primary-badge {
-      padding:6px 14px !important;
-      font-size:11px !important;
-      margin-bottom:6px !important;
+      padding:5px 12px !important;
+      font-size:10px !important;
+      margin-bottom:5px !important;
       box-shadow:none !important;
     }
 
     /* Score bars */
-    .score-row { margin-bottom:10px !important; }
-    .score-bar-bg { height:24px !important; border:1px solid #E2E5EB !important; }
-    .score-label { width:80px !important; font-size:10px !important; }
-    .score-val { font-size:10px !important; }
+    .score-row { margin-bottom:8px !important; gap:8px !important; }
+    .score-bar-bg { height:20px !important; border:1px solid #E2E5EB !important; border-radius:6px !important; }
+    .score-bar-fill { border-radius:6px !important; }
+    .score-label { width:70px !important; font-size:9px !important; }
+    .score-val { font-size:9px !important; }
 
     /* Radar chart */
-    .radar-wrap { padding:12px 0 !important; }
-    .radar-wrap canvas { max-width:280px !important; max-height:280px !important; }
+    .radar-wrap { padding:8px 0 !important; }
+    .radar-wrap canvas { max-width:240px !important; max-height:240px !important; }
 
     /* Trait grid */
-    .trait-grid { gap:6px !important; grid-template-columns:1fr 1fr !important; }
-    .trait-item { padding:8px 12px !important; font-size:10px !important; border-radius:6px !important; }
+    .trait-grid { gap:5px !important; grid-template-columns:1fr 1fr !important; margin-top:10px !important; }
+    .trait-item { padding:6px 10px !important; font-size:9.5px !important; border-radius:5px !important; }
 
     /* Career grid */
-    .career-grid { gap:6px !important; grid-template-columns:1fr 1fr !important; }
-    .career-item { padding:10px 14px !important; border-radius:8px !important; }
-    .career-item strong { font-size:11px !important; }
-    .career-item span { font-size:10px !important; }
+    .career-grid { gap:5px !important; grid-template-columns:1fr 1fr !important; margin-top:10px !important; }
+    .career-item { padding:8px 12px !important; border-radius:6px !important; }
+    .career-item strong { font-size:10px !important; margin-bottom:1px !important; }
+    .career-item span { font-size:9px !important; }
 
     /* Tips grid */
-    .tips-grid { gap:6px !important; }
+    .tips-grid { gap:5px !important; margin-top:10px !important; }
     .tip-item {
-      padding:10px 12px !important;
-      font-size:10.5px !important;
-      border-radius:8px !important;
-      background:#F8F7FF !important;
-      border:1px solid #E2E5EB !important;
-    }
-    .tip-num {
-      width:22px !important; height:22px !important;
+      padding:8px 10px !important;
       font-size:10px !important;
       border-radius:6px !important;
+      background:#F8F7FF !important;
+      border:1px solid #E2E5EB !important;
+      line-height:1.5 !important;
+    }
+    .tip-num {
+      width:20px !important; height:20px !important;
+      min-width:20px !important;
+      font-size:9px !important;
+      border-radius:5px !important;
       box-shadow:none !important;
     }
 
     /* Subsection title */
     .subsection-title {
-      font-size:10px !important;
-      margin:14px 0 8px !important;
-      padding-top:12px !important;
+      font-size:9px !important;
+      margin:12px 0 6px !important;
+      padding-top:10px !important;
       letter-spacing:1.5px !important;
     }
 
     /* Values grid */
-    .values-grid { gap:6px !important; grid-template-columns:1fr 1fr !important; }
+    .values-grid { gap:5px !important; grid-template-columns:1fr 1fr !important; margin-top:10px !important; }
     .value-item {
-      padding:10px 12px !important;
-      border-radius:8px !important;
+      padding:8px 10px !important;
+      border-radius:6px !important;
       background:#FAFAFE !important;
     }
-    .value-item strong { font-size:11px !important; margin-bottom:2px !important; }
-    .value-item span { font-size:10px !important; }
+    .value-item strong { font-size:10px !important; margin-bottom:1px !important; }
+    .value-item span { font-size:9px !important; }
 
     /* Synergy badge */
     .synergy-badge {
-      padding:10px !important;
-      border-radius:8px !important;
-      margin-bottom:12px !important;
+      padding:8px !important;
+      border-radius:6px !important;
+      margin-bottom:10px !important;
       background:#F5F3FF !important;
     }
-    .synergy-badge span { font-size:11px !important; padding:4px 12px !important; }
+    .synergy-badge span { font-size:10px !important; padding:3px 10px !important; }
 
     /* Academic grid */
-    .academic-grid { gap:6px !important; grid-template-columns:1fr 1fr !important; }
+    .academic-grid { gap:5px !important; grid-template-columns:1fr 1fr !important; margin-top:10px !important; }
     .academic-item {
-      padding:10px 12px !important;
-      border-radius:8px !important;
+      padding:8px 10px !important;
+      border-radius:6px !important;
       box-shadow:none !important;
     }
-    .academic-item strong { font-size:11px !important; }
-    .academic-item span { font-size:10px !important; }
+    .academic-item strong { font-size:10px !important; margin-bottom:1px !important; }
+    .academic-item span { font-size:9px !important; }
 
     /* Roadmap timeline */
-    .roadmap-timeline { padding-left:16px !important; margin-top:12px !important; }
-    .roadmap-timeline::before { width:2px !important; left:4px !important; }
-    .roadmap-phase { margin-bottom:14px !important; }
-    .roadmap-label { font-size:10px !important; margin-bottom:6px !important; }
+    .roadmap-timeline { padding-left:14px !important; margin-top:10px !important; }
+    .roadmap-timeline::before { width:2px !important; left:3px !important; }
+    .roadmap-phase { margin-bottom:10px !important; }
+    .roadmap-label { font-size:9px !important; margin-bottom:4px !important; }
     .roadmap-content {
-      padding:10px 14px !important;
-      border-radius:8px !important;
+      padding:8px 12px !important;
+      border-radius:6px !important;
       background:#FAFAFE !important;
       box-shadow:none !important;
     }
-    .roadmap-dot { width:10px !important; height:10px !important; box-shadow:none !important; }
-    .roadmap-content p { font-size:10.5px !important; line-height:1.55 !important; }
+    .roadmap-dot { width:8px !important; height:8px !important; box-shadow:none !important; margin-top:3px !important; }
+    .roadmap-content p { font-size:10px !important; line-height:1.5 !important; }
 
     /* Role models grid */
-    .rolemodels-grid { gap:6px !important; grid-template-columns:1fr 1fr !important; }
+    .rolemodels-grid { gap:5px !important; grid-template-columns:1fr 1fr !important; margin-top:10px !important; }
     .rolemodel-item {
-      padding:12px !important;
-      border-radius:8px !important;
+      padding:10px !important;
+      border-radius:6px !important;
       background:#FAFAFE !important;
       text-align:left !important;
     }
-    .rolemodel-item strong { font-size:12px !important; margin-bottom:4px !important; }
-    .rolemodel-item span { font-size:10px !important; }
+    .rolemodel-item strong { font-size:11px !important; margin-bottom:2px !important; }
+    .rolemodel-item span { font-size:9px !important; }
 
     /* Action list */
     .action-list { margin-top:8px !important; }
     .action-item {
-      padding:10px 12px !important;
-      margin-bottom:6px !important;
-      border-radius:8px !important;
+      padding:8px 10px !important;
+      margin-bottom:5px !important;
+      border-radius:6px !important;
       background:#F8F7FF !important;
     }
     .action-num {
-      width:26px !important; height:26px !important;
-      font-size:11px !important;
-      border-radius:8px !important;
+      width:22px !important; height:22px !important;
+      min-width:22px !important;
+      font-size:10px !important;
+      border-radius:6px !important;
       box-shadow:none !important;
     }
-    .action-item p { font-size:10.5px !important; line-height:1.55 !important; }
+    .action-item p { font-size:10px !important; line-height:1.5 !important; }
 
     /* Watermark */
     .print-watermark {
       display:block !important;
-      position:fixed; bottom:10px; left:0; right:0;
+      position:fixed; bottom:8px; left:0; right:0;
       text-align:center;
       font-family:'DM Sans',sans-serif; font-size:8px; color:#C0C8D8;
       letter-spacing:1px;
@@ -638,7 +644,7 @@
   .locked .locked-content .section-divider { filter:none; }
 
   /* First paragraph per card: semi-blur — tease the content */
-  .locked .locked-content .result-card p:first-of-type { filter:blur(3px); }
+  .locked .locked-content .result-card p:first-of-type { filter:blur(1.5px); }
 
   /* Everything else: full blur */
   .locked .locked-content .result-card p ~ p,
