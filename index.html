@@ -226,16 +226,6 @@
   .ref-box input { width:100%; margin-top:8px; padding:12px 12px; border-radius:10px; border:1.5px solid var(--border); outline:none; font-family:'DM Sans',sans-serif; }
   .ref-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:8px; }
   .ref-status { margin-top:10px; font-size:12px; font-weight:700; }
-  .stripe-slot { margin-top:10px; }
-  .stripe-btn {
-    width:100%; padding:12px 16px; border:none; border-radius:8px; cursor:pointer;
-    background:#635BFF; color:white; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:700;
-    display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;
-    letter-spacing:0.3px;
-  }
-  .stripe-btn:hover { background:#4B45C6; transform:translateY(-1px); box-shadow:0 4px 12px rgba(99,91,255,0.3); }
-  .stripe-btn:active { transform:translateY(0); }
-  .stripe-btn svg { width:18px; height:18px; }
   @media (max-width:600px){ .plan-grid{grid-template-columns:1fr;} .ref-row{grid-template-columns:1fr;} }
 
 </style>
@@ -1159,13 +1149,6 @@ function buildLockedPreview(lockedHTML, sessionId, L){
               <div class="paypal-slot" id="pp_full"></div>
               <div class="pay-or">${isES?'o paga con':'or pay with'}</div>
               <div class="applepay-slot" id="ap_full"></div>
-              <div class="pay-or">${isES?'o paga con tarjeta':'or pay with card'}</div>
-              <div class="stripe-slot" id="stripe_full">
-                <button class="stripe-btn" onclick="stripeCheckout('FULL_9_99','${sessionId}')">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                  ${isES?'Pagar con Tarjeta (Stripe)':'Pay with Card (Stripe)'}
-                </button>
-              </div>
             </div>
 
             <div class="plan-card">
@@ -1189,13 +1172,6 @@ function buildLockedPreview(lockedHTML, sessionId, L){
               <div class="paypal-slot" id="pp_disc" style="display:none"></div>
               <div class="pay-or" id="ap_disc_or" style="display:none">${isES?'o paga con':'or pay with'}</div>
               <div class="applepay-slot" id="ap_disc" style="display:none"></div>
-              <div class="pay-or" id="stripe_disc_or" style="display:none">${isES?'o paga con tarjeta':'or pay with card'}</div>
-              <div class="stripe-slot" id="stripe_disc" style="display:none">
-                <button class="stripe-btn" onclick="stripeCheckout('DISC_5_99','${sessionId}')">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                  ${isES?'Pagar con Tarjeta (Stripe)':'Pay with Card (Stripe)'}
-                </button>
-              </div>
             </div>
           </div>
 
@@ -1579,12 +1555,6 @@ async function submitRefs(sessionId){
       renderApplePayButton('ap_disc', 'DISC_5_99', '5.99');
     }
 
-    // Show Stripe discount button
-    var stripeDiscOr = document.getElementById('stripe_disc_or');
-    var stripeDisc = document.getElementById('stripe_disc');
-    if (stripeDiscOr) stripeDiscOr.style.display = '';
-    if (stripeDisc) stripeDisc.style.display = '';
-
   } else {
     box.style.color = '#BF6C00';
     box.textContent = (LANG==='es')
@@ -1594,71 +1564,6 @@ async function submitRefs(sessionId){
 }
 
 
-
-// ===================== STRIPE CHECKOUT =====================
-async function stripeCheckout(tier, sessionId) {
-  if (!ensureLegalChecked()) return;
-
-  try {
-    var btn = event.target.closest('.stripe-btn');
-    if (btn) { btn.disabled = true; btn.textContent = (LANG==='es') ? 'Redirigiendo...' : 'Redirecting...'; }
-
-    var r = await fetch('/.netlify/functions/stripe-create-session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tier: tier, sessionId: sessionId })
-    });
-    var d = await r.json();
-
-    if (!r.ok || !d.url) {
-      showPayPalDebug('Stripe error: ' + (d.error || 'Could not create session'));
-      if (btn) { btn.disabled = false; btn.textContent = (LANG==='es') ? 'Pagar con Tarjeta (Stripe)' : 'Pay with Card (Stripe)'; }
-      return;
-    }
-
-    // Redirect to Stripe Checkout
-    window.location.href = d.url;
-  } catch(e) {
-    console.error('Stripe checkout error:', e);
-    showPayPalDebug('Stripe: ' + (e.message || String(e)));
-    if (btn) { btn.disabled = false; btn.textContent = (LANG==='es') ? 'Pagar con Tarjeta (Stripe)' : 'Pay with Card (Stripe)'; }
-  }
-}
-
-// Handle Stripe return (success URL)
-(function checkStripeReturn() {
-  var params = new URLSearchParams(window.location.search);
-  if (params.get('stripe_success') === '1') {
-    var checkoutSessionId = params.get('session_id');
-    var tvSession = params.get('tv_session');
-
-    // Clean URL
-    var cleanUrl = window.location.origin + window.location.pathname;
-    window.history.replaceState({}, '', cleanUrl);
-
-    if (checkoutSessionId) {
-      // Verify payment server-side
-      fetch('/.netlify/functions/stripe-verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ checkoutSessionId: checkoutSessionId })
-      }).then(function(r){ return r.json(); }).then(function(d){
-        if (d.success) {
-          var sid = d.tv_session_id || tvSession || getOrCreateSessionId();
-          setUnlocked(sid);
-          // Reload to show unlocked content
-          location.reload();
-        }
-      }).catch(function(e){
-        console.error('Stripe verify error:', e);
-      });
-    }
-  }
-  if (params.get('stripe_cancel') === '1') {
-    var cleanUrl2 = window.location.origin + window.location.pathname;
-    window.history.replaceState({}, '', cleanUrl2);
-  }
-})();
 
 // ===================== RADAR (Pentagon for 5 dimensions) =====================
 function drawRadar(scores) {
