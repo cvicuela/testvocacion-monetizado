@@ -124,30 +124,248 @@
   /* RESULTS */
   .results-container { display:none; }
   .results-container.visible { display:block; }
-  .results-body { max-width:680px; margin:0 auto; padding:32px 24px 80px; }
-  .result-card { background:var(--card); border-radius:16px; padding:32px; box-shadow:var(--shadow); margin-bottom:20px; }
-  .result-card h2 { font-family:'Playfair Display',serif; font-size:20px; font-weight:600; color:var(--navy); margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--border); }
-  .result-card h2 .sn { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; color:var(--accent); letter-spacing:1.5px; display:block; margin-bottom:4px; }
-  .result-card p { color:var(--text-light); font-size:14px; line-height:1.75; margin-bottom:12px; }
-  .result-card p:last-child { margin-bottom:0; }
-  .result-card strong { color:var(--text); }
-  .primary-badge { display:inline-block; padding:8px 20px; border-radius:100px; font-size:13px; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; margin-right:6px; }
-  .score-row { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
-  .score-label { width:100px; font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; text-align:right; flex-shrink:0; }
-  .score-bar-bg { flex:1; height:28px; background:var(--bg); border-radius:8px; overflow:hidden; }
-  .score-bar-fill { height:100%; border-radius:8px; transition:width 1s cubic-bezier(0.4,0,0.2,1); width:0%; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; }
-  .score-val { font-size:12px; font-weight:800; color:white; }
-  .radar-wrap { display:flex; justify-content:center; padding:20px 0; }
-  .trait-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
-  .trait-item { padding:12px 16px; border-radius:8px; font-size:13px; font-weight:500; }
-  .trait-strength { background:var(--green-light); color:#00876A; }
-  .trait-blind { background:#FFF3E0; color:#BF6C00; }
-  .career-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
-  .career-item { padding:14px 18px; border-radius:10px; background:var(--bg); border:1px solid var(--border); }
-  .career-item strong { display:block; font-size:14px; color:var(--navy); margin-bottom:2px; }
-  .career-item span { font-size:12px; color:var(--text-light); }
+  .results-body { max-width:720px; margin:0 auto; padding:40px 28px 80px; }
 
-  .results-footer { text-align:center; padding:32px 24px; border-top:1px solid var(--border); margin-top:12px; }
+  /* RESULT CARDS — professional redesign */
+  .result-card {
+    background:var(--card);
+    border-radius:20px;
+    padding:40px 36px;
+    box-shadow:0 2px 8px rgba(27,20,100,0.05), 0 8px 32px rgba(27,20,100,0.04);
+    margin-bottom:28px;
+    border:1px solid rgba(226,229,235,0.6);
+    position:relative;
+    overflow:hidden;
+  }
+  .result-card::before {
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0;
+    height:4px;
+    background:linear-gradient(90deg, var(--navy), var(--accent), var(--med-blue));
+    border-radius:20px 20px 0 0;
+  }
+  .result-card h2 {
+    font-family:'Playfair Display',serif;
+    font-size:22px;
+    font-weight:700;
+    color:var(--navy);
+    margin-bottom:20px;
+    padding-bottom:16px;
+    border-bottom:2px solid var(--bg);
+    line-height:1.3;
+  }
+  .result-card h2 .sn {
+    font-family:'DM Sans',sans-serif;
+    font-size:11px;
+    font-weight:800;
+    color:var(--accent);
+    letter-spacing:2px;
+    display:block;
+    margin-bottom:6px;
+    text-transform:uppercase;
+  }
+  .result-card p {
+    color:var(--text-light);
+    font-size:14.5px;
+    line-height:1.85;
+    margin-bottom:14px;
+  }
+  .result-card p:last-child { margin-bottom:0; }
+  .result-card strong { color:var(--text); font-weight:600; }
+
+  .primary-badge {
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 22px;
+    border-radius:100px;
+    font-size:13px; font-weight:700;
+    letter-spacing:1px; text-transform:uppercase;
+    margin-bottom:10px; margin-right:8px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  }
+  .score-row { display:flex; align-items:center; gap:14px; margin-bottom:16px; }
+  .score-label { width:105px; font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; text-align:right; flex-shrink:0; }
+  .score-bar-bg { flex:1; height:32px; background:var(--bg); border-radius:10px; overflow:hidden; border:1px solid rgba(226,229,235,0.5); }
+  .score-bar-fill { height:100%; border-radius:10px; transition:width 1s cubic-bezier(0.4,0,0.2,1); width:0%; display:flex; align-items:center; justify-content:flex-end; padding-right:12px; }
+  .score-val { font-size:12px; font-weight:800; color:white; text-shadow:0 1px 2px rgba(0,0,0,0.15); }
+  .radar-wrap { display:flex; justify-content:center; padding:24px 0; }
+
+  /* Trait grid */
+  .trait-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+  .trait-item { padding:14px 18px; border-radius:12px; font-size:13px; font-weight:500; line-height:1.5; }
+  .trait-strength { background:linear-gradient(135deg, #E6FFF7, #F0FFF4); color:#00876A; border:1px solid rgba(0,184,148,0.15); }
+  .trait-blind { background:linear-gradient(135deg, #FFF3E0, #FFFBF0); color:#BF6C00; border:1px solid rgba(225,112,85,0.15); }
+
+  /* Career grid */
+  .career-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+  .career-item { padding:16px 20px; border-radius:12px; background:var(--bg); border:1px solid var(--border); transition:all 0.2s; }
+  .career-item:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(27,20,100,0.06); }
+  .career-item strong { display:block; font-size:14px; color:var(--navy); margin-bottom:4px; }
+  .career-item span { font-size:12px; color:var(--text-light); line-height:1.5; }
+
+  /* ============ NEW SECTIONS STYLES (Professional) ============ */
+  .subsection-title {
+    font-family:'DM Sans',sans-serif;
+    font-size:12px; font-weight:800;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:2px;
+    margin:24px 0 14px;
+    padding-top:20px;
+    border-top:2px solid var(--bg);
+  }
+
+  /* Tips grid */
+  .tips-grid { display:grid; gap:12px; margin-top:16px; }
+  .tip-item {
+    display:flex; align-items:flex-start; gap:14px;
+    padding:18px 20px;
+    border-radius:14px;
+    background:linear-gradient(135deg, var(--bg) 0%, rgba(108,92,231,0.03) 100%);
+    border:1px solid rgba(226,229,235,0.7);
+    font-size:13.5px; color:var(--text-light); line-height:1.7;
+    transition:all 0.2s;
+  }
+  .tip-item:hover { border-color:var(--accent); box-shadow:0 2px 8px rgba(108,92,231,0.06); }
+  .tip-num {
+    width:30px; height:30px;
+    border-radius:10px;
+    background:linear-gradient(135deg, var(--navy), var(--accent));
+    color:white;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:800;
+    flex-shrink:0;
+    box-shadow:0 2px 6px rgba(27,20,100,0.15);
+  }
+
+  /* Values grid */
+  .values-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+  .value-item {
+    padding:18px 20px;
+    border-radius:14px;
+    background:linear-gradient(145deg, var(--card) 0%, var(--bg) 100%);
+    border:1px solid var(--border);
+    transition:all 0.2s;
+  }
+  .value-item:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(27,20,100,0.06); }
+  .value-item strong { display:block; font-size:13.5px; color:var(--navy); margin-bottom:6px; font-weight:700; }
+  .value-item span { font-size:12.5px; color:var(--text-light); line-height:1.6; }
+
+  /* Synergy badge */
+  .synergy-badge {
+    display:flex; align-items:center; justify-content:center; gap:16px;
+    margin-bottom:20px; padding:16px;
+    background:linear-gradient(135deg, rgba(27,20,100,0.03), rgba(108,92,231,0.05));
+    border-radius:14px; border:1px solid rgba(108,92,231,0.1);
+    flex-wrap:wrap;
+  }
+
+  /* Academic grid */
+  .academic-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+  .academic-item {
+    padding:18px 20px;
+    border-radius:14px;
+    background:var(--card);
+    border:1px solid var(--border);
+    box-shadow:0 1px 4px rgba(27,20,100,0.04);
+    transition:all 0.2s;
+  }
+  .academic-item:hover { transform:translateY(-2px); box-shadow:0 4px 14px rgba(27,20,100,0.08); border-color:var(--accent); }
+  .academic-item strong { display:block; font-size:13.5px; color:var(--navy); margin-bottom:6px; font-weight:700; }
+  .academic-item span { font-size:12.5px; color:var(--text-light); line-height:1.6; }
+
+  /* Roadmap timeline */
+  .roadmap-timeline { margin-top:20px; position:relative; padding-left:24px; }
+  .roadmap-timeline::before {
+    content:''; position:absolute; left:5px; top:8px; bottom:8px;
+    width:2px; background:linear-gradient(180deg, var(--accent), var(--navy));
+    border-radius:2px;
+  }
+  .roadmap-phase { margin-bottom:24px; position:relative; }
+  .roadmap-label {
+    font-family:'DM Sans',sans-serif;
+    font-size:12px; font-weight:800;
+    color:var(--accent);
+    letter-spacing:2px; text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .roadmap-content {
+    display:flex; align-items:flex-start; gap:16px;
+    padding:20px 22px;
+    border-radius:14px;
+    background:linear-gradient(135deg, var(--card) 0%, var(--bg) 100%);
+    border:1px solid var(--border);
+    box-shadow:0 2px 8px rgba(27,20,100,0.03);
+  }
+  .roadmap-dot {
+    width:14px; height:14px;
+    border-radius:50%;
+    flex-shrink:0; margin-top:3px;
+    box-shadow:0 0 0 4px rgba(108,92,231,0.12);
+  }
+  .roadmap-content p { font-size:13.5px; color:var(--text-light); line-height:1.8; margin:0; }
+
+  /* Role models grid */
+  .rolemodels-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+  .rolemodel-item {
+    padding:20px;
+    border-radius:14px;
+    background:linear-gradient(145deg, var(--card) 0%, var(--bg) 100%);
+    border:1px solid var(--border);
+    text-align:center;
+    transition:all 0.2s;
+  }
+  .rolemodel-item:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(27,20,100,0.08); }
+  .rolemodel-item strong {
+    display:block;
+    font-size:15px; color:var(--navy);
+    margin-bottom:8px; font-weight:700;
+    font-family:'Playfair Display',serif;
+  }
+  .rolemodel-item span { font-size:12.5px; color:var(--text-light); line-height:1.6; }
+
+  /* Action plan list */
+  .action-list { margin-top:16px; }
+  .action-item {
+    display:flex; align-items:flex-start; gap:16px;
+    padding:20px 22px;
+    border-radius:14px;
+    background:linear-gradient(135deg, var(--bg) 0%, rgba(108,92,231,0.02) 100%);
+    border:1px solid var(--border);
+    margin-bottom:12px;
+    transition:all 0.2s;
+  }
+  .action-item:hover { border-color:var(--accent); box-shadow:0 2px 10px rgba(108,92,231,0.08); }
+  .action-num {
+    width:36px; height:36px;
+    border-radius:12px;
+    background:linear-gradient(135deg,var(--navy),var(--accent));
+    color:white;
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px; font-weight:800;
+    flex-shrink:0;
+    box-shadow:0 3px 8px rgba(27,20,100,0.2);
+  }
+  .action-item p { font-size:13.5px; color:var(--text-light); line-height:1.8; margin:0; }
+
+  /* Section divider between major sections */
+  .section-divider {
+    display:flex; align-items:center; gap:16px;
+    margin:36px 0 8px;
+    padding:0 8px;
+  }
+  .section-divider::before, .section-divider::after {
+    content:''; flex:1; height:1px;
+    background:linear-gradient(90deg, transparent, var(--border), transparent);
+  }
+  .section-divider span {
+    font-family:'DM Sans',sans-serif;
+    font-size:10px; font-weight:700;
+    color:var(--accent); letter-spacing:3px;
+    text-transform:uppercase; white-space:nowrap;
+  }
+
+  .results-footer { text-align:center; padding:40px 28px; border-top:2px solid var(--bg); margin-top:20px; }
   .results-footer p { font-size:12px; color:var(--text-light); }
   .btn-retake { display:inline-block; margin-top:16px; padding:12px 32px; border-radius:10px; border:1.5px solid var(--border); background:white; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; color:var(--navy); cursor:pointer; transition:all 0.2s; }
   .btn-retake:hover { border-color:var(--accent); color:var(--accent); }
@@ -166,31 +384,75 @@
   .form-container.visible { display:block; }
 
   .print-watermark { display:none; }
+
+  /* ============ PRINT / PDF ============ */
   @media print {
-    .share-section, .results-footer, .lang-switch, .btn-retake, .sound-toggle { display:none !important; }
+    .share-section, .results-footer, .lang-switch, .btn-retake, .sound-toggle, .section-divider { display:none !important; }
     body { background:white !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-    .header { padding:24px 24px 28px !important; }
-    .header h1 { font-size:24px !important; }
+    .header { padding:28px 24px 32px !important; }
+    .header h1 { font-size:26px !important; }
     .results-container.visible { display:block !important; }
-    .results-body { padding:16px 24px 20px !important; }
-    .result-card { break-inside:avoid; page-break-inside:avoid; box-shadow:none !important; border:1px solid #ddd; margin-bottom:12px !important; padding:20px 24px !important; }
-    .result-card h2 { font-size:16px !important; }
-    .result-card p { font-size:12px !important; line-height:1.6 !important; }
-    .career-grid { gap:6px !important; }
-    .career-item { padding:10px 14px !important; }
-    .trait-grid { gap:6px !important; }
-    .trait-item { padding:8px 12px !important; font-size:11px !important; }
-    .print-watermark { display:block !important; position:fixed; bottom:12px; left:0; right:0; text-align:center; font-family:'DM Sans',sans-serif; font-size:9px; color:#B0B8C8; letter-spacing:1px; }
+    .results-body { padding:20px 24px 20px !important; max-width:100% !important; }
+
+    /* Each section on its own page, centered */
+    .result-card {
+      page-break-before:always;
+      page-break-inside:avoid;
+      break-before:page;
+      break-inside:avoid;
+      box-shadow:none !important;
+      border:1.5px solid #E2E5EB;
+      border-radius:12px !important;
+      margin:0 auto 0 !important;
+      padding:36px 32px !important;
+      max-width:100%;
+      min-height:calc(100vh - 60px);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .result-card::before { display:none; }
+    /* First card should not force a page break */
+    .result-card:first-child { page-break-before:auto; break-before:auto; }
+
+    .result-card h2 { font-size:20px !important; border-bottom:2px solid #E2E5EB !important; padding-bottom:14px !important; }
+    .result-card h2 .sn { font-size:10px !important; letter-spacing:3px !important; }
+    .result-card p { font-size:12.5px !important; line-height:1.7 !important; }
+
+    .career-grid, .values-grid, .academic-grid, .rolemodels-grid { gap:8px !important; }
+    .career-item, .value-item, .academic-item, .rolemodel-item { padding:12px 16px !important; }
+    .trait-grid { gap:8px !important; }
+    .trait-item { padding:10px 14px !important; font-size:11px !important; }
+    .tips-grid { gap:8px !important; }
+    .tip-item { padding:12px 14px !important; font-size:11.5px !important; }
+    .action-item { padding:12px 14px !important; margin-bottom:8px !important; }
+    .roadmap-content { padding:14px 16px !important; }
+    .roadmap-timeline { padding-left:20px !important; }
+    .synergy-badge { padding:12px !important; }
+    .section-divider { display:none !important; }
+
+    .print-watermark {
+      display:block !important;
+      position:fixed; bottom:12px; left:0; right:0;
+      text-align:center;
+      font-family:'DM Sans',sans-serif; font-size:9px; color:#B0B8C8;
+      letter-spacing:1px;
+    }
   }
 
+  /* ============ MOBILE ============ */
   @media (max-width:600px) {
-    .trait-grid, .career-grid { grid-template-columns:1fr; }
+    .trait-grid, .career-grid, .values-grid, .academic-grid, .rolemodels-grid { grid-template-columns:1fr; }
     .score-label { width:75px; font-size:11px; }
-    .result-card { padding:24px 20px; }
+    .result-card { padding:28px 20px; border-radius:16px; }
+    .results-body { padding:24px 16px 60px; }
     .intro-card,.name-section { padding:24px 20px; }
     .q-header { padding:18px 20px; }
     .q-options { padding:10px 12px 14px; }
     .lang-btn { padding:24px 28px; min-width:150px; }
+    .roadmap-timeline { padding-left:16px; }
+    .tip-item, .action-item { padding:14px 16px; }
+    .synergy-badge { padding:12px; gap:10px; }
   }
 
   /* PAYWALL (preview + blur) */
@@ -428,7 +690,17 @@ const i18n = {
       s07t:'07 — RECOMMENDED CAREERS', s07h:'Paths That Match Your Profile',
       s08t:'08 — IDEAL STUDY ENVIRONMENT', s08h:'',
       s09t:'09 — DEVELOPMENT TIPS', s09h:'Advice for Your Journey',
-      s10t:'10 — YOUR IDENTITY', s10h:'Who You Are'
+      s10t:'10 — YOUR IDENTITY', s10h:'Who You Are',
+      s11t:'11 — YOUR LEARNING STYLE', s11h:'How You Learn Best',
+      s12t:'12 — COMMUNICATION STYLE', s12h:'How You Connect with Others',
+      s13t:'13 — WORK VALUES & MOTIVATORS', s13h:'What Drives You',
+      s14t:'14 — DECISION-MAKING STYLE', s14h:'How You Choose',
+      s15t:'15 — LEADERSHIP PROFILE', s15h:'Your Natural Influence',
+      s16t:'16 — PROFILE SYNERGY', s16h:'How Your Dimensions Combine',
+      s17t:'17 — ACADEMIC ROADMAP', s17h:'Recommended Degree Programs',
+      s18t:'18 — 5-YEAR CAREER ROADMAP', s18h:'Your Path Forward',
+      s19t:'19 — ROLE MODELS & INSPIRATION', s19h:'People Who Share Your Profile',
+      s20t:'20 — YOUR ACTION PLAN', s20h:'Concrete Next Steps'
     },
     summaryAnchored: (name,pri,sec,eq) => `<strong>${name}</strong> shows a vocational profile anchored in the <strong>${pri}</strong> dimension${eq?`, with equally strong <strong>${sec}</strong> aptitude`:`, supported by a secondary <strong>${sec}</strong> orientation`}.`,
     summaryHigh: 'This is a highly focused vocational identity — you know what drives you.',
@@ -530,6 +802,19 @@ const i18n = {
           {name:'Fashion Design',sub:'Textile, styling, product design'}
         ],
         environment:'You thrive in flexible, visually stimulating environments with minimal bureaucracy. Studios, agencies, and independent work suit you best.',
+        learningStyle:'You learn best through experimentation, visual examples, and hands-on creative projects. Traditional lectures bore you — you need to engage your senses. Watching demonstrations, creating mood boards, sketching concepts, and learning through trial-and-error are your strongest methods. You retain information when it connects to an emotional or aesthetic experience.',
+        learningTips:['Use mind maps and visual notes instead of linear outlines','Learn by creating — apply concepts immediately to personal projects','Seek mentors whose work inspires you; apprenticeship-style learning works best','Use multimedia resources: videos, podcasts, and interactive tutorials over textbooks'],
+        commStyle:'You communicate through imagery, metaphor, and storytelling. You\'re expressive and passionate when sharing ideas, often using gestures, sketches, or visual aids to convey your vision. You may struggle to articulate highly technical or numerical concepts, but you excel at making people *feel* your message. In group settings, you bring energy and originality to brainstorming sessions.',
+        commTips:['Practice structuring your ideas before presenting — outline key points','Learn to translate your creative vision into concrete language for different audiences','Use visual presentations (slides, mockups) to support your verbal communication','Listen actively before contributing — sometimes the best creative input comes from understanding others first'],
+        workValues:['Creative Freedom — the ability to express yourself and take creative risks','Authenticity — working on projects that align with your personal values and aesthetic','Recognition — having your creative work seen, appreciated, and credited','Variety — diverse projects that keep you stimulated and prevent monotony','Autonomy — setting your own schedule and working on your own terms','Impact — knowing your creative work moves, inspires, or transforms something'],
+        decisionStyle:'You make decisions intuitively, trusting your gut feeling and emotional response. You tend to visualize outcomes rather than analyze spreadsheets. This gives you an advantage in creative fields where instinct matters, but can be a weakness when financial or logical analysis is required. You may delay decisions if none of the options "feel right," and you can be swayed by aesthetics over practicality.',
+        decisionTips:['When facing big decisions, balance your intuition with at least one objective metric','Set deadlines for decisions to avoid creative overthinking','Consult someone with a practical mindset to pressure-test your instincts','Journal about your options — writing can help clarify what your gut is telling you'],
+        leaderStyle:'You lead by inspiration. Your natural charisma, passion, and originality draw people to your vision. You\'re the type of leader who paints a compelling picture of what\'s possible and empowers your team to bring it to life. You excel in brainstorming sessions and creative direction, and you create cultures where experimentation is valued.',
+        leaderChallenges:['You may struggle with administrative tasks and operational details','Providing critical feedback can feel uncomfortable — you prefer encouragement','You might resist delegation because you want things done your way creatively','Under stress, you can become scattered or emotionally reactive'],
+        academicPaths:[{name:'Fine Arts / Visual Arts',desc:'Painting, sculpture, illustration, digital arts'},{name:'Graphic Design / UX Design',desc:'Visual communication, user experience, digital product design'},{name:'Architecture',desc:'Building design, urban planning, interior design'},{name:'Film, TV & Media Production',desc:'Directing, editing, screenwriting, animation'},{name:'Communications / Advertising',desc:'Creative strategy, branding, content creation'},{name:'Music / Performing Arts',desc:'Composition, performance, sound engineering, theater'}],
+        roadmap:{y1:'Explore multiple creative disciplines through electives, workshops, and personal projects. Build a portfolio that showcases your range. Join creative clubs or communities.',y3:'Specialize in your strongest medium. Complete internships or freelance projects for real clients. Develop a professional portfolio and online presence.',y5:'Establish yourself in your chosen creative field. Launch independent projects or join a leading studio/agency. Mentor emerging creatives and expand into creative leadership.'},
+        roleModels:[{name:'Frida Kahlo',desc:'Transformed personal pain into universal art, redefining self-expression'},{name:'Steve Jobs',desc:'Merged creativity with technology to revolutionize entire industries'},{name:'Hayao Miyazaki',desc:'Created animated worlds that inspire millions through storytelling'},{name:'Virgil Abloh',desc:'Crossed boundaries between fashion, art, and architecture'}],
+        actionPlan:['Start a "creative journal" — spend 15 minutes daily sketching, writing, or experimenting with a new medium','Build an online portfolio (Behance, Dribbble, or personal site) showcasing your 5 best works','Take one online course this month in a creative skill you\'ve been curious about','Reach out to a creative professional for an informational interview about their career path','Enter a creative competition or submit work to a showcase — deadlines drive action']
       },
       S: {
         title:'The Scientific / Investigative',
@@ -546,6 +831,19 @@ const i18n = {
           {name:'Psychology (Research)',sub:'Neuroscience, cognitive science'}
         ],
         environment:'You thrive in intellectual environments with access to resources, labs, libraries, and peers who challenge your thinking. Universities and research institutions are ideal.',
+        learningStyle:'You learn best through structured study, deep reading, and logical progression from fundamentals to advanced concepts. You enjoy lectures from experts, research papers, and problem sets that challenge your reasoning. You need to understand the "why" behind every concept before moving on. Note-taking, summarizing, and revisiting material systematically are your keys to retention.',
+        learningTips:['Use the Feynman technique: explain complex topics in simple terms to test your understanding','Create structured study schedules with progressive difficulty levels','Supplement textbooks with research papers and primary sources for deeper insight','Form study groups with peers who challenge your thinking — debate sharpens your analysis'],
+        commStyle:'You communicate with precision and logic. You prefer evidence-based arguments and structured presentations. You\'re excellent at explaining complex ideas to those willing to listen, but you may lose less analytical audiences with too much detail. You value accuracy over persuasion and may come across as reserved in casual social settings.',
+        commTips:['Practice the "so what?" test — always connect data to its practical implications','Learn to read the room and adjust your level of technical detail','Use analogies and real-world examples to make abstract concepts accessible','Develop your storytelling skills — narratives make your research memorable'],
+        workValues:['Intellectual Challenge — problems that require deep thought and analysis','Evidence — decisions and actions grounded in data, not opinions','Expertise — becoming a recognized authority in your field','Independence — freedom to explore research questions that fascinate you','Precision — environments where accuracy and rigor are valued','Discovery — the thrill of understanding something new about the world'],
+        decisionStyle:'You make decisions analytically, gathering data, weighing evidence, and building logical frameworks before choosing. You\'re rarely impulsive — you prefer to think through every angle. This thoroughness makes you excellent at complex decisions but can slow you down on simpler choices. You may struggle when data is incomplete or when emotional factors should outweigh logic.',
+        decisionTips:['Set a "good enough" threshold — not every decision needs 100% certainty','Recognize that some decisions are better made with emotional intelligence, not just data','Use decision matrices for complex choices, but time-box your analysis','Practice making small decisions quickly to build your tolerance for uncertainty'],
+        leaderStyle:'You lead through expertise and competence. People follow you because they trust your knowledge and judgment. You\'re the leader who does the research before making a call, and your team knows your decisions are well-founded. You excel at technical leadership, mentoring through knowledge-sharing, and creating rigorous standards.',
+        leaderChallenges:['You may struggle with motivational or emotional leadership','Delegating to less rigorous team members can cause anxiety','You might over-analyze instead of acting decisively under time pressure','Providing feedback can feel clinical rather than empathetic'],
+        academicPaths:[{name:'Medicine / Biomedical Sciences',desc:'Clinical practice, medical research, pharmacology, public health'},{name:'Data Science / Statistics',desc:'Machine learning, artificial intelligence, computational analysis'},{name:'Biology / Chemistry / Physics',desc:'Research, lab work, theoretical and applied sciences'},{name:'Engineering (Research-oriented)',desc:'R&D, materials science, computational engineering'},{name:'Psychology / Neuroscience',desc:'Cognitive science, behavioral research, clinical research'},{name:'Environmental Science',desc:'Climate science, ecology, sustainability research'}],
+        roadmap:{y1:'Excel in foundational science and math courses. Join a research lab or assist a professor. Attend seminars and read broadly in your field of interest.',y3:'Publish or present research findings. Complete a specialized internship in a lab, hospital, or tech company. Narrow your focus to a specific subfield.',y5:'Pursue or complete graduate studies (Master\'s/PhD). Contribute original research to your field. Build a professional network of fellow researchers and mentors.'},
+        roleModels:[{name:'Marie Curie',desc:'Pioneer in radioactivity research who won two Nobel Prizes in different scientific fields'},{name:'Alan Turing',desc:'Father of computer science and artificial intelligence, whose analytical mind changed the world'},{name:'Jane Goodall',desc:'Revolutionized primatology through patient, methodical observation and empathy for subjects'},{name:'Neil deGrasse Tyson',desc:'Astrophysicist who excels at making complex science accessible to everyone'}],
+        actionPlan:['Identify a scientific question that fascinates you and spend one week researching it deeply','Contact a professor or researcher to ask about volunteering in their lab or project','Subscribe to a scientific journal or podcast in your area of interest','Complete a data analysis or coding course (Python/R) — essential skills for modern science','Design a mini-experiment or research proposal on a topic you care about']
       },
       H: {
         title:'The Social / Humanitarian',
@@ -562,6 +860,19 @@ const i18n = {
           {name:'International Relations',sub:'Diplomacy, development, humanitarian aid'}
         ],
         environment:'You thrive in collaborative, people-centered environments where relationships matter. Schools, hospitals, nonprofits, and community organizations are where you shine.',
+        learningStyle:'You learn best through discussion, collaboration, and connecting material to real human stories. You enjoy group projects, debates, case studies about people, and mentoring relationships. Abstract theory feels dry unless you can see how it impacts lives. You retain information best when it has emotional resonance or social significance.',
+        learningTips:['Join study groups and discussion circles — teaching others reinforces your own learning','Seek out case studies and real-world stories that illustrate theoretical concepts','Volunteer or shadow professionals in social fields to learn through direct experience','Reflect on what you learn through journaling — connecting knowledge to personal values deepens retention'],
+        commStyle:'You communicate with warmth, empathy, and genuine interest in others. You\'re an excellent listener who makes people feel heard and valued. In groups, you naturally facilitate conversation and bridge differences. You may sometimes avoid direct confrontation to preserve harmony, which can lead to important things going unsaid.',
+        commTips:['Practice assertive communication — being kind doesn\'t mean avoiding difficult truths','Learn to set boundaries in conversations without feeling guilty','Develop public speaking skills — your empathy makes you a powerful speaker when combined with confidence','Use "I" statements when sharing difficult feedback to keep conversations productive'],
+        workValues:['Impact — making a tangible, positive difference in people\'s lives','Connection — working closely with others in meaningful relationships','Purpose — knowing your work contributes to something larger than yourself','Fairness — environments that value equity, inclusion, and justice','Growth — helping others develop and watching them succeed','Community — belonging to a team or organization that shares your values'],
+        decisionStyle:'You make decisions empathetically, considering how each option affects the people involved. You naturally weigh emotional and relational factors alongside practical ones. This makes you excellent at people-related decisions but can cause paralysis when a choice might hurt someone. You may delay tough calls or try to please everyone, leading to compromise solutions.',
+        decisionTips:['Remember that making no decision is itself a decision — and often the worst one','When stuck, ask "What serves the most people in the long run?" not "What avoids short-term discomfort?"','Consult a trusted advisor for decisions where your empathy might cloud objectivity','Practice making small unpopular decisions — building this muscle prevents burnout from people-pleasing'],
+        leaderStyle:'You lead through empathy and trust-building. Your team feels genuinely cared for, which creates deep loyalty and high morale. You\'re the leader who knows everyone\'s strengths, remembers their birthdays, and creates psychologically safe spaces. You excel at conflict resolution, team building, and mentoring individual development.',
+        leaderChallenges:['You may struggle with tough performance conversations or letting people go','Taking sides in team conflicts can cause you significant stress','You might over-invest emotionally in your team\'s personal problems','Under pressure, you can become a doormat if you prioritize harmony over effectiveness'],
+        academicPaths:[{name:'Psychology / Counseling',desc:'Clinical practice, therapy, organizational psychology, coaching'},{name:'Education / Pedagogy',desc:'Teaching, curriculum design, educational leadership, special education'},{name:'Medicine / Nursing',desc:'Patient care, public health, community medicine'},{name:'Social Work',desc:'Community development, family services, policy advocacy'},{name:'Law (Public Interest)',desc:'Human rights, family law, immigration, nonprofit law'},{name:'International Relations / Development',desc:'Humanitarian aid, diplomacy, NGO management'}],
+        roadmap:{y1:'Volunteer extensively in social-impact settings. Take introductory courses in psychology, sociology, or education. Start building your empathy-driven skill set through real interactions.',y3:'Complete focused internships in your chosen social field (hospital, school, NGO). Develop specialized skills in counseling, teaching, or community organizing. Build a network of mentors in the field.',y5:'Pursue professional certification or graduate studies. Establish yourself in a people-centered role. Begin mentoring younger professionals and expanding your circle of influence.'},
+        roleModels:[{name:'Malala Yousafzai',desc:'Education activist who turned personal adversity into a global movement for children\'s rights'},{name:'Nelson Mandela',desc:'Led reconciliation through empathy and forgiveness, transforming a nation'},{name:'Florence Nightingale',desc:'Revolutionized healthcare by combining compassion with systematic reform'},{name:'Fred Rogers',desc:'Used kindness and emotional intelligence to shape generations through children\'s education'}],
+        actionPlan:['Volunteer this month at a local organization that serves your community','Start a conversation journal — after meaningful interactions, write what you learned about the other person','Take an online course in active listening, conflict resolution, or emotional intelligence','Shadow a professional in a social field (therapist, teacher, social worker) for a day','Organize a community event or support group around an issue you care about']
       },
       B: {
         title:'The Business / Enterprising',
@@ -578,6 +889,19 @@ const i18n = {
           {name:'International Business',sub:'Trade, imports/exports, global strategy'}
         ],
         environment:'You thrive in competitive, fast-paced environments with clear goals and rewards. Startups, corporations, and your own ventures are where you excel.',
+        learningStyle:'You learn best through application, competition, and real-world projects with measurable outcomes. Case studies from successful businesses, simulations, and entrepreneurial challenges excite you. You get bored with pure theory — you want to know how to *use* information to get results. You learn fastest when there\'s something at stake.',
+        learningTips:['Study through business case analyses — Harvard Business School cases are available online','Join business competitions, hackathons, or entrepreneurship clubs for hands-on learning','Learn by doing: start a small project or side hustle to apply classroom concepts immediately','Build a personal board of advisors — mentors who can provide real-world business wisdom'],
+        commStyle:'You communicate with confidence, persuasion, and strategic intent. You\'re a natural pitcher — whether selling an idea, negotiating a deal, or motivating a team. You adjust your message to your audience and know how to read a room. However, you may sometimes prioritize winning the argument over truly understanding the other person\'s perspective.',
+        commTips:['Practice listening before responding — the best negotiators understand the other side deeply','Learn to communicate vulnerability — it builds trust and makes your leadership more authentic','Develop your written communication — clear emails and reports are essential in business','Practice asking questions instead of always having the answer — curiosity builds stronger relationships'],
+        workValues:['Achievement — measurable results, goals met, and recognition earned','Influence — the ability to shape decisions, strategies, and outcomes','Financial Reward — compensation that reflects your performance and ambition','Growth — rapid career progression and continuous professional development','Autonomy — freedom to make decisions and execute your vision','Competition — environments where performance is measured and excellence is rewarded'],
+        decisionStyle:'You make decisions quickly and strategically, weighing risks against potential rewards. You trust your judgment and are comfortable with uncertainty — you\'d rather make a bold decision and course-correct than stay paralyzed by analysis. This makes you effective in fast-moving environments but can lead to occasional costly mistakes from insufficient research.',
+        decisionTips:['Slow down for high-stakes decisions — your bias toward action is a strength but can be a liability','Build in a "devil\'s advocate" step: actively look for reasons your preferred option might be wrong','Learn from failed decisions without excessive self-blame — speed requires accepting some misses','Consult your team before major decisions — diverse perspectives catch blind spots'],
+        leaderStyle:'You lead from the front. You\'re the type of leader who sets ambitious targets, rallies the team with a compelling vision, and leads by example through work ethic and results. You create high-performance cultures and aren\'t afraid to make tough calls. Your energy and confidence are contagious.',
+        leaderChallenges:['You may micromanage when you feel results aren\'t coming fast enough','Your competitive drive can create pressure that burns out team members','You might undervalue team members who are slower but more thorough','Under stress, you can become autocratic rather than collaborative'],
+        academicPaths:[{name:'Business Administration / MBA',desc:'Management, operations, strategy, consulting'},{name:'Economics / Finance',desc:'Investment, banking, economic policy, financial analysis'},{name:'Marketing / Digital Marketing',desc:'Brand strategy, growth hacking, consumer behavior'},{name:'Entrepreneurship / Innovation',desc:'Startup creation, venture capital, product management'},{name:'Law (Corporate / Commercial)',desc:'Mergers & acquisitions, contracts, corporate governance'},{name:'International Business',desc:'Global trade, cross-cultural management, supply chain'}],
+        roadmap:{y1:'Take foundational business and economics courses. Start a small venture or side project. Join entrepreneurship clubs and attend networking events. Read extensively about business strategy.',y3:'Complete internships in your target industry (consulting, finance, marketing, startups). Build a professional network. Develop specialized knowledge in your chosen business area.',y5:'Launch your own venture or secure a leadership position in your industry. Pursue an MBA if relevant. Build a track record of measurable results and begin mentoring aspiring entrepreneurs.'},
+        roleModels:[{name:'Elon Musk',desc:'Serial entrepreneur who tackles humanity\'s biggest challenges through ambitious ventures'},{name:'Oprah Winfrey',desc:'Built a media empire through vision, resilience, and authentic connection with audiences'},{name:'Warren Buffett',desc:'Legendary investor whose patience, discipline, and strategic thinking created extraordinary wealth'},{name:'Sara Blakely',desc:'Self-made billionaire who turned a simple idea into Spanx through relentless determination'}],
+        actionPlan:['Identify a problem you could solve with a simple product or service and draft a one-page business plan','Read one business biography or strategy book this month (e.g., "Zero to One" by Peter Thiel)','Attend a networking event, entrepreneur meetup, or business conference this month','Open a savings or investment account and start learning basic financial management','Find a mentor in your target industry and schedule an informational interview']
       },
       T: {
         title:'The Technical / Practical',
@@ -594,6 +918,19 @@ const i18n = {
           {name:'IT & Systems',sub:'Cloud, databases, network administration'}
         ],
         environment:'You thrive in hands-on environments with real problems to solve. Tech companies, engineering firms, labs, and workshops are your natural habitat.',
+        learningStyle:'You learn best by doing. Tutorials, hands-on labs, building projects, and reverse-engineering things are your natural learning methods. You understand concepts by applying them immediately — reading a manual is only useful if you can try it right after. You prefer learning from practical examples over abstract explanations.',
+        learningTips:['Build projects as you learn — create a personal project for every new skill you study','Use platforms like GitHub, Stack Overflow, and technical forums as learning communities','Break complex systems into components and master each part before reassembling the whole','Document your learning through a technical blog or portfolio — teaching reinforces understanding'],
+        commStyle:'You communicate with precision and directness. You prefer facts over feelings and concrete plans over abstract ideas. You\'re excellent at technical documentation, process explanation, and troubleshooting walkthroughs. In social settings, you may be quieter, but when you speak on your area of expertise, you\'re authoritative and clear.',
+        commTips:['Practice explaining technical concepts to non-technical audiences using analogies','Develop your presentation skills — visual diagrams and demos are your strength','Learn to express enthusiasm and passion, not just technical accuracy','In team settings, make an effort to discuss not just *what* to build but *why* it matters'],
+        workValues:['Competence — mastering your craft and being the best at what you do','Tangible Results — seeing the real-world impact of what you build','Problem-Solving — facing challenging puzzles that require ingenuity','Stability — reliable environments with clear expectations and technical resources','Autonomy — freedom to choose your tools and methods','Innovation — working on cutting-edge technology and pushing technical boundaries'],
+        decisionStyle:'You make decisions logically, based on evidence, feasibility, and efficiency. You prefer to test options when possible before committing. You\'re excellent at evaluating technical trade-offs and optimizing solutions. You may struggle with decisions that depend on emotional or political factors, and you can be slow to decide when you feel you don\'t have enough technical information.',
+        decisionTips:['Recognize that some decisions are "reversible" — don\'t over-engineer choices that can be changed later','Factor in human elements (team morale, user experience) alongside technical criteria','Set a decision deadline to avoid endless optimization — "perfect is the enemy of good"','Practice making quick judgment calls on low-stakes decisions to build confidence'],
+        leaderStyle:'You lead through competence and reliability. Your team trusts you because you\'ve been in the trenches and can solve the hardest problems. You\'re the leader who removes technical blockers, sets high quality standards, and leads by example. You create meritocratic cultures where skill and results matter most.',
+        leaderChallenges:['You may struggle with motivational and interpersonal aspects of leadership','Delegating work to less experienced team members can feel inefficient','You might over-focus on technical details at the expense of strategic vision','Under stress, you can withdraw into solo work rather than leveraging your team'],
+        academicPaths:[{name:'Computer Science / Software Engineering',desc:'Programming, algorithms, AI, web/mobile development'},{name:'Civil / Structural Engineering',desc:'Construction, infrastructure, urban development'},{name:'Mechanical / Aerospace Engineering',desc:'Design, manufacturing, robotics, vehicles, flight systems'},{name:'Electrical / Electronic Engineering',desc:'Circuits, embedded systems, telecommunications, IoT'},{name:'Industrial Engineering',desc:'Process optimization, manufacturing, operations research'},{name:'Cybersecurity / Information Technology',desc:'Network security, systems administration, cloud computing'}],
+        roadmap:{y1:'Master foundational technical skills through courses, tutorials, and personal projects. Build a portfolio on GitHub or a personal site. Join tech communities and attend meetups.',y3:'Complete focused internships at tech companies or engineering firms. Contribute to open-source projects. Earn relevant certifications. Develop a specialization.',y5:'Secure a mid-level position or launch a technical venture. Lead technical projects. Begin mentoring junior engineers and consider whether to pursue a management track or stay technical.'},
+        roleModels:[{name:'Linus Torvalds',desc:'Creator of Linux and Git — transformed software development through technical excellence and open-source philosophy'},{name:'Hedy Lamarr',desc:'Hollywood star who invented frequency-hopping technology, the foundation of modern WiFi and Bluetooth'},{name:'Nikola Tesla',desc:'Visionary inventor whose electrical innovations power the modern world'},{name:'Margaret Hamilton',desc:'Led the software engineering team that put humans on the moon, coining the term "software engineering"'}],
+        actionPlan:['Start a personal project that solves a real problem — even a simple tool or website counts','Create a GitHub profile (or similar portfolio) and commit to it regularly','Take a structured online course in your primary technical interest (coding, CAD, circuits, etc.)','Join a tech community — Discord servers, local meetups, or online forums in your specialty','Disassemble and reassemble something (physical or digital) to understand how it works from the inside']
       }
     },
     identity: {
@@ -618,6 +955,29 @@ const i18n = {
       'TH':'a technology humanist who builds tools that empower people.',
       'TB':'a tech entrepreneur who turns engineering skills into business success.',
       'default':'a versatile person with diverse aptitudes ready to explore many paths.'
+    },
+    synergy: {
+      'CS':'Your creative intuition and scientific rigor create a rare combination. You can generate innovative hypotheses that others miss and test them with methodological precision. Fields like UX research, data visualization, science communication, and creative technology thrive on exactly this mix. Your aesthetic sense elevates how you present findings, making complex data beautiful and accessible.',
+      'CH':'Your creativity and empathy combine to create powerful emotional connections through your work. You naturally understand what people need and can express it through art, design, or storytelling. This makes you ideal for therapeutic arts, community-centered design, social impact campaigns, and educational content creation. You inspire action through beauty and compassion.',
+      'CB':'Your creative vision meets business acumen to form an entrepreneurial powerhouse. You can both imagine innovative products and build the business strategy to bring them to market. This combination excels in creative agencies, product development, brand building, and entertainment businesses. You see opportunities where art meets commerce.',
+      'CT':'Your artistic eye and technical hands form a design engineering mindset. You can both envision beautiful solutions and build them with precision. This combination is the backbone of UX/UI design, architecture, game development, and industrial design. You bridge the gap between "what looks right" and "what works."',
+      'SC':'Your analytical foundation and creative spark create an innovative researcher profile. You bring imagination to the scientific process, designing elegant experiments and finding novel approaches to established problems. This combination thrives in R&D, innovative tech companies, science writing, and medical innovation.',
+      'SH':'Your scientific mind and humanitarian heart create an evidence-based helper. You bring rigorous methodology to understanding human problems, ensuring your interventions actually work. Clinical research, public health, evidence-based therapy, and educational psychology all benefit from this powerful combination.',
+      'SB':'Your research skills and business instinct form a data-driven strategist. You can identify market opportunities through rigorous analysis and build evidence-based strategies. This combination excels in management consulting, fintech, market research, and pharmaceutical business development.',
+      'ST':'Your theoretical knowledge and practical skills form a complete engineering profile. You understand both the science behind technology and how to build it. This combination is highly valued in R&D engineering, software architecture, biomedical engineering, and advanced manufacturing.',
+      'HC':'Your empathy and creativity combine to form a deeply human artistic voice. You create work that resonates emotionally because you truly understand people. Art therapy, community arts, narrative medicine, and human-centered design all thrive on this rare combination.',
+      'HS':'Your people skills and scientific rigor form an evidence-based practitioner. You combine warm bedside manner with clinical precision. This profile excels in clinical psychology, medical practice, social research, and educational assessment.',
+      'HB':'Your humanitarian drive and business skills create a social entrepreneur. You understand that sustainable impact requires viable business models. Nonprofit management, social enterprise, CSR consulting, and impact investing all need leaders with exactly your combination.',
+      'HT':'Your people focus and technical skills form a human-centered technologist. You build systems that truly serve users because you understand their needs deeply. Health tech, educational technology, assistive technology, and community platforms all benefit from your unique perspective.',
+      'BC':'Your strategic mind and creative vision form an innovative business leader. You bring fresh thinking to business challenges and can build brands with authentic creative identities. Creative direction, product management, entertainment business, and brand strategy leverage this combination perfectly.',
+      'BS':'Your business instinct and analytical rigor form a formidable strategist. Every business decision you make is backed by thorough research and data analysis. Management consulting, quantitative finance, strategic planning, and business intelligence are your natural arenas.',
+      'BH':'Your ambition and compassion form a purpose-driven leader. You build organizations that generate both profit and positive social impact. Social enterprise, healthcare administration, educational leadership, and corporate social responsibility need leaders with your unique blend.',
+      'BT':'Your business vision and technical expertise form a tech-savvy entrepreneur. You can both build the product and scale the company. CTO roles, tech startups, product management, and operations optimization are where this combination shines brightest.',
+      'TC':'Your technical precision and creative vision form a digital artisan. You build things that are both functional and beautiful. Web development, game design, creative coding, and digital fabrication all thrive on this combination.',
+      'TS':'Your practical skills and scientific understanding form a research engineer. You can both theorize and prototype, bridging the gap between lab and real world. R&D, experimental engineering, prototype development, and scientific instrumentation are your strengths.',
+      'TH':'Your technical ability and people focus form a humanitarian technologist. You build tools and systems that directly improve lives. Assistive technology, educational platforms, healthcare IT, and nonprofit technology leadership need exactly your profile.',
+      'TB':'Your engineering skills and business sense form a tech entrepreneur. You can build the product yourself and understand how to monetize it. Startup founding, freelance engineering, technical consulting, and product leadership are natural fits for your combination.',
+      'default':'Your balanced profile gives you the flexibility to draw from multiple dimensions depending on the situation. This versatility is a genuine asset — you can adapt to diverse teams and projects, serving as a bridge between specialists.'
     }
   },
   es: {
@@ -651,7 +1011,17 @@ const i18n = {
       s07t:'07 — CARRERAS RECOMENDADAS', s07h:'Caminos que Encajan con Tu Perfil',
       s08t:'08 — AMBIENTE IDEAL DE ESTUDIO', s08h:'',
       s09t:'09 — CONSEJOS DE DESARROLLO', s09h:'Para Tu Camino',
-      s10t:'10 — TU IDENTIDAD', s10h:'Quién Eres'
+      s10t:'10 — TU IDENTIDAD', s10h:'Quién Eres',
+      s11t:'11 — TU ESTILO DE APRENDIZAJE', s11h:'Cómo Aprendes Mejor',
+      s12t:'12 — ESTILO DE COMUNICACIÓN', s12h:'Cómo Te Conectas con Otros',
+      s13t:'13 — VALORES Y MOTIVADORES LABORALES', s13h:'Lo Que Te Impulsa',
+      s14t:'14 — ESTILO DE TOMA DE DECISIONES', s14h:'Cómo Eliges',
+      s15t:'15 — PERFIL DE LIDERAZGO', s15h:'Tu Influencia Natural',
+      s16t:'16 — SINERGIA DE PERFIL', s16h:'Cómo Se Combinan Tus Dimensiones',
+      s17t:'17 — RUTA ACADÉMICA', s17h:'Programas de Estudio Recomendados',
+      s18t:'18 — PLAN DE CARRERA A 5 AÑOS', s18h:'Tu Camino Hacia Adelante',
+      s19t:'19 — MODELOS A SEGUIR E INSPIRACIÓN', s19h:'Personas que Comparten Tu Perfil',
+      s20t:'20 — TU PLAN DE ACCIÓN', s20h:'Próximos Pasos Concretos'
     },
     summaryAnchored: (name,pri,sec,eq) => `<strong>${name}</strong> muestra un perfil vocacional anclado en la dimensión <strong>${pri}</strong>${eq?`, con aptitud igualmente fuerte en <strong>${sec}</strong>`:`, apoyado por una orientación secundaria <strong>${sec}</strong>`}.`,
     summaryHigh: 'Este es un perfil vocacional altamente enfocado — sabes lo que te impulsa.',
@@ -753,6 +1123,19 @@ const i18n = {
           {name:'Diseño de Moda',sub:'Textil, styling, diseño de producto'}
         ],
         environment:'Prosperas en ambientes flexibles, visualmente estimulantes y con poca burocracia. Estudios, agencias y trabajo independiente te sientan mejor.',
+        learningStyle:'Aprendes mejor a través de la experimentación, ejemplos visuales y proyectos creativos prácticos. Las clases tradicionales te aburren — necesitas involucrar tus sentidos. Ver demostraciones, crear tableros de inspiración, dibujar conceptos y aprender por ensayo y error son tus métodos más efectivos. Retienes información cuando se conecta con una experiencia emocional o estética.',
+        learningTips:['Usa mapas mentales y notas visuales en lugar de esquemas lineales','Aprende creando — aplica conceptos inmediatamente en proyectos personales','Busca mentores cuyo trabajo te inspire; el aprendizaje estilo tutoría funciona mejor para ti','Usa recursos multimedia: videos, podcasts y tutoriales interactivos en vez de solo libros de texto'],
+        commStyle:'Te comunicas a través de imágenes, metáforas y narrativas. Eres expresivo/a y apasionado/a al compartir ideas, frecuentemente usando gestos, bocetos o ayudas visuales para transmitir tu visión. Puede costarte articular conceptos muy técnicos o numéricos, pero sobresales haciendo que la gente *sienta* tu mensaje. En grupos, aportas energía y originalidad en las lluvias de ideas.',
+        commTips:['Practica estructurar tus ideas antes de presentarlas — esquematiza los puntos clave','Aprende a traducir tu visión creativa en lenguaje concreto para distintas audiencias','Usa presentaciones visuales (slides, mockups) para apoyar tu comunicación verbal','Escucha activamente antes de contribuir — a veces la mejor aportación creativa viene de entender a los demás primero'],
+        workValues:['Libertad Creativa — la posibilidad de expresarte y tomar riesgos creativos','Autenticidad — trabajar en proyectos que se alinean con tus valores y estética personal','Reconocimiento — que tu trabajo creativo sea visto, apreciado y acreditado','Variedad — proyectos diversos que te mantengan estimulado/a y eviten la monotonía','Autonomía — establecer tu propio horario y trabajar en tus propios términos','Impacto — saber que tu trabajo creativo mueve, inspira o transforma algo'],
+        decisionStyle:'Tomas decisiones intuitivamente, confiando en tu instinto y respuesta emocional. Tiendes a visualizar resultados en vez de analizar hojas de cálculo. Esto te da ventaja en campos creativos donde el instinto importa, pero puede ser una debilidad cuando se requiere análisis financiero o lógico. Puedes retrasar decisiones si ninguna opción "se siente bien" y dejarte influir por la estética sobre la practicidad.',
+        decisionTips:['Ante decisiones importantes, equilibra tu intuición con al menos una métrica objetiva','Establece plazos para decidir y evitar el sobre-pensamiento creativo','Consulta a alguien con mentalidad práctica para poner a prueba tus instintos','Escribe sobre tus opciones en un diario — escribir puede aclarar lo que tu instinto te dice'],
+        leaderStyle:'Lideras por inspiración. Tu carisma natural, pasión y originalidad atraen a las personas hacia tu visión. Eres el tipo de líder que pinta una imagen convincente de lo que es posible y empodera a su equipo para hacerla realidad. Sobresales en sesiones de brainstorming y dirección creativa, creando culturas donde la experimentación se valora.',
+        leaderChallenges:['Puedes tener dificultad con tareas administrativas y detalles operativos','Dar retroalimentación crítica puede sentirse incómodo — prefieres animar','Podrías resistirte a delegar porque quieres que las cosas se hagan a tu manera creativa','Bajo estrés, puedes dispersarte o reaccionar emocionalmente'],
+        academicPaths:[{name:'Bellas Artes / Artes Visuales',desc:'Pintura, escultura, ilustración, artes digitales'},{name:'Diseño Gráfico / Diseño UX',desc:'Comunicación visual, experiencia de usuario, diseño de producto digital'},{name:'Arquitectura',desc:'Diseño de edificios, urbanismo, interiorismo'},{name:'Cine, TV y Producción Audiovisual',desc:'Dirección, edición, guión, animación'},{name:'Comunicación / Publicidad',desc:'Estrategia creativa, branding, creación de contenido'},{name:'Música / Artes Escénicas',desc:'Composición, performance, ingeniería de sonido, teatro'}],
+        roadmap:{y1:'Explora múltiples disciplinas creativas a través de electivas, talleres y proyectos personales. Construye un portafolio que muestre tu rango. Únete a clubes o comunidades creativas.',y3:'Especialízate en tu medio más fuerte. Completa pasantías o proyectos freelance para clientes reales. Desarrolla un portafolio profesional y presencia online.',y5:'Establécete en tu campo creativo elegido. Lanza proyectos independientes o únete a un estudio/agencia líder. Mentora a creativos emergentes y expándete hacia el liderazgo creativo.'},
+        roleModels:[{name:'Frida Kahlo',desc:'Transformó el dolor personal en arte universal, redefiniendo la autoexpresión'},{name:'Steve Jobs',desc:'Fusionó creatividad con tecnología para revolucionar industrias enteras'},{name:'Hayao Miyazaki',desc:'Creó mundos animados que inspiran a millones a través de la narrativa'},{name:'Virgil Abloh',desc:'Cruzó fronteras entre la moda, el arte y la arquitectura'}],
+        actionPlan:['Inicia un "diario creativo" — dedica 15 minutos diarios a dibujar, escribir o experimentar con un nuevo medio','Crea un portafolio online (Behance, Dribbble o sitio personal) con tus 5 mejores trabajos','Toma un curso online este mes en una habilidad creativa que te genere curiosidad','Contacta a un profesional creativo para una entrevista informativa sobre su trayectoria','Participa en un concurso creativo o envía tu trabajo a una muestra — los plazos impulsan la acción']
       },
       S: {
         title:'El Perfil Científico / Investigador',
@@ -769,6 +1152,19 @@ const i18n = {
           {name:'Psicología (Investigación)',sub:'Neurociencia, ciencia cognitiva'}
         ],
         environment:'Prosperas en ambientes intelectuales con acceso a recursos, laboratorios, bibliotecas y compañeros que desafíen tu pensamiento.',
+        learningStyle:'Aprendes mejor mediante el estudio estructurado, la lectura profunda y la progresión lógica desde los fundamentos hasta conceptos avanzados. Disfrutas las clases de expertos, los artículos de investigación y los problemas que desafían tu razonamiento. Necesitas entender el "por qué" detrás de cada concepto antes de avanzar. Tomar notas, resumir y revisar material sistemáticamente son tus claves para retener.',
+        learningTips:['Usa la técnica Feynman: explica temas complejos en términos simples para comprobar tu comprensión','Crea horarios de estudio estructurados con niveles de dificultad progresivos','Complementa los libros de texto con artículos de investigación y fuentes primarias','Forma grupos de estudio con compañeros que desafíen tu pensamiento — el debate afila tu análisis'],
+        commStyle:'Te comunicas con precisión y lógica. Prefieres argumentos basados en evidencia y presentaciones estructuradas. Eres excelente explicando ideas complejas a quienes están dispuestos a escuchar, pero puedes perder a audiencias menos analíticas con demasiado detalle. Valoras la exactitud sobre la persuasión y puedes parecer reservado/a en contextos sociales casuales.',
+        commTips:['Practica el test del "¿y qué?" — siempre conecta los datos con sus implicaciones prácticas','Aprende a leer el ambiente y ajusta tu nivel de detalle técnico','Usa analogías y ejemplos del mundo real para hacer accesibles los conceptos abstractos','Desarrolla tus habilidades de narrativa — las historias hacen memorable tu investigación'],
+        workValues:['Desafío Intelectual — problemas que requieren pensamiento profundo y análisis','Evidencia — decisiones y acciones fundamentadas en datos, no en opiniones','Expertise — convertirte en una autoridad reconocida en tu campo','Independencia — libertad para explorar preguntas de investigación que te fascinan','Precisión — ambientes donde la exactitud y el rigor se valoran','Descubrimiento — la emoción de entender algo nuevo sobre el mundo'],
+        decisionStyle:'Tomas decisiones analíticamente, recopilando datos, evaluando evidencia y construyendo marcos lógicos antes de elegir. Rara vez eres impulsivo/a — prefieres pensar cada ángulo. Esta exhaustividad te hace excelente en decisiones complejas pero puede ralentizarte en elecciones más simples. Puedes tener dificultad cuando los datos son incompletos o cuando los factores emocionales deberían pesar más que la lógica.',
+        decisionTips:['Establece un umbral de "suficientemente bueno" — no toda decisión necesita 100% de certeza','Reconoce que algunas decisiones se toman mejor con inteligencia emocional, no solo con datos','Usa matrices de decisión para opciones complejas, pero limita el tiempo de análisis','Practica tomar decisiones pequeñas rápidamente para aumentar tu tolerancia a la incertidumbre'],
+        leaderStyle:'Lideras a través de la experiencia y la competencia. Las personas te siguen porque confían en tu conocimiento y juicio. Eres el tipo de líder que investiga antes de tomar una decisión, y tu equipo sabe que tus decisiones están bien fundamentadas. Sobresales en liderazgo técnico, mentoría basada en conocimiento y creación de estándares rigurosos.',
+        leaderChallenges:['Puedes tener dificultad con el liderazgo motivacional o emocional','Delegar en miembros menos rigurosos del equipo puede causarte ansiedad','Podrías sobre-analizar en vez de actuar decisivamente bajo presión de tiempo','Tu retroalimentación puede parecer clínica en vez de empática'],
+        academicPaths:[{name:'Medicina / Ciencias Biomédicas',desc:'Práctica clínica, investigación médica, farmacología, salud pública'},{name:'Ciencia de Datos / Estadística',desc:'Machine learning, inteligencia artificial, análisis computacional'},{name:'Biología / Química / Física',desc:'Investigación, laboratorio, ciencias teóricas y aplicadas'},{name:'Ingeniería (orientada a investigación)',desc:'I+D, ciencia de materiales, ingeniería computacional'},{name:'Psicología / Neurociencia',desc:'Ciencia cognitiva, investigación conductual, investigación clínica'},{name:'Ciencias Ambientales',desc:'Ciencia del clima, ecología, investigación en sostenibilidad'}],
+        roadmap:{y1:'Destaca en cursos fundamentales de ciencia y matemáticas. Únete a un laboratorio de investigación o asiste a un profesor. Asiste a seminarios y lee ampliamente en tu campo de interés.',y3:'Publica o presenta hallazgos de investigación. Completa una pasantía especializada en un laboratorio, hospital o empresa tech. Enfoca tu área de especialización.',y5:'Persigue o completa estudios de posgrado (Maestría/Doctorado). Contribuye con investigación original a tu campo. Construye una red profesional de colegas investigadores y mentores.'},
+        roleModels:[{name:'Marie Curie',desc:'Pionera en investigación de radioactividad que ganó dos Premios Nobel en diferentes campos científicos'},{name:'Alan Turing',desc:'Padre de la computación e inteligencia artificial, cuya mente analítica cambió el mundo'},{name:'Jane Goodall',desc:'Revolucionó la primatología a través de observación paciente y metódica'},{name:'Neil deGrasse Tyson',desc:'Astrofísico que sobresale haciendo la ciencia compleja accesible para todos'}],
+        actionPlan:['Identifica una pregunta científica que te fascine y dedica una semana a investigarla a fondo','Contacta a un profesor o investigador para preguntar sobre voluntariado en su laboratorio o proyecto','Suscríbete a una revista científica o podcast en tu área de interés','Completa un curso de análisis de datos o programación (Python/R) — habilidades esenciales para la ciencia moderna','Diseña un mini-experimento o propuesta de investigación sobre un tema que te importe']
       },
       H: {
         title:'El Perfil Social / Humanitario',
@@ -785,6 +1181,19 @@ const i18n = {
           {name:'Relaciones Internacionales',sub:'Diplomacia, desarrollo, ayuda humanitaria'}
         ],
         environment:'Prosperas en ambientes colaborativos centrados en personas donde las relaciones importan. Escuelas, hospitales, ONGs y organizaciones comunitarias son donde brillas.',
+        learningStyle:'Aprendes mejor a través de la discusión, la colaboración y conectar el material con historias humanas reales. Disfrutas los proyectos grupales, debates, casos de estudio sobre personas y relaciones de mentoría. La teoría abstracta se siente seca a menos que puedas ver cómo impacta vidas. Retienes información mejor cuando tiene resonancia emocional o significado social.',
+        learningTips:['Únete a grupos de estudio y círculos de discusión — enseñar a otros refuerza tu propio aprendizaje','Busca casos de estudio e historias reales que ilustren los conceptos teóricos','Haz voluntariado o acompaña a profesionales en campos sociales para aprender mediante experiencia directa','Reflexiona sobre lo que aprendes escribiendo un diario — conectar el conocimiento con valores personales profundiza la retención'],
+        commStyle:'Te comunicas con calidez, empatía y genuino interés por los demás. Eres un/a excelente oyente que hace sentir a las personas escuchadas y valoradas. En grupos, facilitas naturalmente la conversación y construyes puentes entre diferencias. Sin embargo, a veces puedes evitar la confrontación directa para preservar la armonía, lo que puede dejar cosas importantes sin decir.',
+        commTips:['Practica la comunicación asertiva — ser amable no significa evitar verdades difíciles','Aprende a establecer límites en las conversaciones sin sentir culpa','Desarrolla habilidades de oratoria — tu empatía te hace un/a orador/a poderoso/a cuando se combina con confianza','Usa declaraciones en primera persona ("yo siento", "yo pienso") al dar retroalimentación difícil'],
+        workValues:['Impacto — hacer una diferencia tangible y positiva en la vida de las personas','Conexión — trabajar cercanamente con otros en relaciones significativas','Propósito — saber que tu trabajo contribuye a algo más grande que tú mismo/a','Justicia — ambientes que valoran la equidad, inclusión y justicia','Crecimiento — ayudar a otros a desarrollarse y verlos tener éxito','Comunidad — pertenecer a un equipo u organización que comparta tus valores'],
+        decisionStyle:'Tomas decisiones empáticamente, considerando cómo cada opción afecta a las personas involucradas. Naturalmente sopesas factores emocionales y relacionales junto con los prácticos. Esto te hace excelente en decisiones relacionadas con personas pero puede causar parálisis cuando una elección podría lastimar a alguien. Puedes retrasar decisiones difíciles o intentar complacer a todos.',
+        decisionTips:['Recuerda que no decidir es en sí una decisión — y frecuentemente la peor','Cuando estés atascado/a, pregunta "¿Qué sirve a más personas a largo plazo?" no "¿Qué evita incomodidad a corto plazo?"','Consulta a un asesor de confianza para decisiones donde tu empatía pueda nublar la objetividad','Practica tomar pequeñas decisiones impopulares — fortalecer este músculo previene el agotamiento por complacer a todos'],
+        leaderStyle:'Lideras a través de la empatía y la construcción de confianza. Tu equipo se siente genuinamente cuidado, lo que crea lealtad profunda y alta moral. Eres el tipo de líder que conoce las fortalezas de todos, recuerda sus cumpleaños y crea espacios psicológicamente seguros. Sobresales en resolución de conflictos, construcción de equipos y mentoría del desarrollo individual.',
+        leaderChallenges:['Puedes tener dificultad con conversaciones difíciles de rendimiento o despidos','Tomar partido en conflictos del equipo puede causarte estrés significativo','Podrías invertir emocionalmente en exceso en los problemas personales de tu equipo','Bajo presión, puedes convertirte en alguien que se deja pisar si priorizas la armonía sobre la efectividad'],
+        academicPaths:[{name:'Psicología / Consejería',desc:'Práctica clínica, terapia, psicología organizacional, coaching'},{name:'Educación / Pedagogía',desc:'Enseñanza, diseño curricular, liderazgo educativo, educación especial'},{name:'Medicina / Enfermería',desc:'Atención al paciente, salud pública, medicina comunitaria'},{name:'Trabajo Social',desc:'Desarrollo comunitario, servicios familiares, advocacy de políticas'},{name:'Derecho (Interés Público)',desc:'Derechos humanos, derecho familiar, inmigración, derecho sin fines de lucro'},{name:'Relaciones Internacionales / Desarrollo',desc:'Ayuda humanitaria, diplomacia, gestión de ONGs'}],
+        roadmap:{y1:'Haz voluntariado extensivo en entornos de impacto social. Toma cursos introductorios de psicología, sociología o educación. Comienza a construir tus habilidades basadas en empatía a través de interacciones reales.',y3:'Completa pasantías enfocadas en tu campo social elegido (hospital, escuela, ONG). Desarrolla habilidades especializadas en consejería, enseñanza u organización comunitaria. Construye una red de mentores.',y5:'Persigue certificación profesional o estudios de posgrado. Establécete en un rol centrado en personas. Comienza a mentorar a profesionales más jóvenes y amplía tu círculo de influencia.'},
+        roleModels:[{name:'Malala Yousafzai',desc:'Activista educativa que convirtió la adversidad personal en un movimiento global por los derechos infantiles'},{name:'Nelson Mandela',desc:'Lideró la reconciliación a través de la empatía y el perdón, transformando una nación'},{name:'Florence Nightingale',desc:'Revolucionó la atención médica combinando compasión con reforma sistemática'},{name:'Fred Rogers',desc:'Usó la amabilidad e inteligencia emocional para moldear generaciones a través de la educación infantil'}],
+        actionPlan:['Haz voluntariado este mes en una organización local que sirva a tu comunidad','Inicia un diario de conversaciones — después de interacciones significativas, escribe lo que aprendiste sobre la otra persona','Toma un curso online de escucha activa, resolución de conflictos o inteligencia emocional','Acompaña a un profesional de campo social (terapeuta, maestro, trabajador social) por un día','Organiza un evento comunitario o grupo de apoyo en torno a un tema que te importe']
       },
       B: {
         title:'El Perfil de Negocios / Emprendedor',
@@ -801,6 +1210,19 @@ const i18n = {
           {name:'Negocios Internacionales',sub:'Comercio, importaciones, estrategia global'}
         ],
         environment:'Prosperas en ambientes competitivos y rápidos con metas y recompensas claras. Startups, corporaciones y tus propios emprendimientos son donde sobresales.',
+        learningStyle:'Aprendes mejor a través de la aplicación, la competencia y proyectos del mundo real con resultados medibles. Los casos de estudio de negocios exitosos, simulaciones y desafíos emprendedores te emocionan. Te aburres con la teoría pura — quieres saber cómo *usar* la información para obtener resultados. Aprendes más rápido cuando hay algo en juego.',
+        learningTips:['Estudia a través de análisis de casos de negocios — los casos de Harvard Business School están disponibles online','Únete a competencias de negocios, hackatones o clubes de emprendimiento para aprender haciendo','Aprende emprendiendo: inicia un pequeño proyecto o negocio paralelo para aplicar conceptos del aula','Construye un consejo personal de asesores — mentores que puedan darte sabiduría empresarial real'],
+        commStyle:'Te comunicas con confianza, persuasión e intención estratégica. Eres un/a pitcher natural — ya sea vendiendo una idea, negociando un acuerdo o motivando a un equipo. Ajustas tu mensaje a tu audiencia y sabes leer el ambiente. Sin embargo, a veces puedes priorizar ganar el argumento sobre entender verdaderamente la perspectiva del otro.',
+        commTips:['Practica escuchar antes de responder — los mejores negociadores entienden profundamente al otro lado','Aprende a comunicar vulnerabilidad — construye confianza y hace tu liderazgo más auténtico','Desarrolla tu comunicación escrita — emails y reportes claros son esenciales en negocios','Practica hacer preguntas en vez de siempre tener la respuesta — la curiosidad construye relaciones más fuertes'],
+        workValues:['Logro — resultados medibles, metas cumplidas y reconocimiento ganado','Influencia — la capacidad de moldear decisiones, estrategias y resultados','Recompensa Financiera — compensación que refleje tu rendimiento y ambición','Crecimiento — progresión rápida en la carrera y desarrollo profesional continuo','Autonomía — libertad para tomar decisiones y ejecutar tu visión','Competencia — ambientes donde el rendimiento se mide y la excelencia se recompensa'],
+        decisionStyle:'Tomas decisiones rápida y estratégicamente, evaluando riesgos contra recompensas potenciales. Confías en tu juicio y te sientes cómodo/a con la incertidumbre — prefieres tomar una decisión audaz y corregir el rumbo que quedarte paralizado/a por el análisis. Esto te hace efectivo/a en ambientes dinámicos pero puede llevar a errores costosos por investigación insuficiente.',
+        decisionTips:['Desacelera para decisiones de alto impacto — tu sesgo hacia la acción es una fortaleza pero puede ser una desventaja','Incluye un paso de "abogado del diablo": busca activamente razones por las que tu opción preferida podría estar equivocada','Aprende de las decisiones fallidas sin auto-culparte excesivamente — la velocidad requiere aceptar algunos errores','Consulta a tu equipo antes de decisiones importantes — las perspectivas diversas detectan puntos ciegos'],
+        leaderStyle:'Lideras desde el frente. Eres el tipo de líder que establece metas ambiciosas, motiva al equipo con una visión convincente y lidera con el ejemplo a través del trabajo duro y los resultados. Creas culturas de alto rendimiento y no temes tomar decisiones difíciles. Tu energía y confianza son contagiosas.',
+        leaderChallenges:['Puedes microgestionar cuando sientes que los resultados no llegan suficientemente rápido','Tu impulso competitivo puede crear presión que agota a los miembros del equipo','Podrías subestimar a miembros del equipo que son más lentos pero más meticulosos','Bajo estrés, puedes volverte autocrático en vez de colaborativo'],
+        academicPaths:[{name:'Administración de Empresas / MBA',desc:'Gestión, operaciones, estrategia, consultoría'},{name:'Economía / Finanzas',desc:'Inversión, banca, política económica, análisis financiero'},{name:'Marketing / Marketing Digital',desc:'Estrategia de marca, growth hacking, comportamiento del consumidor'},{name:'Emprendimiento / Innovación',desc:'Creación de startups, capital de riesgo, gestión de productos'},{name:'Derecho (Corporativo / Comercial)',desc:'Fusiones y adquisiciones, contratos, gobierno corporativo'},{name:'Negocios Internacionales',desc:'Comercio global, gestión intercultural, cadena de suministro'}],
+        roadmap:{y1:'Toma cursos fundamentales de negocios y economía. Inicia un pequeño emprendimiento o proyecto paralelo. Únete a clubes de emprendimiento y asiste a eventos de networking. Lee extensivamente sobre estrategia empresarial.',y3:'Completa pasantías en tu industria objetivo (consultoría, finanzas, marketing, startups). Construye una red profesional. Desarrolla conocimiento especializado en tu área de negocios elegida.',y5:'Lanza tu propio emprendimiento o asegura una posición de liderazgo en tu industria. Persigue un MBA si es relevante. Construye un historial de resultados medibles y comienza a mentorar aspirantes a emprendedores.'},
+        roleModels:[{name:'Elon Musk',desc:'Emprendedor serial que aborda los mayores desafíos de la humanidad a través de ventures ambiciosos'},{name:'Oprah Winfrey',desc:'Construyó un imperio mediático a través de visión, resiliencia y conexión auténtica con audiencias'},{name:'Warren Buffett',desc:'Inversionista legendario cuya paciencia, disciplina y pensamiento estratégico crearon riqueza extraordinaria'},{name:'Sara Blakely',desc:'Multimillonaria self-made que convirtió una idea simple en Spanx a través de determinación incansable'}],
+        actionPlan:['Identifica un problema que puedas resolver con un producto o servicio simple y redacta un plan de negocios de una página','Lee una biografía de negocios o libro de estrategia este mes (ej: "De Cero a Uno" de Peter Thiel)','Asiste a un evento de networking, meetup de emprendedores o conferencia de negocios este mes','Abre una cuenta de ahorro o inversión y comienza a aprender gestión financiera básica','Encuentra un mentor en tu industria objetivo y agenda una entrevista informativa']
       },
       T: {
         title:'El Perfil Técnico / Práctico',
@@ -817,6 +1239,19 @@ const i18n = {
           {name:'IT y Sistemas',sub:'Cloud, bases de datos, redes'}
         ],
         environment:'Prosperas en ambientes prácticos con problemas reales que resolver. Empresas tech, firmas de ingeniería, laboratorios y talleres son tu hábitat natural.',
+        learningStyle:'Aprendes mejor haciendo. Tutoriales, laboratorios prácticos, construir proyectos y desarmar cosas para entenderlas son tus métodos naturales de aprendizaje. Comprendes conceptos aplicándolos inmediatamente — leer un manual solo es útil si puedes probarlo justo después. Prefieres aprender de ejemplos prácticos que de explicaciones abstractas.',
+        learningTips:['Construye proyectos mientras aprendes — crea un proyecto personal por cada nueva habilidad que estudies','Usa plataformas como GitHub, Stack Overflow y foros técnicos como comunidades de aprendizaje','Descompón sistemas complejos en componentes y domina cada parte antes de reensamblar el todo','Documenta tu aprendizaje a través de un blog técnico o portafolio — enseñar refuerza la comprensión'],
+        commStyle:'Te comunicas con precisión y directividad. Prefieres hechos sobre sentimientos y planes concretos sobre ideas abstractas. Eres excelente en documentación técnica, explicación de procesos y guías de resolución de problemas. En contextos sociales puedes ser más callado/a, pero cuando hablas de tu área de expertise, eres autoritativo/a y claro/a.',
+        commTips:['Practica explicar conceptos técnicos a audiencias no técnicas usando analogías','Desarrolla tus habilidades de presentación — diagramas visuales y demos son tu fortaleza','Aprende a expresar entusiasmo y pasión, no solo precisión técnica','En equipos, haz el esfuerzo de discutir no solo *qué* construir sino *por qué* importa'],
+        workValues:['Competencia — dominar tu oficio y ser el/la mejor en lo que haces','Resultados Tangibles — ver el impacto real de lo que construyes','Resolución de Problemas — enfrentar puzzles desafiantes que requieren ingenio','Estabilidad — ambientes confiables con expectativas claras y recursos técnicos','Autonomía — libertad para elegir tus herramientas y métodos','Innovación — trabajar en tecnología de punta y empujar límites técnicos'],
+        decisionStyle:'Tomas decisiones lógicamente, basándote en evidencia, factibilidad y eficiencia. Prefieres probar opciones cuando es posible antes de comprometerte. Eres excelente evaluando compensaciones técnicas y optimizando soluciones. Puedes tener dificultad con decisiones que dependen de factores emocionales o políticos, y puedes ser lento/a para decidir cuando sientes que no tienes suficiente información técnica.',
+        decisionTips:['Reconoce que algunas decisiones son "reversibles" — no sobre-ingenieries elecciones que pueden cambiarse después','Considera factores humanos (moral del equipo, experiencia de usuario) junto con criterios técnicos','Establece un plazo de decisión para evitar optimización sin fin — "lo perfecto es enemigo de lo bueno"','Practica hacer juicios rápidos en decisiones de bajo riesgo para construir confianza'],
+        leaderStyle:'Lideras a través de la competencia y la confiabilidad. Tu equipo confía en ti porque has estado en las trincheras y puedes resolver los problemas más difíciles. Eres el tipo de líder que elimina bloqueos técnicos, establece altos estándares de calidad y lidera con el ejemplo. Creas culturas meritocráticas donde la habilidad y los resultados importan más.',
+        leaderChallenges:['Puedes tener dificultad con los aspectos motivacionales e interpersonales del liderazgo','Delegar trabajo a miembros menos experimentados del equipo puede parecer ineficiente','Podrías sobre-enfocarte en detalles técnicos a expensas de la visión estratégica','Bajo estrés, puedes retraerte al trabajo individual en vez de apoyarte en tu equipo'],
+        academicPaths:[{name:'Ciencias de la Computación / Ing. de Software',desc:'Programación, algoritmos, IA, desarrollo web/móvil'},{name:'Ingeniería Civil / Estructural',desc:'Construcción, infraestructura, desarrollo urbano'},{name:'Ingeniería Mecánica / Aeroespacial',desc:'Diseño, manufactura, robótica, vehículos, sistemas de vuelo'},{name:'Ingeniería Eléctrica / Electrónica',desc:'Circuitos, sistemas embebidos, telecomunicaciones, IoT'},{name:'Ingeniería Industrial',desc:'Optimización de procesos, manufactura, investigación de operaciones'},{name:'Ciberseguridad / Tecnologías de la Información',desc:'Seguridad de redes, administración de sistemas, computación en la nube'}],
+        roadmap:{y1:'Domina habilidades técnicas fundamentales a través de cursos, tutoriales y proyectos personales. Construye un portafolio en GitHub o un sitio personal. Únete a comunidades tech y asiste a meetups.',y3:'Completa pasantías enfocadas en empresas tech o firmas de ingeniería. Contribuye a proyectos open-source. Obtén certificaciones relevantes. Desarrolla una especialización.',y5:'Asegura una posición de nivel medio o lanza un emprendimiento técnico. Lidera proyectos técnicos. Comienza a mentorar ingenieros junior y considera si seguir la ruta de gestión o mantenerte técnico.'},
+        roleModels:[{name:'Linus Torvalds',desc:'Creador de Linux y Git — transformó el desarrollo de software a través de la excelencia técnica y la filosofía open-source'},{name:'Hedy Lamarr',desc:'Estrella de Hollywood que inventó la tecnología de salto de frecuencia, base del WiFi y Bluetooth modernos'},{name:'Nikola Tesla',desc:'Inventor visionario cuyas innovaciones eléctricas alimentan el mundo moderno'},{name:'Margaret Hamilton',desc:'Lideró el equipo de ingeniería de software que llevó humanos a la luna, acuñando el término "ingeniería de software"'}],
+        actionPlan:['Inicia un proyecto personal que resuelva un problema real — incluso una herramienta simple o sitio web cuenta','Crea un perfil de GitHub (o portafolio similar) y haz commits regularmente','Toma un curso online estructurado en tu interés técnico principal (programación, CAD, circuitos, etc.)','Únete a una comunidad tech — servidores de Discord, meetups locales o foros online en tu especialidad','Desarma y reensambla algo (físico o digital) para entender cómo funciona desde adentro']
       }
     },
     identity: {
@@ -841,6 +1276,29 @@ const i18n = {
       'TH':'un humanista tecnológico que construye herramientas que empoderan personas.',
       'TB':'un emprendedor tech que convierte habilidades de ingeniería en éxito empresarial.',
       'default':'una persona versátil con aptitudes diversas lista para explorar muchos caminos.'
+    },
+    synergy: {
+      'CS':'Tu intuición creativa y rigor científico crean una combinación poco común. Puedes generar hipótesis innovadoras que otros pasan por alto y probarlas con precisión metodológica. Campos como investigación UX, visualización de datos, comunicación científica y tecnología creativa prosperan con exactamente esta mezcla. Tu sentido estético eleva cómo presentas hallazgos, haciendo datos complejos bellos y accesibles.',
+      'CH':'Tu creatividad y empatía se combinan para crear conexiones emocionales poderosas a través de tu trabajo. Entiendes naturalmente lo que las personas necesitan y puedes expresarlo a través del arte, diseño o narrativa. Esto te hace ideal para artes terapéuticas, diseño centrado en comunidad, campañas de impacto social y creación de contenido educativo. Inspiras acción a través de la belleza y la compasión.',
+      'CB':'Tu visión creativa y conocimiento de negocios forman una potencia emprendedora. Puedes tanto imaginar productos innovadores como construir la estrategia de negocio para llevarlos al mercado. Esta combinación sobresale en agencias creativas, desarrollo de productos, construcción de marca y negocios de entretenimiento. Ves oportunidades donde el arte se encuentra con el comercio.',
+      'CT':'Tu ojo artístico y tus manos técnicas forman una mentalidad de ingeniería de diseño. Puedes tanto imaginar soluciones bellas como construirlas con precisión. Esta combinación es la columna vertebral del diseño UX/UI, arquitectura, desarrollo de videojuegos y diseño industrial. Conectas el puente entre "lo que se ve bien" y "lo que funciona."',
+      'SC':'Tu base analítica y chispa creativa crean un perfil de investigador innovador. Aportas imaginación al proceso científico, diseñando experimentos elegantes y encontrando enfoques novedosos a problemas establecidos. Esta combinación prospera en I+D, empresas tech innovadoras, divulgación científica e innovación médica.',
+      'SH':'Tu mente científica y corazón humanitario crean un ayudante basado en evidencia. Aportas metodología rigurosa para entender problemas humanos, asegurando que tus intervenciones realmente funcionen. La investigación clínica, salud pública, terapia basada en evidencia y psicología educativa se benefician de esta poderosa combinación.',
+      'SB':'Tus habilidades de investigación e instinto de negocios forman un estratega basado en datos. Puedes identificar oportunidades de mercado a través de análisis riguroso y construir estrategias basadas en evidencia. Esta combinación sobresale en consultoría de gestión, fintech, investigación de mercado y desarrollo de negocios farmacéuticos.',
+      'ST':'Tu conocimiento teórico y habilidades prácticas forman un perfil de ingeniería completo. Entiendes tanto la ciencia detrás de la tecnología como cómo construirla. Esta combinación es altamente valorada en ingeniería de I+D, arquitectura de software, ingeniería biomédica y manufactura avanzada.',
+      'HC':'Tu empatía y creatividad se combinan para formar una voz artística profundamente humana. Creas trabajo que resuena emocionalmente porque verdaderamente entiendes a las personas. La arteterapia, artes comunitarias, medicina narrativa y diseño centrado en el humano prosperan con esta rara combinación.',
+      'HS':'Tus habilidades interpersonales y rigor científico forman un practicante basado en evidencia. Combinas calidez humana con precisión clínica. Este perfil sobresale en psicología clínica, práctica médica, investigación social y evaluación educativa.',
+      'HB':'Tu impulso humanitario y habilidades de negocios crean un emprendedor social. Entiendes que el impacto sostenible requiere modelos de negocio viables. La gestión de ONGs, empresa social, consultoría de RSE e inversión de impacto necesitan líderes con exactamente tu combinación.',
+      'HT':'Tu enfoque en personas y habilidades técnicas forman un tecnólogo centrado en el humano. Construyes sistemas que verdaderamente sirven a los usuarios porque entiendes profundamente sus necesidades. La tecnología de salud, tecnología educativa, tecnología asistiva y plataformas comunitarias se benefician de tu perspectiva única.',
+      'BC':'Tu mente estratégica y visión creativa forman un líder de negocios innovador. Aportas pensamiento fresco a desafíos empresariales y puedes construir marcas con identidades creativas auténticas. Dirección creativa, gestión de productos, negocios de entretenimiento y estrategia de marca aprovechan esta combinación perfectamente.',
+      'BS':'Tu instinto de negocios y rigor analítico forman un estratega formidable. Cada decisión empresarial que tomas está respaldada por investigación exhaustiva y análisis de datos. Consultoría de gestión, finanzas cuantitativas, planificación estratégica e inteligencia de negocios son tus arenas naturales.',
+      'BH':'Tu ambición y compasión forman un líder con propósito. Construyes organizaciones que generan tanto ganancias como impacto social positivo. La empresa social, administración de salud, liderazgo educativo y responsabilidad social corporativa necesitan líderes con tu mezcla única.',
+      'BT':'Tu visión de negocio y experiencia técnica forman un emprendedor con conocimiento tech. Puedes tanto construir el producto como escalar la empresa. Roles de CTO, startups tech, gestión de productos y optimización de operaciones son donde esta combinación brilla más.',
+      'TC':'Tu precisión técnica y visión creativa forman un artesano digital. Construyes cosas que son tanto funcionales como bellas. Desarrollo web, diseño de videojuegos, programación creativa y fabricación digital prosperan con esta combinación.',
+      'TS':'Tus habilidades prácticas y comprensión científica forman un ingeniero de investigación. Puedes tanto teorizar como prototipar, conectando el laboratorio con el mundo real. I+D, ingeniería experimental, desarrollo de prototipos e instrumentación científica son tus fortalezas.',
+      'TH':'Tu habilidad técnica y enfoque en personas forman un tecnólogo humanitario. Construyes herramientas y sistemas que mejoran directamente la vida de las personas. La tecnología asistiva, plataformas educativas, IT de salud y liderazgo tecnológico en ONGs necesitan exactamente tu perfil.',
+      'TB':'Tus habilidades de ingeniería y sentido de negocio forman un emprendedor tech. Puedes construir el producto tú mismo/a y entender cómo monetizarlo. Fundar startups, ingeniería freelance, consultoría técnica y liderazgo de producto son ajustes naturales para tu combinación.',
+      'default':'Tu perfil equilibrado te da la flexibilidad de recurrir a múltiples dimensiones según la situación. Esta versatilidad es un activo genuino — puedes adaptarte a equipos y proyectos diversos, sirviendo como puente entre especialistas.'
     }
   }
 };
@@ -1073,6 +1531,103 @@ function generateResults() {
   lockedHtml += `<div class="result-card">
     <h2><span class="sn">${S.s10t}</span>${S.s10h}</h2>
     <p>${L.finalIs(name,L.labels[primary[0]],L.labels[secondary[0]],identity)}</p>
+  </div>`;
+
+  // — Divider: Deep Profile Analysis —
+  lockedHtml += `<div class="section-divider"><span>${LANG==='en'?'Deep Profile Analysis':'Análisis Profundo de Perfil'}</span></div>`;
+
+  // 11 — LEARNING STYLE
+  lockedHtml += `<div class="result-card">
+    <h2><span class="sn">${S.s11t}</span>${S.s11h}</h2>
+    <p>${pri.learningStyle}</p>
+    <div class="tips-grid">${pri.learningTips.map((tip,i)=>`<div class="tip-item"><span class="tip-num">${i+1}</span><span>${tip}</span></div>`).join('')}</div>
+  </div>`;
+
+  // 12 — COMMUNICATION STYLE
+  lockedHtml += `<div class="result-card">
+    <h2><span class="sn">${S.s12t}</span>${S.s12h}</h2>
+    <p>${pri.commStyle}</p>
+    <h3 class="subsection-title">${LANG==='en'?'Tips to Improve':'Consejos para Mejorar'}</h3>
+    <div class="tips-grid">${pri.commTips.map((tip,i)=>`<div class="tip-item"><span class="tip-num">${i+1}</span><span>${tip}</span></div>`).join('')}</div>
+  </div>`;
+
+  // 13 — WORK VALUES & MOTIVATORS
+  lockedHtml += `<div class="result-card">
+    <h2><span class="sn">${S.s13t}</span>${S.s13h}</h2>
+    <p>${LANG==='en'?'These are the core values that drive your career satisfaction. When your work aligns with these motivators, you feel energized and fulfilled. When they\'re missing, you feel drained — even if the job looks good on paper.':'Estos son los valores fundamentales que impulsan tu satisfacción profesional. Cuando tu trabajo se alinea con estos motivadores, te sientes con energía y realizado/a. Cuando faltan, te sientes agotado/a — incluso si el trabajo se ve bien en el papel.'}</p>
+    <div class="values-grid">${pri.workValues.map(v=>{const parts=v.split(' — ');return `<div class="value-item"><strong>${parts[0]}</strong><span>${parts[1]||''}</span></div>`;}).join('')}</div>
+  </div>`;
+
+  // 14 — DECISION-MAKING STYLE
+  lockedHtml += `<div class="result-card">
+    <h2><span class="sn">${S.s14t}</span>${S.s14h}</h2>
+    <p>${pri.decisionStyle}</p>
+    <h3 class="subsection-title">${LANG==='en'?'How to Make Better Decisions':'Cómo Tomar Mejores Decisiones'}</h3>
+    <div class="tips-grid">${pri.decisionTips.map((tip,i)=>`<div class="tip-item"><span class="tip-num">${i+1}</span><span>${tip}</span></div>`).join('')}</div>
+  </div>`;
+
+  // 15 — LEADERSHIP PROFILE
+  lockedHtml += `<div class="result-card">
+    <h2><span class="sn">${S.s15t}</span>${S.s15h}</h2>
+    <p>${pri.leaderStyle}</p>
+    <h3 class="subsection-title">${LANG==='en'?'Leadership Growth Areas':'Áreas de Crecimiento en Liderazgo'}</h3>
+    <div class="trait-grid">${pri.leaderChallenges.map(s=>`<div class="trait-item trait-blind">⚠ ${s}</div>`).join('')}</div>
+  </div>`;
+
+  // — Divider: Your Future Path —
+  lockedHtml += `<div class="section-divider"><span>${LANG==='en'?'Your Future Path':'Tu Camino Futuro'}</span></div>`;
+
+  // 16 — PROFILE SYNERGY
+  const synergyKey = primary[0]+secondary[0];
+  const synergyText = L.synergy[synergyKey] || L.synergy['default'];
+  lockedHtml += `<div class="result-card">
+    <h2><span class="sn">${S.s16t}</span>${S.s16h}</h2>
+    <div class="synergy-badge"><span style="background:${colors[primary[0]]}20;color:${colors[primary[0]]};padding:6px 16px;border-radius:100px;font-weight:700;font-size:13px">${L.labels[primary[0]]}</span> <span style="font-size:20px;color:var(--text-light)">+</span> <span style="background:${colors[secondary[0]]}20;color:${colors[secondary[0]]};padding:6px 16px;border-radius:100px;font-weight:700;font-size:13px">${L.labels[secondary[0]]}</span></div>
+    <p>${synergyText}</p>
+  </div>`;
+
+  // 17 — ACADEMIC ROADMAP
+  lockedHtml += `<div class="result-card">
+    <h2><span class="sn">${S.s17t}</span>${S.s17h}</h2>
+    <p>${LANG==='en'?'Based on your vocational profile, these degree programs align best with your natural aptitudes and interests:':'Basándose en tu perfil vocacional, estos programas de estudio se alinean mejor con tus aptitudes e intereses naturales:'}</p>
+    <div class="academic-grid">${pri.academicPaths.map(a=>`<div class="academic-item"><strong>${a.name}</strong><span>${a.desc}</span></div>`).join('')}</div>
+  </div>`;
+
+  // 18 — 5-YEAR CAREER ROADMAP
+  lockedHtml += `<div class="result-card">
+    <h2><span class="sn">${S.s18t}</span>${S.s18h}</h2>
+    <p>${LANG==='en'?'A suggested timeline for your professional development based on your profile:':'Una línea de tiempo sugerida para tu desarrollo profesional basándose en tu perfil:'}</p>
+    <div class="roadmap-timeline">
+      <div class="roadmap-phase">
+        <div class="roadmap-label">${LANG==='en'?'Year 1–2':'Año 1–2'}</div>
+        <div class="roadmap-content"><div class="roadmap-dot" style="background:${colors[primary[0]]}"></div><p>${pri.roadmap.y1}</p></div>
+      </div>
+      <div class="roadmap-phase">
+        <div class="roadmap-label">${LANG==='en'?'Year 3–4':'Año 3–4'}</div>
+        <div class="roadmap-content"><div class="roadmap-dot" style="background:${colors[primary[0]]}"></div><p>${pri.roadmap.y3}</p></div>
+      </div>
+      <div class="roadmap-phase">
+        <div class="roadmap-label">${LANG==='en'?'Year 5+':'Año 5+'}</div>
+        <div class="roadmap-content"><div class="roadmap-dot" style="background:${colors[primary[0]]}"></div><p>${pri.roadmap.y5}</p></div>
+      </div>
+    </div>
+  </div>`;
+
+  // 19 — ROLE MODELS & INSPIRATION
+  lockedHtml += `<div class="result-card">
+    <h2><span class="sn">${S.s19t}</span>${S.s19h}</h2>
+    <p>${LANG==='en'?'These notable individuals share characteristics of your vocational profile. Their paths may inspire your own:':'Estas personas notables comparten características de tu perfil vocacional. Sus caminos pueden inspirar el tuyo:'}</p>
+    <div class="rolemodels-grid">${pri.roleModels.map(r=>`<div class="rolemodel-item"><strong>${r.name}</strong><span>${r.desc}</span></div>`).join('')}</div>
+  </div>`;
+
+  // — Divider: Take Action —
+  lockedHtml += `<div class="section-divider"><span>${LANG==='en'?'Take Action':'Toma Acción'}</span></div>`;
+
+  // 20 — ACTION PLAN
+  lockedHtml += `<div class="result-card">
+    <h2><span class="sn">${S.s20t}</span>${S.s20h}</h2>
+    <p>${LANG==='en'?'Don\'t just read this report — act on it. Here are 5 concrete steps you can take this month to start building your vocational future:':'No solo leas este reporte — actúa. Aquí hay 5 pasos concretos que puedes tomar este mes para comenzar a construir tu futuro vocacional:'}</p>
+    <div class="action-list">${pri.actionPlan.map((a,i)=>`<div class="action-item"><div class="action-num">${i+1}</div><p>${a}</p></div>`).join('')}</div>
   </div>`;
 
   // SHARE (always visible)
