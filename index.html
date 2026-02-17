@@ -31,19 +31,32 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; -webkit-font-smoothing:antialiased; }
 
-  /* LANGUAGE SELECTOR */
+  /* LANGUAGE SELECTOR / LANDING PAGE */
   .lang-screen {
     min-height:100vh; display:flex; align-items:center; justify-content:center;
     background: linear-gradient(135deg, var(--navy) 0%, var(--dark-blue) 50%, var(--med-blue) 100%);
-    position:relative; overflow:hidden;
+    position:relative; overflow:hidden; padding:24px;
   }
   .lang-screen::before { content:''; position:absolute; top:-30%; right:-15%; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(108,92,231,0.15) 0%,transparent 70%); }
   .lang-screen::after { content:''; position:absolute; bottom:-30%; left:-10%; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle,rgba(253,167,223,0.1) 0%,transparent 70%); }
-  .lang-box { position:relative; z-index:1; text-align:center; max-width:480px; padding:24px; }
-  .lang-box .badge { display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:100px; padding:6px 20px; font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold-light); margin-bottom:24px; }
-  .lang-box h1 { font-family:'Playfair Display',serif; font-size:clamp(28px,5vw,38px); font-weight:600; color:white; margin-bottom:8px; }
-  .lang-box p { color:rgba(255,255,255,0.5); font-size:14px; margin-bottom:40px; }
-  .lang-buttons { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+  .lang-box { position:relative; z-index:1; text-align:center; max-width:560px; padding:24px; }
+  .lang-box .badge { display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:100px; padding:6px 20px; font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold-light); margin-bottom:20px; }
+  .lang-box h1 { font-family:'Playfair Display',serif; font-size:clamp(28px,5vw,42px); font-weight:700; color:white; margin-bottom:8px; line-height:1.2; }
+  .lang-box .landing-sub { color:rgba(255,255,255,0.55); font-size:15px; margin-bottom:12px; font-weight:300; }
+  .lang-box .landing-hook { color:rgba(255,255,255,0.85); font-size:13px; font-weight:600; margin-bottom:32px; letter-spacing:0.5px; }
+  .lang-box .landing-hook span { color:var(--gold); }
+
+  /* Profile dimension pills */
+  .dimension-pills { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:28px; }
+  .dimension-pill { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:100px; font-size:11px; font-weight:600; letter-spacing:0.5px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); }
+
+  /* Stats row */
+  .landing-stats { display:flex; justify-content:center; gap:32px; margin-bottom:32px; flex-wrap:wrap; }
+  .landing-stat { text-align:center; }
+  .landing-stat .stat-num { font-family:'Playfair Display',serif; font-size:24px; font-weight:700; color:white; display:block; }
+  .landing-stat .stat-label { font-size:10px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.4); }
+
+  .lang-buttons { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-bottom:24px; }
   .lang-btn {
     display:flex; flex-direction:column; align-items:center; gap:10px;
     background:rgba(255,255,255,0.06); border:1.5px solid rgba(255,255,255,0.12);
@@ -53,6 +66,12 @@
   .lang-flag { font-size:36px; }
   .lang-name { color:white; font-size:16px; font-weight:600; }
   .lang-sub { color:rgba(255,255,255,0.4); font-size:12px; font-weight:400; }
+
+  /* Trust badges */
+  .landing-trust { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
+  .trust-item { display:flex; align-items:center; gap:6px; font-size:11px; color:rgba(255,255,255,0.35); font-weight:500; }
+  .trust-item svg { width:14px; height:14px; fill:rgba(255,255,255,0.3); }
+
   .lang-screen.hidden { display:none; }
 
   /* HEADER */
@@ -736,23 +755,67 @@
 </head>
 <body>
 
-<!-- LANGUAGE SELECT -->
+<!-- LANGUAGE SELECT / LANDING PAGE -->
 <div class="lang-screen" id="langScreen">
   <div class="lang-box">
-    <div class="badge">Career Assessment</div>
-    <h1>Select Your Language</h1>
-    <p>Choose the language for your vocational assessment</p>
+    <div class="badge">Career Aptitude Assessment</div>
+    <h1>Discover Your Ideal Career Path</h1>
+    <p class="landing-sub">A science-backed vocational test that maps your personality to the careers where you'll thrive.</p>
+    <p class="landing-hook">Based on <span>5 Psychological Profiles</span> &mdash; 10 questions &mdash; Instant 20-page report</p>
+
+    <!-- 5 dimension pills -->
+    <div class="dimension-pills">
+      <span class="dimension-pill" style="color:#6C5CE7;border-color:rgba(108,92,231,0.3)">Creative</span>
+      <span class="dimension-pill" style="color:#00B894;border-color:rgba(0,184,148,0.3)">Scientific</span>
+      <span class="dimension-pill" style="color:#FDCB6E;border-color:rgba(253,203,110,0.3)">Social</span>
+      <span class="dimension-pill" style="color:#E17055;border-color:rgba(225,112,85,0.3)">Business</span>
+      <span class="dimension-pill" style="color:#0984E3;border-color:rgba(9,132,227,0.3)">Technical</span>
+    </div>
+
+    <!-- Social proof stats -->
+    <div class="landing-stats">
+      <div class="landing-stat">
+        <span class="stat-num">12,847</span>
+        <span class="stat-label">Tests Taken</span>
+      </div>
+      <div class="landing-stat">
+        <span class="stat-num">4.8/5</span>
+        <span class="stat-label">User Rating</span>
+      </div>
+      <div class="landing-stat">
+        <span class="stat-num">3 min</span>
+        <span class="stat-label">Average Time</span>
+      </div>
+    </div>
+
+    <!-- Language buttons -->
     <div class="lang-buttons">
       <div class="lang-btn" onclick="startAssessment('en')">
         <span class="lang-flag">🇺🇸</span>
         <span class="lang-name">English</span>
-        <span class="lang-sub">Career Aptitude Test</span>
+        <span class="lang-sub">Start Assessment</span>
       </div>
       <div class="lang-btn" onclick="startAssessment('es')">
         <span class="lang-flag">🇪🇸</span>
         <span class="lang-name">Español</span>
-        <span class="lang-sub">Test Vocacional</span>
+        <span class="lang-sub">Comenzar Test</span>
       </div>
+    </div>
+
+    <!-- Trust signals -->
+    <div class="landing-trust">
+      <span class="trust-item">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+        Secure & Private
+      </span>
+      <span class="trust-item">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        No Sign-up Required
+      </span>
+      <span class="trust-item">
+        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+        Results in 3 Minutes
+      </span>
     </div>
   </div>
 </div>
