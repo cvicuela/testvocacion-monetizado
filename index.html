@@ -296,6 +296,7 @@
   <div class="results-body" id="resultsBody"></div>
   <div class="print-watermark" id="printWatermark"></div>
   <div class="results-footer">
+    <p id="rDisclaimer" style="font-size:11px;color:var(--text-light);opacity:0.75;max-width:600px;margin:0 auto 16px;line-height:1.5;font-style:italic;border:1px solid var(--border);border-radius:8px;padding:12px 16px;background:rgba(255,255,255,0.03);"></p>
     <p id="rFooter"></p>
     <button class="btn-retake" id="rRetake" onclick="retake()"></button>
   </div>
@@ -410,6 +411,7 @@ const i18n = {
     qHint: 'Select the option that feels most like you',
     rBadge: 'Assessment Complete',
     rFooter: 'Career Aptitude Assessment · Vocational Report',
+    rDisclaimer: 'Disclaimer: This assessment is based on general psychological and vocational studies. The results are orientative and do not constitute a personalized professional diagnosis. For individualized guidance, we recommend consulting a certified career counselor or psychologist.',
     rRetake: '← Take Assessment Again',
     defaultName: 'Student',
     dateLocale: 'en-US',
@@ -632,6 +634,7 @@ const i18n = {
     qHint: 'Selecciona la opción que más se parece a ti',
     rBadge: 'Test Completado',
     rFooter: 'Test de Aptitud Vocacional · Reporte de Orientación',
+    rDisclaimer: 'Aviso legal: Este test está basado en estudios psicológicos y vocacionales de carácter general. Los resultados son orientativos y no constituyen un diagnóstico profesional personalizado. Para una orientación individualizada, recomendamos consultar con un orientador vocacional o psicólogo certificado.',
     rRetake: '← Hacer el Test de Nuevo',
     defaultName: 'Estudiante',
     dateLocale: 'es-ES',
@@ -1002,6 +1005,7 @@ function generateResults() {
   document.getElementById('resultsTitle').textContent = LANG==='en' ? `${name}'s Vocational Profile` : `Perfil Vocacional de ${name}`;
   const dateStr = new Date().toLocaleDateString(L.dateLocale, {year:'numeric',month:'long',day:'numeric'});
   document.getElementById('resultsDate').textContent = dateStr;
+  document.getElementById('rDisclaimer').textContent = L.rDisclaimer;
   document.getElementById('rFooter').textContent = L.rFooter;
   document.getElementById('rRetake').textContent = L.rRetake;
   document.getElementById('printWatermark').textContent = `testvocacion.netlify.app  ·  ${dateStr}  ·  Career Aptitude Assessment`;
