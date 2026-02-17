@@ -468,30 +468,35 @@
       margin-top:16px !important;
     }
 
-    /* === LOCKED WRAPPER: make invisible in print so inner cards flow normally === */
+    /* === LOCKED STATE IN PRINT: keep paywall visible (FOMO) === */
     .result-card.locked {
-      display:block !important;
-      border:none !important;
-      padding:0 !important;
-      margin:0 !important;
-      box-shadow:none !important;
-      page-break-before:auto !important;
-      break-before:auto !important;
+      page-break-before:always !important;
+      break-before:page !important;
       page-break-inside:auto !important;
       break-inside:auto !important;
-      overflow:visible !important;
-      position:static !important;
+      display:block !important;
+      border:1px solid #D0D5DD !important;
+      border-radius:6px !important;
+      padding:0 !important;
+      overflow:hidden !important;
+      position:relative !important;
+      box-shadow:none !important;
+      min-height:auto !important;
     }
     .result-card.locked::before { display:none !important; }
-    .locked .locked-content {
-      opacity:1 !important;
-      pointer-events:auto !important;
-      padding:0 !important;
+    /* Inner cards inside locked: NO page-breaks, compact */
+    .locked .locked-content .result-card {
+      page-break-before:auto !important;
+      break-before:auto !important;
+      border:none !important;
+      box-shadow:none !important;
+      padding:12px 0 !important;
+      margin:0 !important;
     }
-    /* Remove all blur in print */
-    .locked .locked-content * { filter:none !important; }
-    /* Hide paywall overlay in print */
-    .locked-overlay { display:none !important; }
+    .locked .locked-content .result-card::before { display:none !important; }
+    .locked .locked-content .section-divider { display:none !important; }
+    /* Keep blur visible in print — paywall protection */
+    /* Keep overlay visible in print — shows payment prompt */
 
     /* Typography */
     .result-card h2 {
@@ -2422,13 +2427,26 @@ function shareWhatsApp() {
 }
 
 function doPrint() {
-  // Prepare DOM for clean print
-  document.body.classList.add('printing');
-  // Hide form/lang screens explicitly
+  // Check if report is unlocked
+  const sessionId = getOrCreateSessionId();
+  const unlocked = isUnlocked(sessionId);
+
+  if (!unlocked) {
+    // Not paid — show alert and scroll to paywall
+    const isES = (LANG === 'es');
+    alert(isES
+      ? 'Desbloquea tu reporte completo para poder imprimirlo o guardarlo como PDF.'
+      : 'Unlock your full report to print or save it as PDF.');
+    const overlay = document.querySelector('.locked-overlay');
+    if (overlay) overlay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  // Unlocked — prepare DOM for clean print
   const form = document.getElementById('formContainer');
   const lang = document.getElementById('langScreen');
   if (form) form.style.display = 'none';
-  if (lang) form.style.display = 'none';
+  if (lang) lang.style.display = 'none';
 
   // Force score bars to final width (CSS transitions don't work in print)
   document.querySelectorAll('.score-bar-fill').forEach(b => {
@@ -2440,7 +2458,6 @@ function doPrint() {
   setTimeout(() => {
     window.print();
     // Restore after print
-    document.body.classList.remove('printing');
     if (form) form.style.display = '';
     if (lang) lang.style.display = '';
     document.querySelectorAll('.score-bar-fill').forEach(b => {
