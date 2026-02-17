@@ -678,11 +678,19 @@
   .locked .locked-content .result-card h2 { filter:none; }
   .locked .locked-content .section-divider { filter:none; }
 
-  /* First paragraph per card: semi-blur — tease the content */
-  .locked .locked-content .result-card p:first-of-type { filter:blur(1.5px); }
+  /* All paragraphs: full blur by default */
+  .locked .locked-content .result-card p { filter:blur(8px); }
+
+  /* First paragraph per card: gradient mask — first line visible, rest fades to blur */
+  .locked .locked-content .result-card p:first-of-type {
+    filter:none;
+    position:relative;
+    overflow:hidden;
+    -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 1.4em, rgba(0,0,0,0) 2.6em);
+    mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 1.4em, rgba(0,0,0,0) 2.6em);
+  }
 
   /* Everything else: full blur */
-  .locked .locked-content .result-card p ~ p,
   .locked .locked-content .trait-grid,
   .locked .locked-content .career-grid,
   .locked .locked-content .tips-grid,
