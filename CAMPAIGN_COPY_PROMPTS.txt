@@ -1,0 +1,269 @@
+================================
+VOCACIÓN 360 MÉXICO - COPY & PROMPTS
+Ready to Copy/Paste
+================================
+
+PAGE DETAILS
+============
+Page Name: VOCACIÓN 360 MÉXICO
+Bio: Descubre tu perfil profesional en 5 minutos. Orientación vocacional basada en análisis de aptitudes. Test gratuito para jóvenes de prepa y universidad.
+Website: https://testvocacion.netlify.app/
+CTA Button: "Más información"
+
+
+IMAGE PROMPTS (for DALL-E, Midjourney, etc.)
+==============================================
+
+LOGO PROMPT (1024x1024):
+---
+Design a professional, modern educational logo for "VOCACIÓN 360 MÉXICO".
+Style: Premium, minimalist, serious (NOT childish).
+Color palette: Dark blue (#1B1464) and violet (#6C5CE7), white background.
+Elements:
+- A stylized compass or 360-degree symbol representing guidance and direction
+- Incorporate the number "360" subtly as a circular element
+- Include a silhouette of a young professional (head/shoulder) within or around the circle
+- Typography: "VOCACIÓN 360" in bold Montserrat, positioned below or integrated
+- Subtext: "MÉXICO" in smaller DM Sans
+Square format, clean, vector-style, high contrast.
+Should work as a Facebook profile picture.
+---
+
+
+FACEBOOK COVER PROMPT (1640x624):
+---
+Create a premium Facebook cover (1640x624px) for "VOCACIÓN 360 MÉXICO".
+Style: Modern, minimalist, professional educational vibe.
+Color palette: Gradient from dark blue (#1B1464) to violet (#6C5CE7).
+Layout:
+- Left side: Subtle geometric shapes (circles, lines) suggesting "360 analysis"
+- Center: Large bold text "DESCUBRE TU VOCACIÓN" in white Montserrat
+- Right side: Silhouettes of diverse young professionals (different career paths: tech, creative, science, business)
+- Bottom corner: "Test gratuito · 5 minutos" in small white text
+- No video content, clean and scalable
+Ensure text is centered and readable, with breathing room around edges.
+---
+
+
+AD IMAGE A PROMPT (1080x1350) - SCIENTIFIC/DATA APPROACH:
+---
+Create a professional Instagram/Facebook feed ad (1080x1350px) for a vocational test.
+Title: "¿NO SABES QUÉ ESTUDIAR?"
+Style: Clean, data-forward, modern.
+Color palette: Dark blue (#1B1464) background top third, white/light bottom two-thirds.
+Elements:
+- Top section (small text): "TEST VOCACIONAL" in violet (#6C5CE7)
+- Large headline: "¿NO SABES QUÉ ESTUDIAR?" in bold white Montserrat
+- Middle section: Icon row showing 5 career paths (Creativo, Científico, Social, Negocios, Técnico) with simple icons
+- Subtext: "Descubre tu perfil profesional en 5 minutos" in gray DM Sans
+- Bottom section (white): Visual button-style element saying "HACER EL TEST GRATIS" in violet and white
+- Footer: "Ideal para prepa y universidad" in small text
+Ensure all text is readable on mobile. Professional, not promotional-looking.
+---
+
+
+AD IMAGE B PROMPT (1080x1350) - EMOTIONAL/RELATABLE APPROACH:
+---
+Create a professional Instagram/Facebook feed ad (1080x1350px) for a vocational test.
+Emotional/relatable approach.
+Style: Warm, empathetic, modern, with human element.
+Color palette: Gradient from violet (#6C5CE7) top to light gray/white bottom.
+Elements:
+- Top section: "¿AÚN NO SABES?" in white, smaller text
+- Large headline: "ES NORMAL" in bold white Montserrat (large, comforting)
+- Illustration: Young professional/student looking confident, in warm lighting (illustration style, not photo)
+- Middle text: "Haz este test vocacional y descubre tu camino en 5 minutos" in white DM Sans
+- Bottom section: Violet button-style element "HAGO EL TEST GRATIS"
+- Small text: "Resultados al instante"
+Professional but empathetic tone. Should feel supportive, not pushy.
+---
+
+
+FACEBOOK PAGE POSTS (Copy Only)
+================================
+
+POST 1:
+---
+¡Hola! 👋 Bienvenido a Vocación 360 México
+
+Sabemos que elegir carrera no es fácil. Hay muchas opciones, presión familiar,
+dudas de si "es lo tuyo"...
+
+Aquí viene la buena noticia: este test vocacional te ayuda a descubrir tu perfil
+profesional en solo 5 minutos.
+
+El resultado te orienta hacia uno de 5 perfiles:
+✓ Creativo
+✓ Científico
+✓ Social
+✓ Negocios
+✓ Técnico
+
+Gratis, rápido, sin compromisos.
+
+¿Listo para descubrir tu vocación? 🚀
+
+#TestVocacional #Orientación #Carrera #UniversidadMéxico #DecidirCarrera
+---
+
+
+POST 2:
+---
+Casos que hemos visto:
+
+❌ "Elegí carrera porque mis papás querían que fuera doctor... no fue para mí"
+❌ "Estudié ingeniería sin saber si me gustaba realmente"
+❌ "Llegué a la universidad sin claridad de qué quería"
+
+✅ Con nuestro test de 10 preguntas, descubrimos patrones reales en tus aptitudes.
+✅ Te dice exactamente en qué perfil encajas mejor.
+✅ Te ahorras tiempo y dinero eligiendo con datos, no intuición.
+
+Si estás en prepa o universidad y tienes dudas, este es para ti.
+
+→ Haz el test gratis en 5 minutos
+
+#VocaciónProfesional #OrientaciónEducativa #CarreraUniversitaria
+---
+
+
+POST 3:
+---
+Pregunta rápida:
+
+¿Cuántas veces te has preguntado:
+"¿Realmente es lo mío?"
+"¿Qué pasaría si eligiera otra carrera?"
+"¿Cómo sé que no me equivoco?"
+
+La respuesta está aquí. 👇
+
+Test Vocacional 360 → 10 preguntas → 5 minutos → Claridad total
+
+Descubre tu perfil profesional GRATIS ahora.
+No tiene costo, no es vinculante, son solo datos sobre ti.
+
+Es hora de decidir con certeza. 🎯
+
+#VocaciónClara #UniversidadMéxico #OrientaciónVocacional
+---
+
+
+AD COPY - VARIANT A (Data-Driven / Direct)
+============================================
+
+Primary Text:
+---
+Elegir carrera a ciegas sale caro. Haz este test vocacional (10 preguntas)
+y descubre tu perfil profesional en 5 minutos.
+
+Te orienta hacia áreas: Creativo, Científico, Social, Negocios o Técnico.
+
+Gratis. Sin compromisos. Resultados al instante.
+
+Hazlo ahora.
+---
+
+Headline:
+Descubre tu vocación
+
+Description:
+5 minutos · Gratis · 10 preguntas
+
+CTA Button:
+Más información
+
+Landing URL:
+https://testvocacion.netlify.app/?utm_source=meta&utm_medium=paid_social&utm_campaign=mx_testvocacional&utm_content=variant_a_datos
+
+
+AD COPY - VARIANT B (Emotional / Relatable)
+=============================================
+
+Primary Text:
+---
+Si estás en prepa o universidad y aún no sabes qué estudiar... es normal.
+
+Este test vocacional te ayuda a descubrir tu perfil profesional en 5 minutos.
+
+Te muestra hacia dónde van tus aptitudes: Creativo, Científico, Social,
+Negocios o Técnico.
+
+Haz la prueba gratis. Resultados al instante.
+---
+
+Headline:
+Haz el test gratis
+
+Description:
+Resultados al instante · Para prepa y universidad
+
+CTA Button:
+Más información
+
+Landing URL:
+https://testvocacion.netlify.app/?utm_source=meta&utm_medium=paid_social&utm_campaign=mx_testvocacional&utm_content=variant_b_emocional
+
+
+UTM LINKS
+==========
+
+Variant A (Data):
+https://testvocacion.netlify.app/?utm_source=meta&utm_medium=paid_social&utm_campaign=mx_testvocacional&utm_content=variant_a_datos
+
+Variant B (Emotional):
+https://testvocacion.netlify.app/?utm_source=meta&utm_medium=paid_social&utm_campaign=mx_testvocacional&utm_content=variant_b_emocional
+
+Assets/Logo:
+https://testvocacion.netlify.app/?utm_source=meta&utm_medium=paid_social&utm_campaign=mx_testvocacional&utm_content=logo_page_assets
+
+
+TARGETING SPECS
+================
+Location: Mexico
+Age: 16-21
+Language: Spanish
+Interests:
+  - Universidad
+  - Orientación vocacional
+  - Carreras universitarias
+  - Psicología
+  - Educación superior
+  - UNAM
+  - Tec de Monterrey
+  - IPN
+  - Admisión universitaria
+  - Becas
+
+Placements:
+  ✓ Instagram Feed
+  ✓ Instagram Stories
+  ✓ Facebook Feed
+  ✗ Exclude: Audience Network
+  ✗ Exclude: In-stream Videos
+
+Budget:
+  Daily: $5 USD
+  Duration: 2 days
+  Total: $10 USD
+
+Optimization:
+  Objective: Traffic (Landing Page Views) or Conversions (if pixel)
+  Bidding: Automatic
+
+
+COLOR PALETTE
+==============
+Primary Blue: #1B1464
+Accent Violet: #6C5CE7
+White: #FFFFFF
+Light Gray: #F5F5F5
+
+Typography:
+  Headings: Montserrat (Bold)
+  Body: DM Sans
+
+
+================================
+END OF COPY & PROMPTS
+================================
