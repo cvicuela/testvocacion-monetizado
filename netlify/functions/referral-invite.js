@@ -20,11 +20,11 @@ const SITE_URL = 'https://testvocacion.netlify.app';
 const FROM_EMAIL = process.env.SENDGRID_FROM_EMAIL || 'hello@testvocacion.app';
 const FROM_NAME = 'Test Vocacional';
 
-function buildEmailHtml() {
+function buildEmailHtml(name) {
     return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:520px;margin:auto;line-height:1.6;color:#222">
 <h2 style="margin-bottom:10px">Test Vocacional</h2>
 <p>Hola,</p>
-<p>Una persona cercana te recomendó este test vocacional porque pensó que podría ayudarte a descubrir mejor tus fortalezas y posibles caminos profesionales.</p>
+<p><strong>${name}</strong> te recomendó este test vocacional porque pensó que podría ayudarte a descubrir mejor tus fortalezas y posibles caminos profesionales.</p>
 <p>El test incluye una <strong>vista gratuita</strong> con resultados iniciales.</p>
 <div style="text-align:center;margin:30px 0">
 <a href="${SITE_URL}"
@@ -42,9 +42,9 @@ Este mensaje fue enviado como recomendación personal desde testvocacion.netlify
 </div>`;
 }
 
-function buildEmailText() {
+function buildEmailText(name) {
     return `Hola,\n\n`
-        + `Una persona cercana te recomendó este test vocacional porque pensó que podría ayudarte a descubrir mejor tus fortalezas y posibles caminos profesionales.\n\n`
+        + `${name} te recomendó este test vocacional porque pensó que podría ayudarte a descubrir mejor tus fortalezas y posibles caminos profesionales.\n\n`
         + `El test incluye una vista gratuita con resultados iniciales.\n\n`
         + `Hacer el test: ${SITE_URL}\n\n`
         + `Si no deseas recibir más invitaciones simplemente ignora este mensaje.\n\n`
@@ -123,14 +123,14 @@ exports.handler = async (event) => {
         }
 
         // Send invitation emails via SendGrid
-        const displayName = (referrerName || '').trim() || 'Test Vocacional';
-        const htmlBody = buildEmailHtml();
-        const textBody = buildEmailText();
+        const displayName = (referrerName || '').trim() || 'Alguien';
+        const htmlBody = buildEmailHtml(displayName);
+        const textBody = buildEmailText(displayName);
 
         const messages = [...unique].map(toEmail => ({
             to: toEmail,
             from: { email: FROM_EMAIL, name: displayName },
-            subject: 'Te recomendaron este test vocacional',
+            subject: `${displayName} te recomendó este test vocacional`,
             text: textBody,
             html: htmlBody,
         }));
