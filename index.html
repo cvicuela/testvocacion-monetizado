@@ -37,9 +37,9 @@
     background: linear-gradient(135deg, var(--navy) 0%, var(--dark-blue) 50%, var(--med-blue) 100%);
     position:relative; overflow:hidden; padding:24px;
   }
-  .lang-screen::before { content:''; position:absolute; top:-30%; right:-15%; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(108,92,231,0.15) 0%,transparent 70%); }
-  .lang-screen::after { content:''; position:absolute; bottom:-30%; left:-10%; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle,rgba(253,167,223,0.1) 0%,transparent 70%); }
-  .lang-box { position:relative; z-index:1; text-align:center; max-width:560px; padding:24px; }
+  .lang-screen::before { content:''; position:absolute; top:-30%; right:-15%; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(108,92,231,0.15) 0%,transparent 70%); pointer-events:none; }
+  .lang-screen::after { content:''; position:absolute; bottom:-30%; left:-10%; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle,rgba(253,167,223,0.1) 0%,transparent 70%); pointer-events:none; }
+  .lang-box { position:relative; z-index:1; text-align:center; max-width:560px; padding:24px; width:100%; }
   .lang-box .badge { display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:100px; padding:6px 20px; font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold-light); margin-bottom:20px; }
   .lang-box h1 { font-family:'Playfair Display',serif; font-size:clamp(28px,5vw,42px); font-weight:700; color:white; margin-bottom:8px; line-height:1.2; }
   .lang-box .landing-sub { color:rgba(255,255,255,0.55); font-size:15px; margin-bottom:12px; font-weight:300; }
@@ -58,14 +58,22 @@
 
   .lang-buttons { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-bottom:24px; }
   .lang-btn {
-    display:flex; flex-direction:column; align-items:center; gap:10px;
-    background:rgba(255,255,255,0.06); border:1.5px solid rgba(255,255,255,0.12);
-    border-radius:16px; padding:28px 40px; cursor:pointer; transition:all 0.3s; min-width:180px;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    background:linear-gradient(135deg, rgba(108,92,231,0.2), rgba(253,167,223,0.1));
+    border:2px solid rgba(255,255,255,0.2);
+    border-radius:16px; padding:24px 40px; cursor:pointer; transition:all 0.3s; min-width:180px;
+    animation:pulse-glow 2.8s ease-in-out infinite;
+    position:relative; overflow:hidden;
   }
-  .lang-btn:hover { background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.25); transform:translateY(-3px); }
-  .lang-flag { font-size:36px; }
-  .lang-name { color:white; font-size:16px; font-weight:600; }
-  .lang-sub { color:rgba(255,255,255,0.4); font-size:12px; font-weight:400; }
+  .lang-btn::after { content:''; position:absolute; inset:0; border-radius:14px; background:linear-gradient(135deg, rgba(255,255,255,0.08), transparent); pointer-events:none; }
+  .lang-btn:hover { background:linear-gradient(135deg, rgba(108,92,231,0.35), rgba(253,167,223,0.2)); border-color:rgba(255,255,255,0.4); transform:translateY(-3px); box-shadow:0 8px 30px rgba(108,92,231,0.3); }
+  @keyframes pulse-glow {
+    0%,100% { box-shadow:0 0 15px rgba(108,92,231,0.15); }
+    50% { box-shadow:0 0 25px rgba(108,92,231,0.35), 0 0 50px rgba(108,92,231,0.1); }
+  }
+  .lang-flag { font-size:32px; }
+  .lang-name { color:white; font-size:17px; font-weight:700; }
+  .lang-sub { color:rgba(255,255,255,0.6); font-size:12px; font-weight:500; letter-spacing:0.5px; }
 
   /* Trust badges */
   .landing-trust { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
@@ -133,11 +141,11 @@
   .btn-nav { flex:1; padding:16px 24px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; border:none; }
   .btn-prev { background:white; color:var(--navy); border:1.5px solid var(--border); }
   .btn-prev:hover { border-color:var(--accent); color:var(--accent); }
-  .btn-next { background:linear-gradient(135deg,var(--navy),var(--dark-blue)); color:white; box-shadow:0 4px 16px rgba(27,20,100,0.2); }
-  .btn-next:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(27,20,100,0.3); }
+  .btn-next { background:linear-gradient(135deg,var(--navy),var(--accent)); color:white; box-shadow:0 4px 20px rgba(27,20,100,0.25); font-weight:700; }
+  .btn-next:hover { transform:translateY(-2px); box-shadow:0 6px 28px rgba(27,20,100,0.35); }
   .btn-next:disabled { opacity:0.35; cursor:not-allowed; transform:none; box-shadow:none; }
-  .btn-start { background:linear-gradient(135deg,var(--navy),var(--dark-blue)); color:white; box-shadow:0 4px 16px rgba(27,20,100,0.2); width:100%; padding:16px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer; border:none; transition:all 0.2s; margin-top:24px; }
-  .btn-start:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(27,20,100,0.3); }
+  .btn-start { background:linear-gradient(135deg,var(--navy),var(--accent)); color:white; box-shadow:0 4px 20px rgba(27,20,100,0.25); width:100%; padding:16px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:16px; font-weight:700; cursor:pointer; border:none; transition:all 0.2s; margin-top:24px; letter-spacing:0.3px; }
+  .btn-start:hover { transform:translateY(-2px); box-shadow:0 6px 28px rgba(27,20,100,0.35); }
   .q-hint { text-align:center; margin-top:16px; font-size:12px; color:var(--text-light); opacity:0.7; }
 
   /* RESULTS */
@@ -674,19 +682,149 @@
     }
   }
 
-  /* ============ MOBILE ============ */
+  /* ============ MOBILE — TABLET ============ */
+  @media (max-width:768px) {
+    .lang-box h1 { font-size:clamp(24px,6vw,36px); }
+    .lang-box .landing-sub { font-size:13px; margin-bottom:8px; }
+    .lang-box .landing-hook { font-size:12px; margin-bottom:20px; }
+    .dimension-pills { gap:6px; margin-bottom:20px; }
+    .dimension-pill { padding:4px 10px; font-size:10px; }
+    .landing-stats { gap:20px; margin-bottom:20px; }
+    .landing-stat .stat-num { font-size:20px; }
+    .landing-stat .stat-label { font-size:9px; }
+    .header { padding:32px 20px 40px; }
+    .header h1 { font-size:clamp(22px,5vw,34px); }
+    .result-card { padding:28px 22px; }
+    .results-body { padding:28px 16px 60px; }
+  }
+
+  /* ============ MOBILE — PHONE ============ */
   @media (max-width:600px) {
-    .trait-grid, .career-grid, .values-grid, .academic-grid, .rolemodels-grid { grid-template-columns:1fr; }
-    .score-label { width:75px; font-size:11px; }
-    .result-card { padding:28px 20px; border-radius:16px; }
-    .results-body { padding:24px 16px 60px; }
-    .intro-card,.name-section { padding:24px 20px; }
-    .q-header { padding:18px 20px; }
-    .q-options { padding:10px 12px 14px; }
-    .lang-btn { padding:24px 28px; min-width:150px; }
+    /* ---- Landing page: fit viewport, minimal scroll ---- */
+    .lang-screen {
+      min-height:100dvh; min-height:100vh;
+      padding:16px 16px 20px;
+      align-items:center;
+    }
+    .lang-box { padding:8px; max-width:100%; }
+    .lang-box .badge { font-size:9px; padding:4px 14px; margin-bottom:12px; }
+    .lang-box h1 { font-size:24px; margin-bottom:4px; }
+    .lang-box .landing-sub { display:none; }
+    .lang-box .landing-hook { font-size:11.5px; margin-bottom:14px; letter-spacing:0; }
+    .dimension-pills { display:none; }
+    .landing-stats { gap:16px; margin-bottom:14px; }
+    .landing-stat .stat-num { font-size:18px; }
+    .landing-stat .stat-label { font-size:8px; letter-spacing:1px; }
+
+    /* ---- CTA buttons: fill width, very prominent ---- */
+    .lang-buttons { flex-direction:row; gap:10px; margin-bottom:14px; }
+    .lang-btn {
+      flex:1; min-width:0; padding:20px 12px;
+      border-radius:14px;
+      background:linear-gradient(135deg, rgba(108,92,231,0.25), rgba(253,167,223,0.12));
+      border-width:2px;
+    }
+    .lang-flag { font-size:28px; }
+    .lang-name { font-size:15px; }
+    .lang-sub { font-size:11px; }
+
+    /* ---- Trust signals: compact ---- */
+    .landing-trust { gap:10px; }
+    .trust-item { font-size:10px; gap:4px; }
+    .trust-item svg { width:12px; height:12px; }
+
+    /* ---- Form/test screen ---- */
+    .header { padding:24px 16px 32px; }
+    .header h1 { font-size:22px; margin-bottom:6px; }
+    .header p { font-size:13px; }
+    .header .badge { font-size:9px; padding:4px 14px; margin-bottom:10px; }
+    .progress-wrap { margin-top:-18px; padding:0 12px; }
+    .progress-card { padding:12px 16px; gap:10px; border-radius:12px; }
+    .progress-label { font-size:10px; }
+    .progress-pct { font-size:12px; min-width:48px; }
+    .main { padding:20px 14px 60px; }
+    .intro-card { padding:20px 16px; margin-bottom:20px; border-radius:14px; }
+    .intro-card h2 { font-size:18px; margin-bottom:8px; }
+    .intro-card p { font-size:13px; }
+    .highlight { padding:10px 14px; font-size:12px; }
+    .name-section { padding:20px 16px; margin-bottom:20px; border-radius:14px; }
+    .name-section label { font-size:11px; margin-bottom:8px; }
+    .name-input { padding:12px 14px; font-size:14px; border-radius:8px; }
+    .btn-start { padding:14px; font-size:14px; border-radius:10px; margin-top:18px; }
+
+    /* ---- Question cards ---- */
+    .q-card { border-radius:14px; }
+    .q-header { padding:16px 16px; gap:10px; }
+    .q-num { width:32px; height:32px; font-size:13px; border-radius:8px; }
+    .q-text { font-size:14px; }
+    .q-options { padding:8px 10px 12px; gap:6px; }
+    .q-option { padding:12px 14px; gap:10px; border-radius:8px; }
+    .q-option-text { font-size:13px; }
+    .q-radio { width:18px; height:18px; }
+    .q-radio::after { width:7px; height:7px; }
+    .nav-buttons { gap:10px; margin-top:18px; }
+    .btn-nav { padding:14px 16px; font-size:14px; border-radius:10px; }
+    .q-hint { font-size:11px; margin-top:12px; }
+
+    /* ---- Results ---- */
+    .result-card { padding:24px 16px; border-radius:14px; margin-bottom:20px; }
+    .result-card h2 { font-size:18px; margin-bottom:14px; padding-bottom:12px; }
+    .result-card h2 .sn { font-size:10px; }
+    .result-card p { font-size:13.5px; line-height:1.75; }
+    .results-body { padding:20px 12px 60px; }
+    .trait-grid, .career-grid, .values-grid, .academic-grid, .rolemodels-grid { grid-template-columns:1fr; gap:8px; }
+    .score-label { width:70px; font-size:10px; }
+    .score-bar-bg { height:28px; }
+    .primary-badge { padding:8px 16px; font-size:11px; }
     .roadmap-timeline { padding-left:16px; }
-    .tip-item, .action-item { padding:14px 16px; }
-    .synergy-badge { padding:12px; gap:10px; }
+    .tip-item, .action-item { padding:14px 14px; }
+    .synergy-badge { padding:12px; gap:10px; flex-direction:column; }
+    .section-divider { margin:24px 0 6px; }
+    .section-divider span { font-size:9px; letter-spacing:2px; }
+
+    /* ---- Paywall ---- */
+    .locked-box { padding:14px; }
+    .locked-box h4 { font-size:16px; }
+    .locked-box p { font-size:12px; }
+    .plan-grid { grid-template-columns:1fr; gap:10px; }
+    .plan-card { padding:12px; }
+    .plan-price { font-size:20px; }
+    .ref-row { grid-template-columns:1fr; }
+
+    /* ---- Share section ---- */
+    .share-section { padding:24px 16px; border-radius:14px; }
+    .share-section h3 { font-size:16px; }
+    .share-buttons { gap:8px; }
+    .share-btn { padding:10px 18px; font-size:12px; border-radius:8px; }
+
+    /* ---- Footer ---- */
+    .results-footer { padding:28px 16px; }
+    .results-footer p { font-size:11px; }
+    .btn-retake { padding:10px 24px; font-size:12px; }
+
+    /* ---- Lang switch / sound toggle ---- */
+    .lang-switch { top:10px; right:12px; padding:5px 10px; font-size:11px; }
+    .sound-toggle { top:10px; left:12px; padding:5px 10px; font-size:12px; }
+    .sound-toggle .sl { font-size:10px; }
+  }
+
+  /* ============ MOBILE — VERY SMALL (< 380px) ============ */
+  @media (max-width:380px) {
+    .lang-box h1 { font-size:20px; }
+    .lang-box .landing-hook { font-size:10.5px; }
+    .landing-stats { gap:12px; }
+    .landing-stat .stat-num { font-size:16px; }
+    .lang-btn { padding:16px 8px; }
+    .lang-flag { font-size:24px; }
+    .lang-name { font-size:13px; }
+    .lang-sub { font-size:10px; }
+    .trust-item { font-size:9px; }
+    .header h1 { font-size:19px; }
+    .q-text { font-size:13px; }
+    .q-option-text { font-size:12px; }
+    .result-card { padding:20px 14px; }
+    .result-card h2 { font-size:16px; }
+    .result-card p { font-size:12.5px; }
   }
 
   /* PAYWALL (preview + blur) — FOMO strategy */
@@ -760,8 +898,8 @@
   <div class="lang-box">
     <div class="badge">Career Aptitude Assessment</div>
     <h1>Discover Your Ideal Career Path</h1>
-    <p class="landing-sub">A science-backed vocational test that maps your personality to the careers where you'll thrive.</p>
-    <p class="landing-hook">Based on <span>5 Psychological Profiles</span> &mdash; 10 questions &mdash; Instant 20-page report</p>
+    <p class="landing-sub">Science-backed vocational test mapping your personality to ideal careers.</p>
+    <p class="landing-hook">Based on <span>5 Psychological Profiles</span> &bull; 10 questions &bull; Instant results</p>
 
     <!-- 5 dimension pills -->
     <div class="dimension-pills">
