@@ -1,0 +1,102 @@
+# Netlify Headers Configuration File
+# This file defines HTTP response headers for all routes
+# Reference: https://docs.netlify.com/routing/headers/
+
+# ============================================================================
+# DEFAULT SECURITY HEADERS - Apply to all content
+# ============================================================================
+/*
+  # HSTS: Force HTTPS for 1 year, include subdomains
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+  # Prevent content type sniffing
+  X-Content-Type-Options: nosniff
+
+  # Clickjacking protection - prevent framing
+  X-Frame-Options: DENY
+
+  # XSS protection for older browsers
+  X-XSS-Protection: 1; mode=block
+
+  # Referrer policy - privacy focused
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # Feature/Permissions policy
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(self)
+
+# ============================================================================
+# API FUNCTIONS - Restricted CORS
+# ============================================================================
+/.netlify/functions/*
+  # Restrict CORS to same origin only
+  Access-Control-Allow-Origin: https://testvocacion.netlify.app
+  Access-Control-Allow-Methods: POST, OPTIONS
+  Access-Control-Allow-Headers: Content-Type, Authorization
+  Access-Control-Allow-Credentials: false
+  Access-Control-Max-Age: 86400
+
+  # Security headers for API responses
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+# ============================================================================
+# STATIC ASSETS - Long cache
+# ============================================================================
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+*.js
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+*.css
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+*.woff
+  Cache-Control: public, max-age=31536000, immutable
+
+*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+*.ttf
+  Cache-Control: public, max-age=31536000, immutable
+
+*.eot
+  Cache-Control: public, max-age=31536000, immutable
+
+*.svg
+  Cache-Control: public, max-age=31536000, immutable
+
+# ============================================================================
+# IMAGES - Medium cache
+# ============================================================================
+*.jpg
+  Cache-Control: public, max-age=2592000
+  X-Content-Type-Options: nosniff
+
+*.jpeg
+  Cache-Control: public, max-age=2592000
+  X-Content-Type-Options: nosniff
+
+*.png
+  Cache-Control: public, max-age=2592000
+  X-Content-Type-Options: nosniff
+
+*.gif
+  Cache-Control: public, max-age=2592000
+  X-Content-Type-Options: nosniff
+
+*.webp
+  Cache-Control: public, max-age=2592000
+  X-Content-Type-Options: nosniff
+
+# ============================================================================
+# HTML PAGES - No cache (always check for updates)
+# ============================================================================
+*.html
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
