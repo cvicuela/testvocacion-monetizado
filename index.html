@@ -2142,8 +2142,15 @@ function generateResults() {
   setTimeout(() => {
     document.querySelectorAll('.score-bar-fill').forEach(b => { b.style.width=b.dataset.width+'%'; });
     drawRadar(scores);
-    if (!unlocked && typeof paypal !== 'undefined') {
-      renderPaywallButtons(sessionId);
+    if (!unlocked) {
+      // Retry until PayPal SDK is loaded (it loads async from Netlify config)
+      (function waitForPayPal(attempts){
+        if (typeof paypal !== 'undefined') {
+          renderPaywallButtons(sessionId);
+        } else if (attempts < 30) {
+          setTimeout(function(){ waitForPayPal(attempts + 1); }, 500);
+        }
+      })(0);
     }
   }, 120);
 
@@ -2742,6 +2749,14 @@ function retake() {
     var s = document.createElement('script');
     s.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(cfg.clientId) + '&currency=USD&disable-funding=paylater,card&components=buttons,applepay';
     s.async = true;
+    s.onload = function(){
+      // If results are already shown and buttons not yet rendered, render now
+      var ppSlot = document.getElementById('pp_full');
+      if (ppSlot && !ppSlot.hasChildNodes() && typeof paypal !== 'undefined') {
+        var sid = (typeof getOrCreateSessionId === 'function') ? getOrCreateSessionId() : null;
+        if (sid && !isUnlocked(sid)) renderPaywallButtons(sid);
+      }
+    };
     document.body.appendChild(s);
   } catch(e) { console.error('Failed to load PayPal config:', e); }
 })();
