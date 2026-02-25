@@ -523,7 +523,22 @@
     .locked .locked-content .result-card::before { display:none !important; }
     .locked .locked-content .section-divider { display:none !important; }
     /* Keep blur visible in print — paywall protection */
-    /* Keep overlay visible in print — shows payment prompt */
+    /* Overlay: reset from fixed back to static for print */
+    .locked .locked-overlay {
+      position:static !important;
+      background:rgba(245,243,255,0.9) !important;
+      display:block !important;
+      max-height:none !important;
+      box-shadow:none !important;
+      border:1px solid #D0D5DD !important;
+      padding:16px !important;
+    }
+    .locked-box {
+      max-height:none !important;
+      overflow:visible !important;
+      box-shadow:none !important;
+      border-radius:12px !important;
+    }
 
     /* Typography */
     .result-card h2 {
@@ -782,14 +797,22 @@
     .section-divider { margin:24px 0 6px; }
     .section-divider span { font-size:9px; letter-spacing:2px; }
 
-    /* ---- Paywall ---- */
-    .locked-box { padding:14px; }
-    .locked-box h4 { font-size:16px; }
-    .locked-box p { font-size:12px; }
-    .plan-grid { grid-template-columns:1fr; gap:10px; }
-    .plan-card { padding:12px; }
-    .plan-price { font-size:20px; }
+    /* ---- Floating paywall panel ---- */
+    .locked .locked-overlay { background:linear-gradient(0deg, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); }
+    .locked-box { padding:14px 14px calc(14px + env(safe-area-inset-bottom)); max-height:65vh; border-radius:16px 16px 0 0; }
+    .locked-box h4 { font-size:15px; margin-bottom:4px; }
+    .locked-box p { font-size:11px; margin-bottom:10px; }
+    .plan-grid { grid-template-columns:1fr; gap:8px; }
+    .plan-card { padding:10px; }
+    .plan-title { font-size:12px; }
+    .plan-price { font-size:18px; }
+    .plan-note { font-size:11px; }
     .ref-row { grid-template-columns:1fr; }
+    .ref-box { padding:10px; }
+    .ref-box label { font-size:10px; }
+    .ref-box input { padding:10px; font-size:13px; }
+    .legal-mini { padding:10px 12px; font-size:11px; margin-top:10px; }
+    .legal-mini input[type="checkbox"] { width:16px; height:16px; }
 
     /* ---- Share section ---- */
     .share-section { padding:24px 16px; border-radius:14px; }
@@ -828,7 +851,7 @@
   }
 
   /* PAYWALL (preview + blur) — FOMO strategy */
-  .locked { position:relative; overflow:hidden; }
+  .locked { position:relative; }
   .locked .locked-content { opacity:0.92; pointer-events:none; user-select:none; }
 
   /* Titles: fully visible — show what they're missing */
@@ -860,10 +883,25 @@
   .locked .locked-content .subsection-title,
   .locked .locked-content .primary-badge { filter:blur(8px); }
 
-  .locked .locked-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:18px;
-    background: linear-gradient(180deg, rgba(245,243,255,0.35), rgba(245,243,255,0.88)); border:1px solid var(--border); }
-  .locked-box { width:100%; max-width:560px; background: rgba(255,255,255,0.94); border:1px solid rgba(226,229,235,0.9);
-    border-radius:16px; padding:18px; box-shadow: var(--shadow-lg); text-align:center; }
+  .locked .locked-overlay {
+    position:fixed; bottom:0; left:0; right:0; top:auto;
+    z-index:100; display:block; padding:0;
+    background:linear-gradient(0deg, rgba(255,255,255,1) 60%, rgba(255,255,255,0) 100%);
+    border:none;
+    pointer-events:none;
+  }
+  .locked-box {
+    pointer-events:auto;
+    width:100%; max-width:600px;
+    margin:0 auto;
+    background:rgba(255,255,255,0.97);
+    border:1px solid rgba(226,229,235,0.8);
+    border-radius:20px 20px 0 0;
+    padding:20px 24px calc(20px + env(safe-area-inset-bottom));
+    box-shadow:0 -6px 30px rgba(27,20,100,0.12);
+    text-align:center;
+    max-height:70vh; overflow-y:auto;
+  }
   .locked-box h4 { font-family:'Playfair Display',serif; font-size:18px; color:var(--navy); margin-bottom:6px; }
   .locked-box p { font-size:13px; color:var(--text-light); margin-bottom:14px; }
   .plan-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
@@ -2136,8 +2174,8 @@ function buildLockedPreview(lockedHTML, sessionId, L){
     ? 'Ves un preview: títulos visibles y detalles borrosos. Paga para ver el análisis completo, exportarlo y guardarlo.'
     : 'You are seeing a preview: titles visible and details blurred. Pay to access the full analysis, export it and save it.';
   return `
-    <div class="result-card locked" style="padding:0">
-      <div class="locked-content" style="padding:32px">${lockedHTML}</div>
+    <div class="result-card locked" style="padding:0;overflow:visible">
+      <div class="locked-content" style="padding:32px 32px 360px 32px">${lockedHTML}</div>
       <div class="locked-overlay">
         <div class="locked-box">
           <h4>${title}</h4>
@@ -2646,8 +2684,8 @@ function doPrint() {
     alert(isES
       ? 'Desbloquea tu reporte completo para poder imprimirlo o guardarlo como PDF.'
       : 'Unlock your full report to print or save it as PDF.');
-    const overlay = document.querySelector('.locked-overlay');
-    if (overlay) overlay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const lockedCard = document.querySelector('.result-card.locked');
+    if (lockedCard) lockedCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
     return;
   }
 
